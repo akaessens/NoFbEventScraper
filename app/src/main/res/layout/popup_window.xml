@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/popup_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:hint="@string/add_link_hint"
+                    android:overScrollMode="always"
+                    android:scrollHorizontally="true"
+                    app:layout_constraintBottom_toBottomOf="@+id/paste_button"
+                    app:layout_constraintEnd_toStartOf="@+id/paste_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/paste_button"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@android:string/paste"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/text_input"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_name"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:text="Name" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/field_event_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Event name" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/label_start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Start" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/field_event_start"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Event start time" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/label_end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="End" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/field_event_end"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Event end time" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/label_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Location" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/field_event_location"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Event location" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </TableRow>
+                </TableLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@android:string/cancel" />
+
+                <Button
+                    android:id="@+id/ok_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@android:string/ok" />
+
+            </LinearLayout>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
