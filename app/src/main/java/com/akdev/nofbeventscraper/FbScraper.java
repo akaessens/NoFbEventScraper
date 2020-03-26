@@ -34,7 +34,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         try {
             document = Jsoup.connect(url).get();
 
-            String json = document.select("#u_0_j").first().data();
+            String json = document.select("script[type = application/ld+json]").first().data();
 
             try {
                 JSONObject reader = new JSONObject(json);
@@ -61,12 +61,6 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-
-
-
 
         return null;
     }
