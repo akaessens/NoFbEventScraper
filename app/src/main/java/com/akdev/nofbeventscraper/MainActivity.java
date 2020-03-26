@@ -60,16 +60,19 @@ public class MainActivity extends AppCompatActivity {
         paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 
-                if (clipboard != null) {
+                try {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     String str = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
 
                     clear(true);
                     field_uri_input.setText(str);
-                    startScraping();
-
                 }
+                catch (NullPointerException e) {
+                    e.printStackTrace();
+                    toast("Error: Clipboard empty");
+                }
+                startScraping();
             }
         });
 
@@ -83,31 +86,39 @@ public class MainActivity extends AppCompatActivity {
         ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    //time
+                    String start_str = field_event_start.getText().insert(22, ":").toString();
+                    String end_str = field_event_end.getText().insert(22, ":").toString();
 
-                // time
-                String start_str = field_event_start.getText().insert(22, ":").toString();
-                String end_str = field_event_end.getText().insert(22, ":").toString();
+                    LocalDateTime start = LocalDateTime.parse(start_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    LocalDateTime end = LocalDateTime.parse(end_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 
-                LocalDateTime start = LocalDateTime.parse(start_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-                LocalDateTime end = LocalDateTime.parse(end_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    ZoneId zoneId = ZoneId.systemDefault();
+                    long start_epoch = start.atZone(zoneId).toEpochSecond() * 1000;
+                    long end_epoch = end.atZone(zoneId).toEpochSecond() * 1000;
 
-                ZoneId zoneId = ZoneId.systemDefault();
-                long start_epoch = start.atZone(zoneId).toEpochSecond() * 1000;
-                long end_epoch = end.atZone(zoneId).toEpochSecond() * 1000;
+                    String name = field_event_name.getText().toString();
+                    String location = field_event_location.getText().toString();
+                    String description = field_event_description.getText().toString();
+                    String uri = field_uri_input.getText().toString();
 
-                String name = field_event_name.getText().toString();
-                String location = field_event_location.getText().toString();
-                String description = field_event_description.getText().toString();
-                String uri = field_uri_input.getText().toString();
+                    Intent intent = new Intent(Intent.ACTION_EDIT);
+                    intent.setType("vnd.android.cursor.item/event");
+                    intent.putExtra(CalendarContract.Events.TITLE, field_event_name.getText().toString());
+                    intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start_epoch);
+                    intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end_epoch);
+                    intent.putExtra(CalendarContract.Events.EVENT_LOCATION, field_event_location.getText().toString());
+                    intent.putExtra(CalendarContract.Events.DESCRIPTION, uri + "\n" + description);
+                    startActivity(intent);
+                }
+                catch (Exception e )
+                {
+                    e.printStackTrace();
+                    toast("Error: Invalid fields");
+                    return;
+                }
 
-                Intent intent = new Intent(Intent.ACTION_EDIT);
-                intent.setType("vnd.android.cursor.item/event");
-                intent.putExtra(CalendarContract.Events.TITLE, field_event_name.getText().toString());
-                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start_epoch);
-                intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end_epoch);
-                intent.putExtra(CalendarContract.Events.EVENT_LOCATION, field_event_location.getText().toString());
-                intent.putExtra(CalendarContract.Events.DESCRIPTION, uri + "\n" + description);
-                startActivity(intent);
             }
         });
 
@@ -115,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
                 //If the keyevent is a key-down event on the "enter" button
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
                     startScraping();
                     return true;
                 }
@@ -123,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //get data from deep link
         Intent intent = getIntent();
-        //String action = intent.getAction();
         Uri data = intent.getData();
 
         if (data != null) {
@@ -141,7 +151,8 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             double d = Double.parseDouble(strNum);
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -185,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         catch (Exception e) {
+            e.printStackTrace();
             clear(true);
             toast("Invalid URL");
         }
