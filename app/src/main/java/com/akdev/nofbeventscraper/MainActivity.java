@@ -3,11 +3,13 @@ package com.akdev.nofbeventscraper;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.provider.CalendarContract;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         field_event_location = (TextInputEditText) findViewById(R.id.field_event_location);
         field_event_description = (TextInputEditText) findViewById(R.id.field_event_description);
 
-        final MainActivity mainactivity = this;
+        //final MainActivity mainactivity = this;
 
         paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         field_uri_input.setText(str);
-                        FbScraper scraper = new FbScraper(mainactivity, field_uri_input.getText().toString());
-                        scraper.execute();
+
+                        startScraping();
                     }
                     catch (Exception e) {
                         clear();
@@ -121,8 +123,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        field_uri_input.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                //If the keyevent is a key-down event on the "enter" button
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+                    startScraping();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        Intent intent = getIntent();
+        //String action = intent.getAction();
+        Uri data = intent.getData();
+
+        if (data != null) {
+            // opening external fb link
+            field_uri_input.setText(data.toString());
+            startScraping();
+        }
+
     }
 
+    public void startScraping() {
+        FbScraper scraper = new FbScraper(this, field_uri_input.getText().toString());
+        scraper.execute();
+
+    }
     public void clear() {
         field_uri_input.setText("");
         field_event_name.setText("");

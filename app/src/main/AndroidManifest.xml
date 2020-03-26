@@ -15,9 +15,25 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:label="NoFb Event Scraper">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "https://m.facebook.com/events” -->
+                <data android:scheme="https"
+                    android:host="m.facebook.com"
+                    android:pathPrefix="/events" />
+                <!-- Accepts URIs that begin with "https://www.facebook.com/events” -->
+                <data android:scheme="https"
+                    android:host="www.facebook.com"
+                    android:pathPrefix="/events" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+            </intent-filter>
+
+
         </activity>
 
     </application>
