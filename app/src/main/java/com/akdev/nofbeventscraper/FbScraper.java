@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -18,25 +19,27 @@ import java.io.IOException;
 public class FbScraper extends AsyncTask<Void, Void, Void> {
 
     private String url;
+    private String error;
     private MainActivity main;
     public FbEvent event;
 
     public FbScraper(MainActivity main, String url) {
         this.url = url;
         this.main = main;
+
     }
 
     @Override
-    protected Void doInBackground(Void... voids){
+    protected Void doInBackground(Void... voids) {
 
         Document document = null;
 
         try {
             document = Jsoup.connect(url).get();
 
-            String json = document.select("script[type = application/ld+json]").first().data();
-
             try {
+                String json = document.select("script[type = application/ld+json]").first().data();
+
                 JSONObject reader = new JSONObject(json);
 
                 String event_name = reader.getString("name");
@@ -45,30 +48,43 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 String event_description = reader.getString("description");
                 String location = reader.getJSONObject("location").getString("name");
 
-                String image_url = reader.getString("image");
+                //String image_url = reader.getString("image");
 
-                this.event = new FbEvent(event_name, event_start, event_end, event_description, location, image_url);
+                if (event_name == null || event_start == null || event_end == null) {
+                    this.event = null;
+                    throw new Exception();
+                } else {
+                    this.event = new FbEvent(event_name, event_start, event_end, event_description, location, null);
+                }
 
-
-
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                this.error = "Error: Scraping event data failed";
             }
-
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
+            this.error = "Error: URL not available";
         }
 
         return null;
     }
 
+    @Override
+    protected void onPreExecute() {
+
+        super.onPreExecute();
+    }
+
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-            main.update(event);
+        if (this.event != null) {
+            this.main.update(event);
+        }
+        else {
+            main.toast(error);
+            this.main.clear(false);
+        }
     }
 }
 

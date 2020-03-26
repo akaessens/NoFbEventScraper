@@ -1,7 +1,9 @@
 package com.akdev.nofbeventscraper;
 
+import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.provider.CalendarContract;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -62,26 +65,10 @@ public class MainActivity extends AppCompatActivity {
                 if (clipboard != null) {
                     String str = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
 
-                    try {
-                        new URL(str).toURI();
+                    clear(true);
+                    field_uri_input.setText(str);
+                    startScraping();
 
-                        if (str.substring(0,32).equals("https://www.facebook.com/events/")) {
-                            str = str.replace("www.", "m.");
-                        }
-                        else if (str.substring(0,30).equals("https://m.facebook.com/events/")) {
-
-                        }
-                        else {
-                            throw new Exception();
-                        }
-
-                        field_uri_input.setText(str);
-
-                        startScraping();
-                    }
-                    catch (Exception e) {
-                        clear();
-                    }
                 }
             }
         });
@@ -89,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clear();
+                clear(true);
             }
         });
 
@@ -148,13 +135,69 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
     public void startScraping() {
-        FbScraper scraper = new FbScraper(this, field_uri_input.getText().toString());
-        scraper.execute();
+
+        try {
+            String str = field_uri_input.getText().toString();
+
+            // check for a valid uri
+            new URL(str).toURI();
+
+            String eventId = null;
+
+            // check for facebook uri
+            if (str.contains("facebook.com/events/")) {
+
+                // find event id
+                String[] separated = str.split("/");
+                for (int i = 0; i< separated.length; i++) {
+                    if (separated[i].length() > 8 && isNumeric(separated[i])) {
+                        eventId = separated[i];
+                        break;
+                    }
+                }
+                if (eventId == null) // no event id found
+                {
+                    throw new Exception();
+                }
+            }
+            else {
+                throw new Exception();
+            }
+
+            String input_uri = "https://m.facebook.com/events/"+ eventId;
+            field_uri_input.setText(input_uri);
+
+            FbScraper scraper = new FbScraper(this, field_uri_input.getText().toString());
+            scraper.execute();
+
+        }
+        catch (Exception e) {
+            clear(true);
+            toast("Invalid URL");
+        }
+
 
     }
-    public void clear() {
-        field_uri_input.setText("");
+    public void toast(String str) {
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
+    public void clear(boolean clearUri) {
+        if (clearUri) {
+            field_uri_input.setText("");
+        }
         field_event_name.setText("");
         field_event_start.setText("");
         field_event_end.setText("");
