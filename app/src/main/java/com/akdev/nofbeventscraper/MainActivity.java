@@ -123,10 +123,16 @@ public class MainActivity extends AppCompatActivity {
         //get data from deep link
         Intent intent = getIntent();
         Uri data = intent.getData();
+        String shared_text = intent.getStringExtra(Intent.EXTRA_TEXT);
 
         if (data != null) {
             // opening external fb link
             field_uri_input.setText(data.toString());
+            startScraping();
+        }
+        else if (shared_text != null) {
+            //share to nofb
+            field_uri_input.setText(shared_text);
             startScraping();
         }
 
