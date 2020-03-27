@@ -20,8 +20,6 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         field_event_location = (TextInputEditText) findViewById(R.id.field_event_location);
         field_event_description = (TextInputEditText) findViewById(R.id.field_event_description);
 
-        //final MainActivity mainactivity = this;
-
         paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,28 +83,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    //time
-                    String start_str = field_event_start.getText().insert(22, ":").toString();
-                    String end_str = field_event_end.getText().insert(22, ":").toString();
+                    Long start_epoch = convertTimeToEpoch(field_event_start);
+                    Long end_epoch = convertTimeToEpoch(field_event_end);
 
-                    LocalDateTime start = LocalDateTime.parse(start_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-                    LocalDateTime end = LocalDateTime.parse(end_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-
-                    ZoneId zoneId = ZoneId.systemDefault();
-                    long start_epoch = start.atZone(zoneId).toEpochSecond() * 1000;
-                    long end_epoch = end.atZone(zoneId).toEpochSecond() * 1000;
-
-                    String name = field_event_name.getText().toString();
-                    String location = field_event_location.getText().toString();
-                    String description = field_event_description.getText().toString();
-                    String uri = field_uri_input.getText().toString();
+                    String name = parseField(field_event_name);
+                    String location = parseField(field_event_location);
+                    String description = parseField(field_event_description);
+                    String uri = parseField(field_uri_input);
 
                     Intent intent = new Intent(Intent.ACTION_EDIT);
                     intent.setType("vnd.android.cursor.item/event");
-                    intent.putExtra(CalendarContract.Events.TITLE, field_event_name.getText().toString());
+                    intent.putExtra(CalendarContract.Events.TITLE, name);
                     intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start_epoch);
                     intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end_epoch);
-                    intent.putExtra(CalendarContract.Events.EVENT_LOCATION, field_event_location.getText().toString());
+                    intent.putExtra(CalendarContract.Events.EVENT_LOCATION, location);
                     intent.putExtra(CalendarContract.Events.DESCRIPTION, uri + "\n" + description);
                     startActivity(intent);
                 }
@@ -116,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     e.printStackTrace();
                     toast("Error: Invalid fields");
-                    return;
                 }
 
             }
@@ -143,6 +130,30 @@ public class MainActivity extends AppCompatActivity {
             startScraping();
         }
 
+    }
+    private String parseField(TextInputEditText field) {
+        try {
+            return field.getText().toString();
+        }
+        catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    private Long convertTimeToEpoch (TextInputEditText field) {
+        try {
+            String time_str = field.getText().insert(22, ":").toString();
+
+            LocalDateTime datetime = LocalDateTime.parse(time_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+            ZoneId zoneId = ZoneId.systemDefault();
+            return datetime.atZone(zoneId).toEpochSecond() * 1000;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            toast("Error: Invalid Time");
+        }
+        return null;
     }
 
     public static boolean isNumeric(String strNum) {

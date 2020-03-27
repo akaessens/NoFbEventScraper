@@ -21,14 +21,46 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     private String url;
     private String error;
     private MainActivity main;
-    public FbEvent event;
+    private FbEvent event;
 
-    public FbScraper(MainActivity main, String url) {
+    FbScraper(MainActivity main, String url) {
         this.url = url;
         this.main = main;
 
     }
+    private String readFromLocJson(String location_json) {
 
+        String name = "";
+        String street_address = "";
+        String postal_code = "";
+        String address_locality = "";
+        try {
+            JSONObject reader = new JSONObject(location_json);
+
+            name = reader.getString("name");
+
+            JSONObject address = reader.getJSONObject("address");
+            street_address = ", " + address.getString("streetAddress");
+            postal_code = ", " + address.getString("postalCode");
+            address_locality = " " + address.getString("addressLocality");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return name +  street_address + postal_code + address_locality;
+    }
+
+
+    private String readFromJson(JSONObject reader, String field) {
+        try {
+            return reader.getString(field);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     @Override
     protected Void doInBackground(Void... voids) {
 
@@ -42,15 +74,15 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
                 JSONObject reader = new JSONObject(json);
 
-                String event_name = reader.getString("name");
-                String event_start = reader.getString("startDate");
-                String event_end = reader.getString("endDate");
-                String event_description = reader.getString("description");
-                String location = reader.getJSONObject("location").getString("name");
+                String event_name = readFromJson(reader, "name");
+                String event_start = readFromJson(reader, "startDate");
+                String event_end = readFromJson(reader, "endDate");
+                String event_description = readFromJson(reader, "description");
+                String location_json = readFromJson(reader, "location");
 
-                //String image_url = reader.getString("image");
+                String location = readFromLocJson(location_json);
 
-                if (event_name == null || event_start == null || event_end == null) {
+                if (event_name == null) {
                     this.event = null;
                     throw new Exception();
                 } else {
@@ -65,13 +97,11 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
             this.error = "Error: URL not available";
         }
-
         return null;
     }
 
     @Override
     protected void onPreExecute() {
-
         super.onPreExecute();
     }
 
