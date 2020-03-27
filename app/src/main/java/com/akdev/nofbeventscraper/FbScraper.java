@@ -3,6 +3,8 @@ package com.akdev.nofbeventscraper;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.Editable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -51,6 +53,18 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         return name +  street_address + postal_code + address_locality;
     }
 
+    private String fixTimezone(String time_in) {
+
+        try {
+
+            Editable editable = new SpannableStringBuilder(time_in);
+
+            return editable.insert(22, ":").toString();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     private String readFromJson(JSONObject reader, String field) {
         try {
@@ -75,10 +89,12 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 JSONObject reader = new JSONObject(json);
 
                 String event_name = readFromJson(reader, "name");
-                String event_start = readFromJson(reader, "startDate");
-                String event_end = readFromJson(reader, "endDate");
+                String event_start = fixTimezone(readFromJson(reader, "startDate"));
+                String event_end = fixTimezone(readFromJson(reader, "endDate"));
+
                 String event_description = readFromJson(reader, "description");
                 String location_json = readFromJson(reader, "location");
+
 
                 String location = readFromLocJson(location_json);
 

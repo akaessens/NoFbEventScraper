@@ -149,15 +149,13 @@ public class MainActivity extends AppCompatActivity {
 
     private Long convertTimeToEpoch (TextInputEditText field) {
         try {
-            String time_str = field.getText().insert(22, ":").toString();
+            String time_str = field.getText().toString();
 
             LocalDateTime datetime = LocalDateTime.parse(time_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            ZoneId zoneId = ZoneId.systemDefault();
-            return datetime.atZone(zoneId).toEpochSecond() * 1000;
+            return datetime.atZone(ZoneId.of("UTC")).toEpochSecond() * 1000;
         } catch (Exception e)
         {
             e.printStackTrace();
-            toast("Error: Invalid Time");
         }
         return null;
     }
