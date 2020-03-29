@@ -11,41 +11,42 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AboutActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "https://*.facebook.com/events” -->
-                <data android:scheme="https"
+                <data
                     android:host="*.facebook.com"
-                    android:pathPrefix="/events" />
+                    android:pathPrefix="/events"
+                    android:scheme="https" />
                 <!-- Accepts URIs that begin with "https://facebook.com/events” -->
-                <data android:scheme="https"
+                <data
                     android:host="facebook.com"
-                    android:pathPrefix="/events" />
+                    android:pathPrefix="/events"
+                    android:scheme="https" />
             </intent-filter>
 
             <!-- Accepts share intents” -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain"/>
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
-
-
-
         </activity>
-
     </application>
 
 </manifest>
-
