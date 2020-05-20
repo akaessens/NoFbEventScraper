@@ -1,0 +1,1 @@
+This app scrapes facebook event links and adds the event to your calendar.

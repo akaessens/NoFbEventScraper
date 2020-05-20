@@ -1,4 +1,5 @@
 TODO.txt
+app/release
 *.iml
 .gradle
 /local.properties

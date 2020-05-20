@@ -5,7 +5,7 @@
     <string name="about_text">This application was developed to be used without a facebook account.
         \nTherefore it does not use the facebook API.
         Instead it opens the facebook event URI and downloads the website source code.
-        This source contains the event information which is used to create a calendar entry.
+        This source contains the information which is used to create a calendar entry.
     </string>
     <string name="open_source_heading"> Open Source </string>
     <string name="open_source_text"> The source code for this application can be found at https://github.com/akaessens/NoFbEventScraper .</string>
