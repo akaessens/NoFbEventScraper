@@ -14,3 +14,4 @@ app/release
 /captures
 .externalNativeBuild
 .cxx
+.idea
