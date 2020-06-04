@@ -262,6 +262,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, AboutActivity.class));
             return true;
         }
+        if (id == R.id.action_help) {
+            startActivity(new Intent(this, HelpActivity.class));
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

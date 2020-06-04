@@ -1,15 +1,29 @@
 <resources>
     <string name="app_name">NoFb Event Scraper</string>
     <string name="action_about">About</string>
+    <string name="action_help">Help</string>
     <string name="add_link_hint">Paste facebook link to the event.</string>
-    <string name="about_text">This application was developed to be used without a facebook account.
+
+    <string name="description_heading">Description</string>
+    <string name="description_text">This application was developed to be used without a facebook account.
         \nTherefore it does not use the facebook API.
         Instead it opens the facebook event URI and downloads the website source code.
         This source contains the information which is used to create a calendar entry.
     </string>
     <string name="open_source_heading"> Open Source </string>
-    <string name="open_source_text"> The source code for this application can be found at https://github.com/akaessens/NoFbEventScraper .</string>
+    <string name="open_source_text"> The source code and issue tracker for this application can be found at https://github.com/akaessens/NoFbEventScraper .</string>
+
+    <string name="faq_heading"> FAQ </string>
+    <string name="faq_0q"> What links can be used with this app? </string>
+    <string name="faq_0a"> All facebook subdomains are supported, whether mobile (m.facebook.com) or language-specific (de-de.facebook.com). The link must contain an event ID.</string>
+    <string name="faq_1q"> How to use this application? </string>
+    <string name="faq_1a"> You can use the paste button to paste a previously copied link into the URL bar.
+        Alternatively you can use the "share" function e.g. from the Android browser.
+        A third option is to click on a facebook link and use the "open with"-dialog. </string>
+    <string name="faq_2q"> Why does event X not work? </string>
+    <string name="faq_2a"> Current limitations are events in the past or events with multiple instances. If you find some other event that does not work, please let me know.</string>
 
     <string name="changelog_heading"> Changelog </string>
-    <string name="changelog_text"> v0.1.0\t\tInitial release.</string>
+    <string name="changelog_text">v0.1.0\t\tInitial release.\nv0.2.0\t\tAdded help section.\n
+    </string>
 </resources>
