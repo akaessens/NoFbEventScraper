@@ -1,1 +1,1 @@
-Added help section.
+Added help and reports section.

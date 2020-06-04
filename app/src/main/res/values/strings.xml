@@ -11,7 +11,10 @@
         This source contains the information which is used to create a calendar entry.
     </string>
     <string name="open_source_heading"> Open Source </string>
-    <string name="open_source_text"> The source code and issue tracker for this application can be found at https://github.com/akaessens/NoFbEventScraper .</string>
+    <string name="open_source_text"> The source code for this application can be found at https://github.com/akaessens/NoFbEventScraper .</string>
+
+    <string name="issues_heading" > Report a bug</string>
+    <string name="issues_text" >If you encounter a bug please report it to me anonymously at https://gitreports.com/issue/akaessens/NoFbEventScraper or directly at Github with the link above.</string>
 
     <string name="faq_heading"> FAQ </string>
     <string name="faq_0q"> What links can be used with this app? </string>
@@ -23,7 +26,7 @@
     <string name="faq_2q"> Why does event X not work? </string>
     <string name="faq_2a"> Current limitations are events in the past or events with multiple instances. If you find some other event that does not work, please let me know.</string>
 
-    <string name="changelog_heading"> Changelog </string>
-    <string name="changelog_text">v0.1.0\t\tInitial release.\nv0.2.0\t\tAdded help section.\n
-    </string>
+    <string name="donate_heading"> Donations </string>
+    <string name="donate_text">Click on the PayPal image to send me a coffee if you like :) </string>
+
 </resources>
