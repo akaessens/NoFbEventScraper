@@ -11,7 +11,7 @@ This source contains the information which is used to create a calendar entry.
 # Download
 Currently this application is in the submitting process to FDroid. see also [#2](/../../issues/2).
 
-Until it is published at FDroid, use [release v0.1.0](https://github.com/akaessens/NoFbEventScraper/releases/download/v0.1.0/app-release.apk).
+Until it is published at FDroid, use [release v0.1.1](https://github.com/akaessens/NoFbEventScraper/releases/download/v0.1.1/app-release.apk).
 
 # Screenshot
 
