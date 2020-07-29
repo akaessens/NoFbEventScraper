@@ -62,7 +62,19 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
             return editable.insert(22, ":").toString();
 
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
+        }
+    }
+
+    private String fixLinks(String description_in) {
+        try {
+            // @[152580919265:274:MagentaMusik 360] -> m.facebook.com/152580919265
+            return description_in.replaceAll("@\\[([0-9]{10,}):[0-9]{3,}:[^\\]]*\\]", "m.facebook.com/$1");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return description_in;
         }
     }
 
@@ -92,7 +104,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 String event_start = fixTimezone(readFromJson(reader, "startDate"));
                 String event_end = fixTimezone(readFromJson(reader, "endDate"));
 
-                String event_description = readFromJson(reader, "description");
+                String event_description = fixLinks(readFromJson(reader, "description"));
                 String location_json = readFromJson(reader, "location");
 
 
