@@ -30,7 +30,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         this.main = main;
 
     }
-    private String fixLocation(String location_json) {
+    protected String fixLocation(String location_json) {
 
         String name = "";
 
@@ -63,7 +63,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    private String fixTimezone(String time_in) {
+    protected String fixTimezone(String time_in) {
 
         try {
 
@@ -77,7 +77,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    private String fixLinks(String description_in) {
+    protected String fixLinks(String description_in) {
         try {
             // @[152580919265:274:MagentaMusik 360] -> m.facebook.com/152580919265
             return description_in.replaceAll("@\\[([0-9]{10,}):[0-9]{3}:([^\\]]*)\\]", "m.facebook.com/$1 ($2)");

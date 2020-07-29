@@ -1,9 +1,7 @@
 package com.akdev.nofbeventscraper;
 
-import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,7 +19,9 @@ import android.widget.Toast;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    Long start_epoch = convertTimeToEpoch(field_event_start);
-                    Long end_epoch = convertTimeToEpoch(field_event_end);
+                    Long start_epoch = convertTimeToEpoch(field_event_start.getText().toString());
+                    Long end_epoch = convertTimeToEpoch(field_event_end.getText().toString());
 
                     String name = parseField(field_event_name);
                     String location = parseField(field_event_location);
@@ -149,12 +149,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private Long convertTimeToEpoch (TextInputEditText field) {
+    Long convertTimeToEpoch(String time_str) {
         try {
-            String time_str = field.getText().toString();
+            ZonedDateTime datetime = ZonedDateTime.parse(time_str, DateTimeFormatter.ISO_DATE_TIME);
 
-            LocalDateTime datetime = LocalDateTime.parse(time_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            return datetime.atZone(ZoneId.of("UTC")).toEpochSecond() * 1000;
+            return datetime.toEpochSecond() * 1000;
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -169,16 +168,14 @@ public class MainActivity extends AppCompatActivity {
         try {
             double d = Double.parseDouble(strNum);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return false;
         }
         return true;
     }
-
-    public void startScraping() {
-
+    String checkURI(String str)
+    {
         try {
-            String str = field_uri_input.getText().toString();
 
             // check for a valid uri
             new URL(str).toURI();
@@ -190,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // find event id
                 String[] separated = str.split("/");
-                for (int i = 0; i< separated.length; i++) {
+                for (int i = 0; i < separated.length; i++) {
                     if (separated[i].length() > 8 && isNumeric(separated[i])) {
                         eventId = separated[i];
                         break;
@@ -200,17 +197,30 @@ public class MainActivity extends AppCompatActivity {
                 {
                     throw new Exception();
                 }
-            }
-            else {
+            } else {
                 throw new Exception();
             }
 
-            String input_uri = "https://m.facebook.com/events/"+ eventId;
-            field_uri_input.setText(input_uri);
+            String input_uri = "https://m.facebook.com/events/" + eventId;
+            str = input_uri;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            clear(true);
+            toast("Invalid URL");
+            str = "";
+        }
+        return str;
+    }
 
+    public void startScraping() {
+
+        String str = checkURI(field_uri_input.getText().toString());
+        field_uri_input.setText(str);
+
+        try {
             FbScraper scraper = new FbScraper(this, field_uri_input.getText().toString());
             scraper.execute();
-
         }
         catch (Exception e) {
             e.printStackTrace();
