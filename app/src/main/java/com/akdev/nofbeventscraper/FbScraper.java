@@ -30,27 +30,37 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         this.main = main;
 
     }
-    private String readFromLocJson(String location_json) {
+    private String fixLocation(String location_json) {
 
         String name = "";
-        String street_address = "";
-        String postal_code = "";
-        String address_locality = "";
+
         try {
             JSONObject reader = new JSONObject(location_json);
 
             name = reader.getString("name");
-
             JSONObject address = reader.getJSONObject("address");
-            street_address = ", " + address.getString("streetAddress");
-            postal_code = ", " + address.getString("postalCode");
-            address_locality = " " + address.getString("addressLocality");
+
+            String type = address.getString("@type");
+
+            if (type.equals("PostalAddress"))
+            {
+                String postal_code = address.getString("postalCode");
+                String address_locality = address.getString("addressLocality");
+                String address_country = address.getString("addressCountry");
+                String street_address = address.getString("streetAddress");
+
+                return name + ", " + street_address + ", " + postal_code + " " + address_locality;
+            }
+            else
+            {
+                return name;
+            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
+            return name;
         }
-
-        return name +  street_address + postal_code + address_locality;
     }
 
     private String fixTimezone(String time_in) {
@@ -63,7 +73,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return "";
         }
     }
 
@@ -84,7 +94,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         }
         catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return "";
         }
     }
     @Override
@@ -105,10 +115,8 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 String event_end = fixTimezone(readFromJson(reader, "endDate"));
 
                 String event_description = fixLinks(readFromJson(reader, "description"));
-                String location_json = readFromJson(reader, "location");
+                String location = fixLocation(readFromJson(reader, "location"));
 
-
-                String location = readFromLocJson(location_json);
 
                 if (event_name == null) {
                     this.event = null;
