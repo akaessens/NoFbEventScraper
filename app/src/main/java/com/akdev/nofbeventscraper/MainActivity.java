@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,8 +16,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.net.URI;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -36,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText field_event_end;
     private TextInputEditText field_event_location;
     private TextInputEditText field_event_description;
+    private ImageView         toolbar_image_view;
+    private CollapsingToolbarLayout toolbar_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         field_event_end = (TextInputEditText) findViewById(R.id.field_event_end);
         field_event_location = (TextInputEditText) findViewById(R.id.field_event_location);
         field_event_description = (TextInputEditText) findViewById(R.id.field_event_description);
+        toolbar_image_view = (ImageView) findViewById(R.id.image_view);
+        toolbar_layout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
         paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 throw new Exception();
             }
 
-            String input_uri = "https://m.facebook.com/events/" + eventId;
+            String input_uri = "https://www.facebook.com/events/" + eventId;
             str = input_uri;
         }
         catch (Exception e) {
@@ -242,6 +252,9 @@ public class MainActivity extends AppCompatActivity {
         field_event_end.setText("");
         field_event_location.setText("");
         field_event_description.setText("");
+        toolbar_image_view.setImageDrawable(null);
+
+        toolbar_layout.setTitle(getString(R.string.app_name));
     }
 
     public void update(FbEvent event) {
@@ -250,6 +263,10 @@ public class MainActivity extends AppCompatActivity {
         field_event_end.setText(event.end_date);
         field_event_location.setText(event.location);
         field_event_description.setText(event.description);
+
+        toolbar_layout.setTitle(" ");
+
+        Picasso.get().load(event.image_url).into(toolbar_image_view);
     }
 
 

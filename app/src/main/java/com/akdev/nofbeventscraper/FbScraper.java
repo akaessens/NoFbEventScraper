@@ -117,12 +117,23 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 String event_description = fixLinks(readFromJson(reader, "description"));
                 String location = fixLocation(readFromJson(reader, "location"));
 
+                String image_url = null;
+
+                try {
+                    image_url = readFromJson(reader, "image"); // get from json
+
+                    // get from event header
+                    image_url = document.getElementsByClass("scaledImageFitWidth").first().attr("src");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    this.error = "Error: no image found";
+                }
 
                 if (event_name == null) {
                     this.event = null;
                     throw new Exception();
                 } else {
-                    this.event = new FbEvent(event_name, event_start, event_end, event_description, location, null);
+                    this.event = new FbEvent(event_name, event_start, event_end, event_description, location, image_url);
                 }
 
             } catch (Exception e) {

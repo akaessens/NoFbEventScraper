@@ -1,6 +1,7 @@
 package com.akdev.nofbeventscraper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -14,7 +15,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
+        this.getSupportActionBar().hide();
 
         ImageView img = (ImageView)findViewById(R.id.paypal_image);
 
