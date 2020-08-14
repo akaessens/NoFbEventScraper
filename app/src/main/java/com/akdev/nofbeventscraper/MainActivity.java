@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     Long end_epoch = convertTimeToEpoch(field_event_end.getText().toString());
 
                     String name = parseField(field_event_name);
+
                     String location = parseField(field_event_location);
                     String description = parseField(field_event_description);
                     String uri = parseField(field_uri_input);
@@ -248,10 +249,15 @@ public class MainActivity extends AppCompatActivity {
             field_uri_input.setText("");
         }
         field_event_name.setText("");
+        field_event_name.setError(null);
         field_event_start.setText("");
+        field_event_start.setError(null);
         field_event_end.setText("");
+        field_event_end.setError(null);
         field_event_location.setText("");
+        field_event_location.setError(null);
         field_event_description.setText("");
+        field_event_description.setError(null);
         toolbar_image_view.setImageDrawable(null);
 
         toolbar_layout.setTitle(getString(R.string.app_name));
@@ -259,14 +265,45 @@ public class MainActivity extends AppCompatActivity {
 
     public void update(FbEvent event) {
         field_event_name.setText(event.name);
+
+        if (event.name.equals(""))
+        {
+            field_event_name.setError("no event name detected");
+        }
         field_event_start.setText(event.start_date);
+
+        if (event.start_date.equals(""))
+        {
+            field_event_start.setError("no event start date detected");
+        }
         field_event_end.setText(event.end_date);
+
+        if (event.end_date.equals(""))
+        {
+            field_event_end.setError("no event end date detected");
+        }
+
         field_event_location.setText(event.location);
+
+        if (event.location.equals(""))
+        {
+            field_event_location.setError("no event location detected");
+        }
         field_event_description.setText(event.description);
 
-        toolbar_layout.setTitle(" ");
+        if (event.description.equals(""))
+        {
+            field_event_description.setError("no event description detected");
+        }
 
-        Picasso.get().load(event.image_url).into(toolbar_image_view);
+
+        try {
+            Picasso.get().load(event.image_url).into(toolbar_image_view);
+            toolbar_layout.setTitle(" ");
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 

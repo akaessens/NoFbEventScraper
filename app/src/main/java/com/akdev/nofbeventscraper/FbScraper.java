@@ -117,7 +117,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 String event_description = fixLinks(readFromJson(reader, "description"));
                 String location = fixLocation(readFromJson(reader, "location"));
 
-                String image_url = null;
+                String image_url = "";
 
                 try {
                     image_url = readFromJson(reader, "image"); // get from json
@@ -134,6 +134,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                     throw new Exception();
                 } else {
                     this.event = new FbEvent(event_name, event_start, event_end, event_description, location, image_url);
+                    //this.event = new FbEvent("", "", "", "", "", "");
                 }
 
             } catch (Exception e) {
