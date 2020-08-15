@@ -57,7 +57,8 @@
                 android:cursorVisible="true"
                 android:hint="@string/add_link_hint"
                 android:inputType="textNoSuggestions"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColorLink="@color/material_on_background_emphasis_high_type" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -91,9 +92,10 @@
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:cursorVisible="true"
-                        android:inputType="textNoSuggestions"
                         android:hint="Event name"
-                        android:singleLine="true" />
+                        android:inputType="textNoSuggestions"
+                        android:singleLine="true"
+                        android:textColorLink="@color/material_on_background_emphasis_high_type" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -156,10 +158,11 @@
                         android:layout_height="wrap_content"
                         android:autoLink="web"
                         android:clickable="true"
-                        android:inputType="textNoSuggestions|textMultiLine"
                         android:cursorVisible="true"
                         android:hint="Event description"
-                        android:singleLine="false" />
+                        android:inputType="textNoSuggestions|textMultiLine"
+                        android:singleLine="false"
+                        android:textColorLink="@color/material_on_background_emphasis_high_type" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
