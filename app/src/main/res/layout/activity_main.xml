@@ -70,38 +70,21 @@
         android:layout_margin="0dp"
         app:contentInsetStart="0dp">
 
-        <LinearLayout
-            android:id="@+id/groupbutton"
+
+        <Button
+            android:id="@+id/ok_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <Button
-                android:id="@+id/cancel_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:textColor="#FFFFFF"
-                android:layout_weight="1"
-                android:padding="12dp"
-                android:text="@android:string/cancel"
-                app:cornerRadius="12dp" />
-
-            <Button
-                android:id="@+id/ok_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="16dp"
-                android:textColor="#FFFFFF"
-                android:layout_weight="1"
-                android:padding="12dp"
-                android:text="@android:string/ok"
-                app:cornerRadius="12dp" />
-        </LinearLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:padding="12dp"
+            android:text="@string/add_to_calendar"
+            android:textColor="#FFFFFF"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/ic_event_available"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 

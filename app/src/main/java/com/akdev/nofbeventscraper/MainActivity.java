@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText field_event_description;
     private ImageView         toolbar_image_view;
     private CollapsingToolbarLayout toolbar_layout;
+    private TextInputLayout   input_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        cancel_button = (Button) findViewById(R.id.cancel_button);
         ok_button = (Button) findViewById(R.id.ok_button);
         paste_button = (Button) findViewById(R.id.paste_button);
 
         field_uri_input = (TextInputEditText) findViewById(R.id.field_uri_input);
+        input_layout = (TextInputLayout) findViewById(R.id.textInputLayout);
         field_event_name = (TextInputEditText) findViewById(R.id.field_event_name);
         field_event_start = (TextInputEditText) findViewById(R.id.field_event_start);
         field_event_end = (TextInputEditText) findViewById(R.id.field_event_end);
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         field_event_description = (TextInputEditText) findViewById(R.id.field_event_description);
         toolbar_image_view = (ImageView) findViewById(R.id.image_view);
         toolbar_layout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+
 
         paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,13 +77,20 @@ public class MainActivity extends AppCompatActivity {
                 }
                 catch (NullPointerException e) {
                     e.printStackTrace();
-                    toast("Error: Clipboard empty");
+                    error("Error: Clipboard empty");
                 }
                 startScraping();
             }
         });
 
-        cancel_button.setOnClickListener(new View.OnClickListener() {
+
+        input_layout.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clear(true);
+            }
+        });
+        input_layout.setErrorIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clear(true);
@@ -106,13 +116,12 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start_epoch);
                     intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end_epoch);
                     intent.putExtra(CalendarContract.Events.EVENT_LOCATION, location);
-                    intent.putExtra(CalendarContract.Events.DESCRIPTION, uri + "\n" + description);
+                    intent.putExtra(CalendarContract.Events.DESCRIPTION, uri + "\n\n" + description);
                     startActivity(intent);
                 }
                 catch (Exception e )
                 {
                     e.printStackTrace();
-                    toast("Error: Invalid fields");
                 }
 
             }
@@ -213,8 +222,8 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (Exception e) {
             e.printStackTrace();
-            clear(true);
-            toast("Invalid URL");
+            clear(false);
+            error("Error: Invalid URL");
             str = "";
         }
         return str;
@@ -222,23 +231,31 @@ public class MainActivity extends AppCompatActivity {
 
     public void startScraping() {
 
-        String str = checkURI(field_uri_input.getText().toString());
-        field_uri_input.setText(str);
+        error(null);
 
         try {
-            FbScraper scraper = new FbScraper(this, field_uri_input.getText().toString());
-            scraper.execute();
+            String str = checkURI(field_uri_input.getText().toString());
+
+
+            if (!str.equals(""))
+            {
+                field_uri_input.setText(str);
+                FbScraper scraper = new FbScraper(this, field_uri_input.getText().toString());
+                scraper.execute();
+            }
+
         }
         catch (Exception e) {
             e.printStackTrace();
-            clear(true);
-            toast("Invalid URL");
+            clear(false);
+            error("Error: Invalid URL");
         }
 
 
     }
-    public void toast(String str) {
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    public void error(String str) {
+        //Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        input_layout.setError(str);
     }
     public void clear(boolean clearUri) {
         if (clearUri) {
@@ -261,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void update(FbEvent event) {
         field_event_name.setText(event.name);
+        input_layout.setError(null);
 
         if (event.name.equals(""))
         {

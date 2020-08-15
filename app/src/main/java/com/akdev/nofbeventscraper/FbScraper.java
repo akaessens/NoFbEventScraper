@@ -1,15 +1,9 @@
 package com.akdev.nofbeventscraper;
 
-import android.app.Activity;
-import android.content.Context;
+
 import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,7 +136,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 e.printStackTrace();
                 this.error = "Error: Scraping event data failed";
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             this.error = "Error: URL not available";
         }
@@ -161,7 +155,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
             this.main.update(event);
         }
         else {
-            main.toast(error);
+            main.error(error);
             this.main.clear(false);
         }
     }
