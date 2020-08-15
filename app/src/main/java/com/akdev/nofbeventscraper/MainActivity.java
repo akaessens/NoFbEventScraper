@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private CollapsingToolbarLayout toolbar_layout;
     private TextInputLayout   input_layout;
 
+    private FbScraper         scraper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar_image_view = (ImageView) findViewById(R.id.image_view);
         toolbar_layout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
+
+        ok_button.setEnabled(false);
 
         paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
             if (!str.equals(""))
             {
                 field_uri_input.setText(str);
-                FbScraper scraper = new FbScraper(this, field_uri_input.getText().toString());
+                scraper = new FbScraper(this, field_uri_input.getText().toString());
                 scraper.execute();
             }
 
@@ -274,6 +278,13 @@ public class MainActivity extends AppCompatActivity {
         toolbar_image_view.setImageDrawable(null);
 
         toolbar_layout.setTitle(getString(R.string.app_name));
+
+        if (scraper!=null)
+        {
+            scraper.cancel(true);
+            scraper = null;
+        }
+        ok_button.setEnabled(false);
     }
 
     public void update(FbEvent event) {
@@ -318,6 +329,8 @@ public class MainActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }
+
+        ok_button.setEnabled(true);
     }
 
 
