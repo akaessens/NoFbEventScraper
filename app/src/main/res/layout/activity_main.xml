@@ -84,7 +84,8 @@
             app:cornerRadius="24dp"
             app:icon="@drawable/ic_event_available"
             app:iconGravity="textStart"
-            app:iconPadding="16dp" />
+            app:iconPadding="16dp"
+            app:iconTint="#FFFFFF" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
