@@ -36,7 +36,7 @@ public class MainActivityUnitTest {
         mInstrumentation.removeMonitor(monitor);
 
 
-        final String exp = "https://m.facebook.com/events/261145401687844";
+        final String exp = "https://www.facebook.com/events/261145401687844";
 
         String url = "https://www.facebook.com/events/261145401687844";
         String act = mainActivity.checkURI(url);

@@ -55,12 +55,12 @@ public class ScraperUnitTest {
         FbScraper scraper = new FbScraper(null, "");
 
         String in = "foo @[152580919265:274:MagentaMusik 360] bar";
-        String exp = "foo m.facebook.com/152580919265 (MagentaMusik 360) bar";
+        String exp = "foo MagentaMusik 360 [m.facebook.com/152580919265] bar";
         String act = scraper.fixLinks(in);
         assertEquals(exp, act);
 
         in = "foo @[152580919265:274:MagentaMusik 360] bar @[666666666666:274:NoOfTheBeast]";
-        exp = "foo m.facebook.com/152580919265 (MagentaMusik 360) bar m.facebook.com/666666666666 (NoOfTheBeast)";
+        exp = "foo MagentaMusik 360 [m.facebook.com/152580919265] bar NoOfTheBeast [m.facebook.com/666666666666]";
         act = scraper.fixLinks(in);
         assertEquals(exp, act);
 
