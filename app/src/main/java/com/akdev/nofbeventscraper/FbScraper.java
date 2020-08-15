@@ -98,7 +98,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         Document document = null;
 
         try {
-            document = Jsoup.connect(url).get();
+            document = Jsoup.connect(url).userAgent("Mozilla").get();
 
             try {
                 String json = document.select("script[type = application/ld+json]").first().data();

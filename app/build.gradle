@@ -35,7 +35,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.0'
 
     // jsoup HTML parser library @ https://jsoup.org/
-    implementation 'org.jsoup:jsoup:1.11.1'
+    implementation 'org.jsoup:jsoup:1.13.1'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
