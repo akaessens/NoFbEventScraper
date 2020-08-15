@@ -1,0 +1,3 @@
+Fixes for new design.
+Mew button layout.
+Improve input error display.
