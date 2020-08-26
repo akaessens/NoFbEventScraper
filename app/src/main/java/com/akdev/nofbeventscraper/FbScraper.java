@@ -74,7 +74,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     protected String fixLinks(String description_in) {
         try {
             // @[152580919265:274:MagentaMusik 360] -> m.facebook.com/152580919265
-            return description_in.replaceAll("@\\[([0-9]{10,}):[0-9]{3}:([^\\]]*)\\]",
+            return description_in.replaceAll("@\\[([0-9]{10,}):[0-9]{3}:([^]]*)]",
                     "$2 [m.facebook.com/$1]");
 
         } catch (Exception e) {

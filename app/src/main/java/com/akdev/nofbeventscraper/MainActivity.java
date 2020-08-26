@@ -25,6 +25,8 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -228,15 +230,20 @@ public class MainActivity extends AppCompatActivity {
             // check for a valid uri
             new URL(str).toURI();
 
-            if (str.matches(".*(facebook.com/events/[0-9]*).*")) {
-                return  str.replaceAll(".*(facebook.com/events/[0-9]*).*",
-                        "https://m.$1");
+            Pattern pattern = Pattern.compile("(facebook.com/events/[0-9]*)");
+            Matcher matcher = pattern.matcher(str);
+
+            if (matcher.find())
+            {
+                return "https://m." + matcher.group(1);
             }
-            else {
+            else
+            {
                 error("Error: Invalid URL");
                 clear(false);
                 return "";
             }
+
         }
         catch (Exception e) {
             e.printStackTrace();
