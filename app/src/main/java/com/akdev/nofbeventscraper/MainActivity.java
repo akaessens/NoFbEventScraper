@@ -202,18 +202,6 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    public static boolean isNumeric(String strNum) {
-        if (strNum == null) {
-            return false;
-        }
-        try {
-            double d = Double.parseDouble(strNum);
-        } catch (NumberFormatException e) {
-            //e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
     String checkURI(String str)
     {
         try {
@@ -223,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (str.matches(".*(facebook.com/events/[0-9]*).*")) {
                 return  str.replaceAll(".*(facebook.com/events/[0-9]*).*",
-                        "https://www.$1");
+                        "https://m.$1");
             }
             else {
                 error("Error: Invalid URL");

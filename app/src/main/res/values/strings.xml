@@ -5,6 +5,7 @@
     <string name="add_link_hint">Event link</string>
     <string name="add_link_helper">Paste facebook link to the event.</string>
     <string name="add_to_calendar">Add to calendar</string>
+    <string name="paste_button">Paste from clipboard</string>
 
     <string name="description_heading">Description</string>
     <string name="description_text">This application was developed to be used without a facebook account.

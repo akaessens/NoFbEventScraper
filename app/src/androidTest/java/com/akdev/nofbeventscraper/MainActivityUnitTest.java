@@ -36,7 +36,7 @@ public class MainActivityUnitTest {
         mInstrumentation.removeMonitor(monitor);
 
 
-        final String exp = "https://www.facebook.com/events/261145401687844";
+        final String exp = "https://m.facebook.com/events/261145401687844";
 
         String url = "https://www.facebook.com/events/261145401687844";
         String act = mainActivity.checkURI(url);
@@ -51,6 +51,10 @@ public class MainActivityUnitTest {
         assertEquals(exp, act);
 
         url = "https://www.facebook.com/events/261145401687844/?active_tab=discussion";
+        act = mainActivity.checkURI(url);
+        assertEquals(exp, act);
+
+        url = "https://www.facebook.com/events/261145401687844?reflink_something";
         act = mainActivity.checkURI(url);
         assertEquals(exp, act);
     }
