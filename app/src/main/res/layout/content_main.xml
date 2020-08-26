@@ -130,10 +130,14 @@
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/location_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:endIconDrawable="@drawable/ic_add_location"
+                    app:endIconMode="custom">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/field_event_location"
@@ -142,8 +146,8 @@
                         android:autoLink="map"
                         android:clickable="true"
                         android:cursorVisible="true"
-                        android:inputType="textNoSuggestions"
                         android:hint="Event location"
+                        android:inputType="textNoSuggestions"
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 

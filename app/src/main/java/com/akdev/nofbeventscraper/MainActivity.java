@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView         toolbar_image_view;
     private CollapsingToolbarLayout toolbar_layout;
     private TextInputLayout   input_layout;
-
+    private TextInputLayout   location_layout;
     private FbScraper         scraper;
 
     @Override
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         field_uri_input = (TextInputEditText) findViewById(R.id.field_uri_input);
         input_layout = (TextInputLayout) findViewById(R.id.textInputLayout);
+        location_layout = (TextInputLayout) findViewById(R.id.location_layout);
         field_event_name = (TextInputEditText) findViewById(R.id.field_event_name);
         field_event_start = (TextInputEditText) findViewById(R.id.field_event_start);
         field_event_end = (TextInputEditText) findViewById(R.id.field_event_end);
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         ok_button.setEnabled(false);
+        location_layout.setEndIconVisible(false);
 
         toolbar_image_view.setImageResource(R.drawable.ic_banner_foreground);
 
@@ -121,6 +123,23 @@ public class MainActivity extends AppCompatActivity {
                 clear(true);
             }
         });
+
+
+        location_layout.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String map_search = "geo:0,0?q=" + field_event_location.getText();
+
+                Uri gmmIntentUri = Uri.parse(map_search);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                //mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
+
+            }
+        });
+
 
         ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
             scraper = null;
         }
         ok_button.setEnabled(false);
+        location_layout.setEndIconVisible(false);
         toolbar_image_view.setImageResource(R.drawable.ic_banner_foreground);
     }
 
@@ -305,6 +325,11 @@ public class MainActivity extends AppCompatActivity {
         if (event.location.equals(""))
         {
             field_event_location.setError("no event location detected");
+        }
+        else
+        {
+            location_layout.setEndIconVisible(true);
+            field_event_location.setError(null);
         }
         field_event_description.setText(event.description);
 
