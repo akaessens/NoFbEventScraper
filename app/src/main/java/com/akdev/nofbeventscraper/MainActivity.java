@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,6 +66,28 @@ public class MainActivity extends AppCompatActivity {
 
 
         ok_button.setEnabled(false);
+
+        toolbar_image_view.setImageResource(R.drawable.ic_banner_foreground);
+
+        AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar);
+        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = true;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    toolbar_layout.setTitle(getString(R.string.app_name));
+                    isShow = true;
+                } else if(isShow) {
+                    toolbar_layout.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
 
         paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,14 +282,13 @@ public class MainActivity extends AppCompatActivity {
         field_event_description.setError(null);
         toolbar_image_view.setImageDrawable(null);
 
-        toolbar_layout.setTitle(getString(R.string.app_name));
-
         if (scraper!=null)
         {
             scraper.cancel(true);
             scraper = null;
         }
         ok_button.setEnabled(false);
+        toolbar_image_view.setImageResource(R.drawable.ic_banner_foreground);
     }
 
     public void update(FbEvent event) {
@@ -306,7 +328,6 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             Picasso.get().load(event.image_url).into(toolbar_image_view);
-            toolbar_layout.setTitle(" ");
         } catch (Exception e)
         {
             e.printStackTrace();
