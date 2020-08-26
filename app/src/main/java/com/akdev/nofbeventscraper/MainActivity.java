@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
@@ -30,7 +29,6 @@ import java.time.format.DateTimeFormatter;
 public class MainActivity extends AppCompatActivity {
 
     private Button paste_button;
-    private Button cancel_button;
     private Button ok_button;
 
     private TextInputEditText field_uri_input;
@@ -200,37 +198,22 @@ public class MainActivity extends AppCompatActivity {
             // check for a valid uri
             new URL(str).toURI();
 
-            String eventId = null;
-
-            // check for facebook uri
-            if (str.contains("facebook.com/events/")) {
-
-                // find event id
-                String[] separated = str.split("/");
-                for (int i = 0; i < separated.length; i++) {
-                    if (separated[i].length() > 8 && isNumeric(separated[i])) {
-                        eventId = separated[i];
-                        break;
-                    }
-                }
-                if (eventId == null) // no event id found
-                {
-                    throw new Exception();
-                }
-            } else {
-                throw new Exception();
+            if (str.matches(".*(facebook.com/events/[0-9]*).*")) {
+                return  str.replaceAll(".*(facebook.com/events/[0-9]*).*",
+                        "https://www.$1");
             }
-
-            String input_uri = "https://www.facebook.com/events/" + eventId;
-            str = input_uri;
+            else {
+                error("Error: Invalid URL");
+                clear(false);
+                return "";
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
-            clear(false);
             error("Error: Invalid URL");
-            str = "";
+            clear(false);
+            return "";
         }
-        return str;
     }
 
     public void startScraping() {
@@ -251,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (Exception e) {
             e.printStackTrace();
-            clear(false);
             error("Error: Invalid URL");
         }
 
