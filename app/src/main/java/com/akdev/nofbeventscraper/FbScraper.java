@@ -64,8 +64,12 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
         if (matcher.find()) {
 
-            SharedPreferences shared_prefs = PreferenceManager.getDefaultSharedPreferences(main.get());
-            String url_prefix = shared_prefs.getString("url_preference", "m.facebook.com");
+            String url_prefix = "https://m.";
+            if (main != null){
+                SharedPreferences shared_prefs = PreferenceManager.getDefaultSharedPreferences(main.get());
+                url_prefix = shared_prefs.getString("url_preference", url_prefix);
+            }
+
             // rewrite url to m.facebook and dismiss any query strings or referrals
             String ret = url_prefix + matcher.group(1);
             if (matcher.group(2) != null) {
@@ -233,11 +237,13 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        if (this.event != null) {
-            main.get().update(event);
-        } else {
-            main.get().error(error);
-            main.get().clear(false);
+        if (main != null) {
+            if (this.event != null) {
+                main.get().update(event);
+            } else {
+                main.get().error(error);
+                main.get().clear(false);
+            }
         }
     }
 }
