@@ -6,19 +6,18 @@ import java.time.format.FormatStyle;
 
 public class FbEvent {
 
-    public String url;
-    public String name;
-    public ZonedDateTime start_date;
-    public ZonedDateTime end_date;
-    public String description;
-    public String location;
-    public String image_url;
+    public final String url;
+    public final String name;
+    public final ZonedDateTime start_date;
+    public final ZonedDateTime end_date;
+    public final String description;
+    public final String location;
+    public final String image_url;
 
-    public FbEvent() {
 
-    }
-
-    public FbEvent(String name, ZonedDateTime start_date, ZonedDateTime end_date, String description, String location, String image_url) {
+    public FbEvent(String url, String name, ZonedDateTime start_date, ZonedDateTime end_date,
+                   String description, String location, String image_url) {
+        this.url = url;
         this.name = name;
         this.start_date = start_date;
         this.end_date = end_date;

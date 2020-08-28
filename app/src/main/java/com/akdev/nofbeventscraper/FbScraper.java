@@ -135,14 +135,15 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
             JSONObject reader = new JSONObject(json);
 
-            event = new FbEvent();
-            event.url = url;
-            event.name = readFromJson(reader, "name");
-            event.start_date = toZonedDateTime(readFromJson(reader, "startDate"));
-            event.end_date = toZonedDateTime(readFromJson(reader, "endDate"));
-            event.description = fixDescriptionLinks(readFromJson(reader, "description"));
-            event.location = fixLocation(readFromJson(reader, "location"));
-            event.image_url = readFromJson(reader, "image");
+            event = new FbEvent(
+                    url,
+                    readFromJson(reader, "name"),
+                    toZonedDateTime(readFromJson(reader, "startDate")),
+                    toZonedDateTime(readFromJson(reader, "endDate")),
+                    fixDescriptionLinks(readFromJson(reader, "description")),
+                    fixLocation(readFromJson(reader, "location")),
+                    readFromJson(reader, "image")
+            );
 
         } catch (URISyntaxException | MalformedURLException e) {
             e.printStackTrace();
