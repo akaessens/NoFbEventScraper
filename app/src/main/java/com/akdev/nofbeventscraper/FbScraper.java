@@ -19,35 +19,59 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class can asynchronously scrape public facebook events
+ * and gather the most important information. It is stored in a FbEvent object.
+ */
 public class FbScraper extends AsyncTask<Void, Void, Void> {
 
     private String error;
-    private String input_str;
+    private String input_url;
     private WeakReference<MainActivity> main; // no context leak with WeakReference
     private FbEvent event;
 
-    FbScraper(WeakReference<MainActivity> main, String str) {
+    /**
+     * Constructor with WeakReference to the main activity, to update it's text fields.
+     *
+     * @param main WeakReference of main activity to prevent context leak
+     * @param input_url Input url to scrape from
+     */
+    FbScraper(WeakReference<MainActivity> main, String input_url) {
         this.main = main;
-        this.input_str = str;
+        this.input_url = input_url;
     }
 
-    protected String fixURI(String str) throws URISyntaxException, MalformedURLException {
+    /**
+     * Strips the facebook event link of the input url.
+     *
+     * @param url input url
+     * @return facebook event url String if one was found
+     * @throws URISyntaxException if event not found
+     * @throws MalformedURLException
+     */
+    protected String fixURI(String url) throws URISyntaxException, MalformedURLException {
 
         // check for url format
-        new URL(str).toURI();
+        new URL(url).toURI();
 
         Pattern pattern = Pattern.compile("(facebook.com/events/[0-9]*)");
-        Matcher matcher = pattern.matcher(str);
+        Matcher matcher = pattern.matcher(url);
 
         if (matcher.find()) {
             // rewrite url to m.facebook and dismiss any query strings or referrals
             return "https://m." + matcher.group(1);
         } else {
-            throw new URISyntaxException(str, "Does not contain event.");
+            throw new URISyntaxException(url, "Does not contain event.");
         }
 
     }
 
+    /**
+     * Strips the event location from the json string.
+     * This can be a name only or a complete postal address.
+     * @param location_json JSON formatted string
+     * @return String representation of the location.
+     */
     protected String fixLocation(String location_json) {
 
         String location_name = "";
@@ -67,7 +91,6 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 // included in locality
                 //String address_country = address.getString("addressCountry");
 
-
                 return location_name + ", "
                         + street_address + ", "
                         + postal_code + " "
@@ -82,6 +105,13 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    /**
+     * Parses a time string from the facebook event.
+     * Corrects format to ISO date time and parse into ZonedDateTime
+     *
+     * @param time_in time string from the event
+     * @return ZonedDateTime parsed from input or null
+     */
     protected ZonedDateTime toZonedDateTime(String time_in) {
 
         try {
@@ -98,6 +128,13 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    /**
+     * Replaces all occurrences of a facebook internal links in
+     * an event description into an actual URL.
+     *
+     * @param description_in description string from the event
+     * @return corrected String with internal links resolved
+     */
     protected String fixDescriptionLinks(String description_in) {
         try {
             /* @[152580919265:274:SiteDescription]
@@ -113,6 +150,12 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    /**
+     * Read a single field from a JSONObject
+     * @param reader JSONObject to read from
+     * @param field Which field to read
+     * @return String of the value of the field or empty string
+     */
     private String readFromJson(JSONObject reader, String field) {
         try {
             return reader.getString(field);
@@ -122,11 +165,17 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    /**
+     * Started by scraper.execute().
+     * Gets the HTML doc from the input string and scrapes the event information from it.
+     * @param voids
+     * @return
+     */
     @Override
     protected Void doInBackground(Void... voids) {
 
         try {
-            String url = fixURI(input_str);
+            String url = fixURI(input_url);
             // useragent needed with Jsoup > 1.12
             Document document = Jsoup.connect(url).userAgent("Mozilla").get();
             String json = document
@@ -164,6 +213,11 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         super.onPreExecute();
     }
 
+    /**
+     * When scraping is finished, main activity will be updated.
+     * If an error occurred, main activity is given an error string.
+     * @param aVoid
+     */
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 

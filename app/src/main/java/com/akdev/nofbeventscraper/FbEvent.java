@@ -4,6 +4,10 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
+/**
+ * Objects of this class store immutable information about
+ * a single event that was created by the FbScraper.
+ */
 public class FbEvent {
 
     public final String url;
@@ -26,18 +30,31 @@ public class FbEvent {
         this.image_url = image_url;
     }
 
-
-    static Long dateTimeToEpoch(ZonedDateTime datetime) {
+    /**
+     * Converts datetime to epoch.
+     *
+     * @param zoned_date_time ZonedDateTime object
+     * @return Event begin time in milliseconds from the epoch for calendar intent or null
+     */
+    static Long dateTimeToEpoch(ZonedDateTime zoned_date_time) {
         try {
-            return datetime.toEpochSecond() * 1000;
+            return zoned_date_time.toEpochSecond() * 1000;
         } catch (Exception e) {
             return null;
         }
     }
 
-    static String dateTimeToString(ZonedDateTime datetime) {
+    /**
+     * Returns a String representation of a ZonedDateTime
+     *
+     * @param zoned_date_time
+     * @return Locally formatted String of zoned_date_time or empty String
+     */
+    static String dateTimeToString(ZonedDateTime zoned_date_time) {
         try {
-            return DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(datetime);
+            return DateTimeFormatter
+                    .ofLocalizedDateTime(FormatStyle.LONG)
+                    .format(zoned_date_time);
         } catch (Exception e) {
             return "";
         }

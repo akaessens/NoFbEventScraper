@@ -209,6 +209,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * launch the FbScraper asynchronous task with the current text in the input text field.
+     */
     public void startScraping() {
 
         error(null);
@@ -222,6 +225,12 @@ public class MainActivity extends AppCompatActivity {
         layout_uri_input.setError(str);
     }
 
+    /**
+     * Clears all event text field strings and errors and also the input field depending if wanted.
+     * Loads the default banner into the toolbar image view and disables unneeded buttons.
+     *
+     * @param clear_uri Choose whether to clear the input uri field, too
+     */
     public void clear(boolean clear_uri) {
 
         if (clear_uri) {
@@ -235,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         edit_text_event_description.setText("");
 
         edit_text_event_name.setError(null);
-//        edit_text_event_start.setError(null);
+        edit_text_event_start.setError(null);
         edit_text_event_end.setError(null);
         edit_text_event_location.setError(null);
         edit_text_event_description.setError(null);
@@ -253,6 +262,12 @@ public class MainActivity extends AppCompatActivity {
         image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);
     }
 
+    /**
+     * Updates the text fields with the event information provided.
+     * If something is missing, the corresponding test field will show an error.
+     *
+     * @param scraped_event the event information that was scraped by FbScraper
+     */
     public void update(FbEvent scraped_event) {
 
         this.event = scraped_event;
