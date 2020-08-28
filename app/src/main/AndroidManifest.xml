@@ -12,17 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".SettingsActivity">
+        <activity android:name=".SettingsActivity"
+            android:label="@string/action_settings" >
             <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".MainActivity"/>
         </activity>
-        <activity android:name=".HelpActivity">
+        <activity android:name=".HelpActivity"
+            android:label="@string/action_help" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-        <activity android:name=".AboutActivity">
+        <activity android:name=".AboutActivity"
+            android:label="@string/action_about" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
