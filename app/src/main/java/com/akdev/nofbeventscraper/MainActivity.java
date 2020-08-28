@@ -23,6 +23,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 
 import static com.akdev.nofbeventscraper.FbEvent.dateTimeToEpoch;
 
@@ -212,16 +213,9 @@ public class MainActivity extends AppCompatActivity {
 
         error(null);
 
-        try {
-            String url = edit_text_uri_input.getText().toString();
-            scraper = new FbScraper(new WeakReference<>(this), url);
-            scraper.execute();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            error("Error: Invalid URL");
-        }
-
+        String url = Objects.requireNonNull(edit_text_uri_input.getText()).toString();
+        scraper = new FbScraper(new WeakReference<>(this), url);
+        scraper.execute();
     }
 
     public void error(String str) {
