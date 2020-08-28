@@ -45,15 +45,15 @@ public class FbEvent {
     }
 
     /**
-     * Returns a String representation of a ZonedDateTime
+     * Returns a RFC formatted String representation of a ZonedDateTime
      *
      * @param zoned_date_time
-     * @return Locally formatted String of zoned_date_time or empty String
+     * @return RFC-1123 formatted String of zoned_date_time or empty String
      */
     static String dateTimeToString(ZonedDateTime zoned_date_time) {
         try {
             return DateTimeFormatter
-                    .ofLocalizedDateTime(FormatStyle.LONG)
+                    .RFC_1123_DATE_TIME
                     .format(zoned_date_time);
         } catch (Exception e) {
             return "";
