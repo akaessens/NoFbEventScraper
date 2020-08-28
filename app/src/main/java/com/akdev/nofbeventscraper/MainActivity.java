@@ -5,12 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.textfield.TextInputEditText;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.provider.CalendarContract;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -19,32 +13,39 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.lang.ref.WeakReference;
 
+import static com.akdev.nofbeventscraper.FbEvent.dateTimeToEpoch;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button paste_button;
-    private Button ok_button;
+    protected Button ok_button;
+    protected Button paste_button;
 
-    private TextInputEditText field_uri_input;
-    private TextInputEditText field_event_name;
-    private TextInputEditText field_event_start;
-    private TextInputEditText field_event_end;
-    private TextInputEditText field_event_location;
-    private TextInputEditText field_event_description;
-    private ImageView         toolbar_image_view;
-    private CollapsingToolbarLayout toolbar_layout;
-    private TextInputLayout   input_layout;
-    private TextInputLayout   location_layout;
-    private FbScraper         scraper;
+    protected TextInputEditText edit_text_uri_input;
+    protected TextInputEditText edit_text_event_name;
+    protected TextInputEditText edit_text_event_start;
+    protected TextInputEditText edit_text_event_end;
+    protected TextInputEditText edit_text_event_location;
+    protected TextInputEditText edit_text_event_description;
+
+    protected TextInputLayout layout_uri_input;
+    protected TextInputLayout layout_event_location;
+
+    protected ImageView image_view_toolbar;
+    protected CollapsingToolbarLayout layout_toolbar;
+
+    protected FbScraper scraper;
+    protected FbEvent event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,43 +57,52 @@ public class MainActivity extends AppCompatActivity {
         ok_button = (Button) findViewById(R.id.ok_button);
         paste_button = (Button) findViewById(R.id.paste_button);
 
-        field_uri_input = (TextInputEditText) findViewById(R.id.field_uri_input);
-        input_layout = (TextInputLayout) findViewById(R.id.textInputLayout);
-        location_layout = (TextInputLayout) findViewById(R.id.location_layout);
-        field_event_name = (TextInputEditText) findViewById(R.id.field_event_name);
-        field_event_start = (TextInputEditText) findViewById(R.id.field_event_start);
-        field_event_end = (TextInputEditText) findViewById(R.id.field_event_end);
-        field_event_location = (TextInputEditText) findViewById(R.id.field_event_location);
-        field_event_description = (TextInputEditText) findViewById(R.id.field_event_description);
-        toolbar_image_view = (ImageView) findViewById(R.id.image_view);
-        toolbar_layout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        edit_text_uri_input = (TextInputEditText) findViewById(R.id.edit_text_uri_input);
+        edit_text_event_name = (TextInputEditText) findViewById(R.id.edit_text_event_name);
+        edit_text_event_start = (TextInputEditText) findViewById(R.id.edit_text_event_start);
+        edit_text_event_end = (TextInputEditText) findViewById(R.id.edit_text_event_end);
+        edit_text_event_location = (TextInputEditText) findViewById(R.id.edit_text_event_location);
+        edit_text_event_description = (TextInputEditText) findViewById(R.id.edit_text_event_description);
+
+        layout_uri_input = (TextInputLayout) findViewById(R.id.layout_uri_input);
+        layout_event_location = (TextInputLayout) findViewById(R.id.layout_event_location);
+        layout_toolbar = (CollapsingToolbarLayout) findViewById(R.id.layout_toolbar);
+        image_view_toolbar = (ImageView) findViewById(R.id.image_view);
 
 
+        /*
+         * Default view settings
+         */
         ok_button.setEnabled(false);
-        location_layout.setEndIconVisible(false);
+        layout_event_location.setEndIconVisible(false);
+        image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);
 
-        toolbar_image_view.setImageResource(R.drawable.ic_banner_foreground);
-
+        /*
+         * Display title only when toolbar is collapsed
+         */
         AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar);
         app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = true;
-            int scrollRange = -1;
+            boolean show = true;
+            int scroll_range = -1;
 
             @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
+            public void onOffsetChanged(AppBarLayout app_bar_layout, int vertical_offset) {
+                if (scroll_range == -1) {
+                    scroll_range = app_bar_layout.getTotalScrollRange();
                 }
-                if (scrollRange + verticalOffset == 0) {
-                    toolbar_layout.setTitle(getString(R.string.app_name));
-                    isShow = true;
-                } else if(isShow) {
-                    toolbar_layout.setTitle(" ");
-                    isShow = false;
+                if (scroll_range + vertical_offset == 0) {
+                    layout_toolbar.setTitle(getString(R.string.app_name));
+                    show = true;
+                } else if (show) {
+                    layout_toolbar.setTitle(" ");
+                    show = false;
                 }
             }
         });
 
+        /*
+         * Paste button: get last entry from clipboard
+         */
         paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,9 +112,8 @@ public class MainActivity extends AppCompatActivity {
                     String str = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
 
                     clear(true);
-                    field_uri_input.setText(str);
-                }
-                catch (NullPointerException e) {
+                    edit_text_uri_input.setText(str);
+                } catch (NullPointerException e) {
                     e.printStackTrace();
                     error("Error: Clipboard empty");
                 }
@@ -112,71 +121,65 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        input_layout.setEndIconOnClickListener(new View.OnClickListener() {
+        /*
+         * Clear button: delete all text in all fields
+         */
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clear(true);
             }
-        });
-        input_layout.setErrorIconOnClickListener(new View.OnClickListener() {
+        };
+        layout_uri_input.setEndIconOnClickListener(listener);
+        layout_uri_input.setErrorIconOnClickListener(listener);
+
+        /*
+         * Maps button: launch maps intent
+         */
+        layout_event_location.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clear(true);
-            }
-        });
+                String map_search = "geo:0,0?q=" + edit_text_event_location.getText();
 
-
-        location_layout.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String map_search = "geo:0,0?q=" + field_event_location.getText();
-
-                Uri gmmIntentUri = Uri.parse(map_search);
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                //mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
+                Uri intent_uri = Uri.parse(map_search);
+                Intent map_intent = new Intent(Intent.ACTION_VIEW, intent_uri);
+                if (map_intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(map_intent);
                 }
-
             }
         });
 
-
+        /*
+         * Add to calendar button: launch calendar application
+         */
         ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    Long start_epoch = convertTimeToEpoch(field_event_start.getText().toString());
-                    Long end_epoch = convertTimeToEpoch(field_event_end.getText().toString());
 
-                    String name = parseField(field_event_name);
+                Long start_epoch = dateTimeToEpoch(event.start_date);
+                Long end_epoch = dateTimeToEpoch(event.end_date);
 
-                    String location = parseField(field_event_location);
-                    String description = parseField(field_event_description);
-                    String uri = parseField(field_uri_input);
+                Intent intent = new Intent(Intent.ACTION_EDIT);
+                intent.setType("vnd.android.cursor.item/event");
+                intent.putExtra(CalendarContract.Events.TITLE, event.name);
+                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start_epoch);
+                intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end_epoch);
+                intent.putExtra(CalendarContract.Events.EVENT_LOCATION, event.location);
 
-                    Intent intent = new Intent(Intent.ACTION_EDIT);
-                    intent.setType("vnd.android.cursor.item/event");
-                    intent.putExtra(CalendarContract.Events.TITLE, name);
-                    intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start_epoch);
-                    intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end_epoch);
-                    intent.putExtra(CalendarContract.Events.EVENT_LOCATION, location);
-                    intent.putExtra(CalendarContract.Events.DESCRIPTION, uri + "\n\n" + description);
-                    startActivity(intent);
-                }
-                catch (Exception e )
-                {
-                    e.printStackTrace();
-                }
-
+                // prepend url in description
+                String desc = event.url + "\n\n" + event.description;
+                intent.putExtra(CalendarContract.Events.DESCRIPTION, desc);
+                startActivity(intent);
             }
         });
 
-        field_uri_input.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
-                //If the keyevent is a key-down event on the "enter" button
-                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+        /*
+         * Enter button in uri input: start scraping
+         */
+        edit_text_uri_input.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keycode, KeyEvent keyevent) {
+                //If the key event is a key-down event on the "enter" button
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keycode == KeyEvent.KEYCODE_ENTER)) {
                     startScraping();
                     return true;
                 }
@@ -184,73 +187,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //get data from deep link
+
+        /*
+         * Get data from intent: if launched by other application
+         * via "share to" or "open with"
+         */
         Intent intent = getIntent();
         Uri data = intent.getData();
         String shared_text = intent.getStringExtra(Intent.EXTRA_TEXT);
 
         if (data != null) {
             // opening external fb link
-            field_uri_input.setText(data.toString());
+            edit_text_uri_input.setText(data.toString());
             startScraping();
-        }
-        else if (shared_text != null) {
+        } else if (shared_text != null) {
             //share to nofb
-            field_uri_input.setText(shared_text);
+            edit_text_uri_input.setText(shared_text);
             startScraping();
         }
 
-    }
-    private String parseField(TextInputEditText field) {
-        try {
-            return field.getText().toString();
-        }
-        catch (Exception e) {
-            return null;
-        }
-    }
-
-
-    Long convertTimeToEpoch(String time_str) {
-        try {
-            ZonedDateTime datetime = ZonedDateTime.parse(time_str, DateTimeFormatter.ISO_DATE_TIME);
-
-            return datetime.toEpochSecond() * 1000;
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    String checkURI(String str)
-    {
-        try {
-
-            // check for a valid uri
-            new URL(str).toURI();
-
-            Pattern pattern = Pattern.compile("(facebook.com/events/[0-9]*)");
-            Matcher matcher = pattern.matcher(str);
-
-            if (matcher.find())
-            {
-                return "https://m." + matcher.group(1);
-            }
-            else
-            {
-                error("Error: Invalid URL");
-                clear(false);
-                return "";
-            }
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            error("Error: Invalid URL");
-            clear(false);
-            return "";
-        }
     }
 
     public void startScraping() {
@@ -258,100 +213,95 @@ public class MainActivity extends AppCompatActivity {
         error(null);
 
         try {
-            String str = checkURI(field_uri_input.getText().toString());
+            String url = edit_text_uri_input.getText().toString();
+            scraper = new FbScraper(new WeakReference<>(this), url);
+            scraper.execute();
 
-
-            if (!str.equals(""))
-            {
-                field_uri_input.setText(str);
-                scraper = new FbScraper(this, field_uri_input.getText().toString());
-                scraper.execute();
-            }
-
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             error("Error: Invalid URL");
         }
 
-
     }
+
     public void error(String str) {
-        //Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-        input_layout.setError(str);
-    }
-    public void clear(boolean clearUri) {
-        if (clearUri) {
-            field_uri_input.setText("");
-        }
-        field_event_name.setText("");
-        field_event_name.setError(null);
-        field_event_start.setText("");
-        field_event_start.setError(null);
-        field_event_end.setText("");
-        field_event_end.setError(null);
-        field_event_location.setText("");
-        field_event_location.setError(null);
-        field_event_description.setText("");
-        field_event_description.setError(null);
-        toolbar_image_view.setImageDrawable(null);
-
-        if (scraper!=null)
-        {
-            scraper.cancel(true);
-            scraper = null;
-        }
-        ok_button.setEnabled(false);
-        location_layout.setEndIconVisible(false);
-        toolbar_image_view.setImageResource(R.drawable.ic_banner_foreground);
+        layout_uri_input.setError(str);
     }
 
-    public void update(FbEvent event) {
-        field_event_name.setText(event.name);
-        input_layout.setError(null);
+    public void clear(boolean clear_uri) {
 
-        if (event.name.equals(""))
-        {
-            field_event_name.setError("no event name detected");
+        if (clear_uri) {
+            edit_text_uri_input.setText("");
+            layout_uri_input.setError(null);
         }
-        field_event_start.setText(event.start_date);
+        edit_text_event_name.setText("");
+        edit_text_event_start.setText("");
+        edit_text_event_end.setText("");
+        edit_text_event_location.setText("");
+        edit_text_event_description.setText("");
 
-        if (event.start_date.equals(""))
-        {
-            field_event_start.setError("no event start date detected");
-        }
-        field_event_end.setText(event.end_date);
-
-        if (event.end_date.equals(""))
-        {
-            field_event_end.setError("no event end date detected");
-        }
-
-        field_event_location.setText(event.location);
-
-        if (event.location.equals(""))
-        {
-            field_event_location.setError("no event location detected");
-        }
-        else
-        {
-            location_layout.setEndIconVisible(true);
-            field_event_location.setError(null);
-        }
-        field_event_description.setText(event.description);
-
-        if (event.description.equals(""))
-        {
-            field_event_description.setError("no event description detected");
-        }
-
+        edit_text_event_name.setError(null);
+//        edit_text_event_start.setError(null);
+        edit_text_event_end.setError(null);
+        edit_text_event_location.setError(null);
+        edit_text_event_description.setError(null);
 
         try {
-            Picasso.get().load(event.image_url).into(toolbar_image_view);
-        } catch (Exception e)
-        {
+            scraper.cancel(true);
+            scraper = null;
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        ok_button.setEnabled(false);
+        layout_event_location.setEndIconVisible(false);
+        image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);
+    }
+
+    public void update(FbEvent scraped_event) {
+
+        this.event = scraped_event;
+
+        edit_text_uri_input.setText(event.url);
+
+        if (event.name.equals("")) {
+            edit_text_event_name.setError("no event name detected");
+        } else {
+            edit_text_event_name.setText(event.name);
+        }
+
+        if (event.start_date == null) {
+            edit_text_event_start.setError("no event start date detected");
+        } else {
+            String str = FbEvent.dateTimeToString(event.start_date);
+            edit_text_event_start.setText(str);
+        }
+
+        if (event.end_date == null) {
+            edit_text_event_end.setError("no event end date detected");
+        } else {
+            String str = FbEvent.dateTimeToString(event.end_date);
+            edit_text_event_end.setText(str);
+        }
+
+        if (event.location.equals("")) {
+            edit_text_event_location.setError("no event location detected");
+        } else {
+            edit_text_event_location.setText(event.location);
+            layout_event_location.setEndIconVisible(true);
+        }
+
+        if (event.description.equals("")) {
+            edit_text_event_description.setError("no event description detected");
+        } else {
+            edit_text_event_description.setText(event.description);
+        }
+
+        Picasso.get()
+                .load(event.image_url)
+                .placeholder(R.drawable.ic_banner_foreground)
+                .into(image_view_toolbar);
 
         ok_button.setEnabled(true);
     }
