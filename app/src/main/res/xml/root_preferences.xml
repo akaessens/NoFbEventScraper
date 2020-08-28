@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/scraper_header">
+
+
+        <ListPreference
+            app:defaultValue="m.facebook.com"
+            app:entries="@array/url_to_scrape"
+            app:entryValues="@array/url_prefix"
+            app:key="url_preference"
+            app:title="@string/url_setting"
+            android:summary="@string/url_setting_summary"/>
+
+
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

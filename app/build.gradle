@@ -38,6 +38,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.13.1'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'androidx.preference:preference:1.1.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

@@ -1,76 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HelpActivity">
 
-    <ScrollView
+
+    <WebView
+        android:id="@+id/webview_help"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="16dp">
-
-            <TextView
-                android:id="@+id/faq_heading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/faq_heading"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-            <TextView
-                android:id="@+id/faq_0q"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/faq_0q"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-            <TextView
-                android:id="@+id/faq_0a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/faq_0a"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-            <TextView
-                android:id="@+id/faq_1q"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/faq_1q"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-            <TextView
-                android:id="@+id/faq_1a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/faq_1a"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-            <TextView
-                android:id="@+id/faq_2q"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/faq_2q"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-            <TextView
-                android:id="@+id/faq_2a"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/faq_2a"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
-
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

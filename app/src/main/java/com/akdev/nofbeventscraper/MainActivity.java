@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -320,6 +321,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        if(menu instanceof MenuBuilder){
+            MenuBuilder m = (MenuBuilder) menu;
+            //noinspection RestrictedApi
+            m.setOptionalIconsVisible(true);
+        }
         return true;
     }
 
@@ -337,6 +344,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if (id == R.id.action_help) {
             startActivity(new Intent(this, HelpActivity.class));
+            return true;
+        }
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 

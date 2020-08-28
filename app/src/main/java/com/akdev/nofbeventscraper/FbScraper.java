@@ -1,8 +1,11 @@
 package com.akdev.nofbeventscraper;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
+
+import androidx.preference.PreferenceManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,12 +57,21 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         // check for url format
         new URL(url).toURI();
 
-        Pattern pattern = Pattern.compile("(facebook.com/events/[0-9]*)");
+        String regex = "(facebook.com/events/[0-9]*)(/\\?event_time_id=[0-9]*)?";
+
+        Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(url);
 
         if (matcher.find()) {
+
+            SharedPreferences shared_prefs = PreferenceManager.getDefaultSharedPreferences(main.get());
+            String url_prefix = shared_prefs.getString("url_preference", "m.facebook.com");
             // rewrite url to m.facebook and dismiss any query strings or referrals
-            return "https://m." + matcher.group(1);
+            String ret = url_prefix + matcher.group(1);
+            if (matcher.group(2) != null) {
+                ret += matcher.group(2);
+            }
+             return ret;
         } else {
             throw new URISyntaxException(url, "Does not contain event.");
         }
