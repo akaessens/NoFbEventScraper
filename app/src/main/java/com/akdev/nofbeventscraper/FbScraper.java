@@ -192,8 +192,13 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
         try {
             String url = fixURI(input_url);
-            // useragent needed with Jsoup > 1.12
-            Document document = Jsoup.connect(url).userAgent("Mozilla").get();
+            // use correct system user agent because of facebook ToS
+            String user_agent = System.getProperty("http.agent");
+            Document document = Jsoup.connect(url).userAgent(user_agent).get();
+
+            if (document == null) {
+                throw new IOException();
+            }
             String json = document
                     .select("script[type = application/ld+json]")
                     .first().data();
@@ -219,6 +224,9 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
             this.error = "Error: Unable to connect.";
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.error = "Error: Unknown Error.";
         }
 
         return null;
