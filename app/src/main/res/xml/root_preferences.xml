@@ -5,7 +5,7 @@
 
 
         <ListPreference
-            app:defaultValue="m.facebook.com"
+            app:defaultValue="https://m."
             app:entries="@array/url_to_scrape"
             app:entryValues="@array/url_prefix"
             app:key="url_preference"
