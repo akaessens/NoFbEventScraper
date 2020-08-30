@@ -192,8 +192,8 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
         try {
             String url = fixURI(input_url);
-            // use correct system user agent because of facebook ToS
-            String user_agent = System.getProperty("http.agent");
+            // use default android user agent
+            String user_agent = "Mozilla/5.0 (X11; Linux x86_64)";
             Document document = Jsoup.connect(url).userAgent(user_agent).get();
 
             if (document == null) {
@@ -205,15 +205,26 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
             JSONObject reader = new JSONObject(json);
 
-            event = new FbEvent(
-                    url,
-                    readFromJson(reader, "name"),
-                    toZonedDateTime(readFromJson(reader, "startDate")),
-                    toZonedDateTime(readFromJson(reader, "endDate")),
-                    fixDescriptionLinks(readFromJson(reader, "description")),
-                    fixLocation(readFromJson(reader, "location")),
-                    readFromJson(reader, "image")
-            );
+
+            String name = readFromJson(reader, "name");
+            ZonedDateTime start_date = toZonedDateTime(readFromJson(reader, "startDate"));
+            ZonedDateTime end_date = toZonedDateTime(readFromJson(reader, "endDate"));
+            String description = fixDescriptionLinks(readFromJson(reader, "description"));
+            String location = fixLocation(readFromJson(reader, "location"));
+
+            String image_url = readFromJson(reader, "image"); // get from json
+
+            try {
+                // possibly get higher res image from event header
+                image_url = document.getElementsByClass("scaledImageFitWidth")
+                        .first().attr("src");
+
+            } catch (Exception e) {
+                // ignore
+            }
+
+            event = new FbEvent(url, name,start_date, end_date, description, location, image_url);
+
 
         } catch (URISyntaxException | MalformedURLException e) {
             e.printStackTrace();
