@@ -19,7 +19,7 @@ public class HelpActivity extends AppCompatActivity {
 
         WebView webview_help = findViewById(R.id.webview_help);
 
-        webview_help.loadUrl("file:////android_asset/help.html");
+        webview_help.loadUrl("file:////android_res/raw/help.html");
 
     }
 }

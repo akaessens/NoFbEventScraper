@@ -13,7 +13,7 @@
 
     <string name="url_setting">Which URL to scrape</string>
     <string name="url_setting_summary">
-        Using m.facebook.com is more stable and faster. Using www.facebook.com works better with multiple instance events but will eventually break when facebook disables the classic design.
+        Using m.facebook.com is more stable and faster. Using www.facebook.com works better with multiple instance events and will display a high resolution preview but will eventually break when facebook disables the classic design.
     </string>
 
 </resources>
