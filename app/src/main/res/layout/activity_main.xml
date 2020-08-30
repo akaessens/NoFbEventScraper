@@ -59,7 +59,8 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         app:icon="@drawable/ic_content_paste"
-        android:text="@string/paste_button"/>
+        android:text="@android:string/paste"
+        android:tooltipText="@string/tooltip_paste"/>
 
     <include layout="@layout/content_main" />
 
@@ -80,7 +81,7 @@
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:padding="12dp"
-            android:text="@string/add_to_calendar"
+            android:text="@string/button_add"
             android:textColor="#FFFFFF"
             app:cornerRadius="24dp"
             app:icon="@drawable/ic_event_available"

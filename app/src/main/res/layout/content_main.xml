@@ -37,7 +37,7 @@
             app:errorIconDrawable="@drawable/ic_backspace_black"
             app:endIconMode="custom"
 
-            app:helperText="@string/add_link_helper"
+            app:helperText="@string/helper_add_link"
             app:helperTextEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:cursorVisible="true"
-                android:hint="@string/add_link_hint"
+                android:hint="@string/hint_add_link"
                 android:inputType="textNoSuggestions"
                 android:singleLine="true"
                 android:textColorLink="@color/material_on_background_emphasis_high_type" />
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:cursorVisible="false"
-                android:hint="Event name"
+                android:hint="@string/hint_event_name"
                 android:inputType="textNoSuggestions"
                 android:singleLine="true"
                 android:textColorLink="@color/material_on_background_emphasis_high_type" />
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:cursorVisible="false"
-                android:hint="Event start"
+                android:hint="@string/hint_event_start"
                 android:inputType="textNoSuggestions"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:cursorVisible="false"
-                android:hint="Event end"
+                android:hint="@string/hint_event_end"
                 android:inputType="textNoSuggestions"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -117,7 +117,7 @@
                 android:autoLink="map"
                 android:focusable="false"
                 android:cursorVisible="false"
-                android:hint="Event location"
+                android:hint="@string/hint_event_location"
                 android:inputType="textNoSuggestions"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -134,7 +134,7 @@
                 android:autoLink="web"
                 android:focusable="false"
                 android:cursorVisible="false"
-                android:hint="Event description"
+                android:hint="@string/hint_event_description"
                 android:inputType="textNoSuggestions|textMultiLine"
                 android:singleLine="false"
                 android:textColorLink="@color/material_on_background_emphasis_high_type" />

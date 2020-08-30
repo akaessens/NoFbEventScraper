@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NoFb Event Scraper</string>
+    <string name="action_about">Über</string>
+    <string name="action_help">Hilfe</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="hint_add_link">Veranstaltungslink</string>
+    <string name="hint_event_name">Veranstaltungsname</string>
+    <string name="hint_event_start">Veranstaltungsbeginn</string>
+    <string name="hint_event_end">Veranstantungsende</string>
+    <string name="hint_event_location">Veranstaltungsort</string>
+    <string name="hint_event_description">Veranstaltungsbeschreibung</string>
+    <string name="helper_add_link">Facebook-Link zur Veranstaltung einfügen</string>
+    <string name="button_add">Zum Kalender hinzufügen</string>
+    <string name="tooltip_paste">Einfügen von Inhalten aus der Zwischenablage in das URL-Eingabefeld</string>
+    <string name="preferences_url_setting">Welcher URL-Präfix ist zu verwenden?</string>
+    <string name="preferences_url_setting_summary">Die Nutzung von m.facebook.com ist stabiler und schneller. Die Verwendung von www.facebook.com funktioniert besser bei Ereignissen mit mehreren Instanzen und zeigt eine hochauflösende Vorschau an, geht aber irgendwann kaputt, wenn Facebook das klassische Design deaktiviert.</string>
+</resources>

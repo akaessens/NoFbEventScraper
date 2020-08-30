@@ -1,0 +1,4 @@
+Diese Anwendung wurde entwickelt, um ohne ein Facebook-Konto verwendet werden zu können.
+Daher verwendet sie nicht die Facebook-API.
+Stattdessen öffnet sie die URI der Facebook-Veranstaltung und lädt den Quellcode der Website herunter.
+Dieser Quellcode enthält die Informationen, die zum Erstellen eines Kalendereintrags verwendet werden.

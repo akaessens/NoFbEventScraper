@@ -1,4 +1,4 @@
-This application was developed to be used without a facebook account.
-Therefore it does not use the facebook API.
-Instead it opens the facebook event URI and downloads the website source code.
+This application was developed to be used without a Facebook account.
+Therefore it does not use the Facebook API.
+Instead it opens the Facebook event URI and downloads the website source code.
 This source contains the information which is used to create a calendar entry.

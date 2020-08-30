@@ -1,0 +1,1 @@
+Diese App durchsucht Facebook-Veranstaltungslinks und fügt sie zu deinem Kalender hinzu.
