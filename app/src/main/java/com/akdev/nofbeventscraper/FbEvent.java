@@ -1,8 +1,8 @@
 package com.akdev.nofbeventscraper;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Objects of this class store immutable information about
@@ -12,14 +12,14 @@ public class FbEvent {
 
     public final String url;
     public final String name;
-    public final ZonedDateTime start_date;
-    public final ZonedDateTime end_date;
+    public final Date start_date;
+    public final Date end_date;
     public final String description;
     public final String location;
     public final String image_url;
 
 
-    public FbEvent(String url, String name, ZonedDateTime start_date, ZonedDateTime end_date,
+    public FbEvent(String url, String name, Date start_date, Date end_date,
                    String description, String location, String image_url) {
         this.url = url;
         this.name = name;
@@ -33,28 +33,27 @@ public class FbEvent {
     /**
      * Converts datetime to epoch.
      *
-     * @param zoned_date_time ZonedDateTime object
+     * @param date Date object
      * @return Event begin time in milliseconds from the epoch for calendar intent or null
      */
-    static Long dateTimeToEpoch(ZonedDateTime zoned_date_time) {
+    static Long dateTimeToEpoch(Date date) {
         try {
-            return zoned_date_time.toEpochSecond() * 1000;
+            return date.getTime();
         } catch (Exception e) {
             return null;
         }
     }
 
     /**
-     * Returns a RFC formatted String representation of a ZonedDateTime
+     * Returns a locally formatted String representation of a Date
      *
-     * @param zoned_date_time
-     * @return RFC-1123 formatted String of zoned_date_time or empty String
+     * @param date
+     * @return locally formatted String of date or empty String
      */
-    static String dateTimeToString(ZonedDateTime zoned_date_time) {
+    static String dateTimeToString(Date date) {
         try {
-            return DateTimeFormatter
-                    .RFC_1123_DATE_TIME
-                    .format(zoned_date_time);
+            SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm z", Locale.getDefault());
+            return formatter.format(date);
         } catch (Exception e) {
             return "";
         }

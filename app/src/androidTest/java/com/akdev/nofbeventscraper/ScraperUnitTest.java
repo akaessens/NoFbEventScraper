@@ -42,15 +42,16 @@ public class ScraperUnitTest {
 
         FbScraper scraper = new FbScraper(null, "");
 
-        String exp = "2020-10-23T05:00+02:00";
-        String in = "2020-10-23T05:00:00+0200";
-        String act = scraper.toZonedDateTime(in).toString();
+        String in = "2020-01-01T12:00:00+0100";
+        String exp = "Mi., 01 Jan. 2020 12:00 MEZ";
+
+        String act = FbEvent.dateTimeToString(scraper.parseToDate(in));
         assertEquals(exp, act);
 
 
-        exp = null;
+        exp = "";
         in = "";
-        ZonedDateTime act2 = scraper.toZonedDateTime(in);
+        String act2 = FbEvent.dateTimeToString(scraper.parseToDate(in));
         assertEquals(exp, act2);
     }
 

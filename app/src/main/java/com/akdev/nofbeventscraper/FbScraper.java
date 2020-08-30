@@ -2,8 +2,6 @@ package com.akdev.nofbeventscraper;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.text.Editable;
-import android.text.SpannableStringBuilder;
 
 import androidx.preference.PreferenceManager;
 
@@ -17,8 +15,9 @@ import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,21 +121,22 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     }
 
     /**
-     * Parses a time string from the facebook event.
-     * Corrects format to ISO date time and parse into ZonedDateTime
+     * Parses a time string from the facebook event into a Date
      *
      * @param time_in time string from the event
-     * @return ZonedDateTime parsed from input or null
+     * @return Date parsed from input or null
      */
-    protected ZonedDateTime toZonedDateTime(String time_in) {
+    protected Date parseToDate(String time_in) {
 
         try {
             // time in is missing a : in the timezone offset
-            Editable editable = new SpannableStringBuilder(time_in);
-            String time_str = editable.insert(22, ":").toString();
+            //Editable editable = new SpannableStringBuilder(time_in);
+            //String time_str = editable.insert(22, ":").toString();
 
-            // parse e.g. 2011-12-03T10:15:30+01:00
-            return ZonedDateTime.parse(time_str, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+            // parse e.g. 2011-12-03T10:15:30+0100
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+
+            return sdf.parse(time_in);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,8 +207,8 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
 
             String name = readFromJson(reader, "name");
-            ZonedDateTime start_date = toZonedDateTime(readFromJson(reader, "startDate"));
-            ZonedDateTime end_date = toZonedDateTime(readFromJson(reader, "endDate"));
+            Date start_date = parseToDate(readFromJson(reader, "startDate"));
+            Date end_date = parseToDate(readFromJson(reader, "endDate"));
             String description = fixDescriptionLinks(readFromJson(reader, "description"));
             String location = fixLocation(readFromJson(reader, "location"));
 
