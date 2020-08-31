@@ -110,13 +110,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                String str = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).getText().toString();
+                try {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    String str = Objects.requireNonNull(clipboard.getPrimaryClip())
+                            .getItemAt(0).getText().toString();
 
-                clear(true);
-                edit_text_uri_input.setText(str);
+                    clear(true);
+                    edit_text_uri_input.setText(str);
 
-                startScraping();
+                    startScraping();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    error(R.string.error_clipboard_empty);
+                }
             }
         });
 
