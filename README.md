@@ -31,3 +31,7 @@ This Android app is written in Java and is using the Gradle build system. To com
 
 <img src="https://github.com/akaessens/NoFbEventScraper/raw/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Screenshot 1" width="200"> <img src="https://github.com/akaessens/NoFbEventScraper/raw/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" alt="Screenshot 2" width="200"> <img src="https://github.com/akaessens/NoFbEventScraper/raw/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" alt="Screenshot 3" width="200"> <img src="https://github.com/akaessens/NoFbEventScraper/raw/master/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" alt="Screenshot 4" width="200">
 
+# Donations
+I develop this application in my free time. If you like it, you can donate at <a href="https://www.paypal.me/andreaskaessens">PayPal</a>.
+
+<a title="PayPal" href="https://www.paypal.me/andreaskaessens"><img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" height="75" /></a>
