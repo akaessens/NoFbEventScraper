@@ -1,4 +1,3 @@
 - Fixes for new design.
 - New button layout.
 - Improve input error display.
-

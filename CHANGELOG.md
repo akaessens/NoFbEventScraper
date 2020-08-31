@@ -1,4 +1,8 @@
 # Changelog
+## v0.3.3 (9)
+- Update about section with download and changelog information.
+- Improve high-res preview scraping.
+- Fix potential crash on calendar intent.
 ## v0.3.2 (8)
 - Add german translation.
 - Decrease MinSDK to 23 (Android 6.0).
@@ -24,7 +28,6 @@
 - Fixes for new design.
 - New button layout.
 - Improve input error display.
-
 ## v0.2.0 (3)
 - Fix for timezone calculation.
 - Material design Interface, will be improved further.

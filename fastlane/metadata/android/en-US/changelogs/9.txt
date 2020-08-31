@@ -1,0 +1,3 @@
+- Update about section with download and changelog information.
+- Improve high-res preview scraping.
+- Fix potential crash on calendar intent.
