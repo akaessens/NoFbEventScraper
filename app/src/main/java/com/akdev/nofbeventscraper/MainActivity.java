@@ -1,5 +1,6 @@
 package com.akdev.nofbeventscraper;
 
+import android.annotation.SuppressLint;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -109,16 +110,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                try {
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    String str = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                String str = Objects.requireNonNull(clipboard.getPrimaryClip()).getItemAt(0).getText().toString();
 
-                    clear(true);
-                    edit_text_uri_input.setText(str);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    error("Error: Clipboard empty");
-                }
+                clear(true);
+                edit_text_uri_input.setText(str);
+
                 startScraping();
             }
         });
@@ -222,8 +219,13 @@ public class MainActivity extends AppCompatActivity {
         scraper.execute();
     }
 
-    public void error(String str) {
-        layout_uri_input.setError(str);
+    public void error(Integer resId) {
+        if (resId != null) {
+            layout_uri_input.setError(getString(resId));
+        } else {
+            layout_uri_input.setError(null);
+        }
+
     }
 
     /**
@@ -276,34 +278,34 @@ public class MainActivity extends AppCompatActivity {
         edit_text_uri_input.setText(event.url);
 
         if (event.name.equals("")) {
-            edit_text_event_name.setError("no event name detected");
+            edit_text_event_name.setError(getString(R.string.error_no_name));
         } else {
             edit_text_event_name.setText(event.name);
         }
 
         if (event.start_date == null) {
-            edit_text_event_start.setError("no event start date detected");
+            edit_text_event_start.setError(getString(R.string.error_no_start_date));
         } else {
             String str = FbEvent.dateTimeToString(event.start_date);
             edit_text_event_start.setText(str);
         }
 
         if (event.end_date == null) {
-            edit_text_event_end.setError("no event end date detected");
+            edit_text_event_end.setError(getString(R.string.error_no_end_date));
         } else {
             String str = FbEvent.dateTimeToString(event.end_date);
             edit_text_event_end.setText(str);
         }
 
         if (event.location.equals("")) {
-            edit_text_event_location.setError("no event location detected");
+            edit_text_event_location.setError(getString(R.string.error_no_location));
         } else {
             edit_text_event_location.setText(event.location);
             layout_event_location.setEndIconVisible(true);
         }
 
         if (event.description.equals("")) {
-            edit_text_event_description.setError("no event description detected");
+            edit_text_event_description.setError(getString(R.string.error_no_description));
         } else {
             edit_text_event_description.setText(event.description);
         }
@@ -317,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

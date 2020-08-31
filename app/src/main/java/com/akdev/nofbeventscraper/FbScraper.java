@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  */
 public class FbScraper extends AsyncTask<Void, Void, Void> {
 
-    private String error;
+    private int error;
     private String input_url;
     private WeakReference<MainActivity> main; // no context leak with WeakReference
     private FbEvent event;
@@ -224,16 +224,16 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
         } catch (URISyntaxException | MalformedURLException e) {
             e.printStackTrace();
-            this.error = "Error: URL invalid.";
+            this.error = R.string.error_url;
         } catch (JSONException e) {
             e.printStackTrace();
-            this.error = "Error: Scraping event data failed";
+            this.error = R.string.error_scraping;
         } catch (IOException e) {
             e.printStackTrace();
-            this.error = "Error: Unable to connect.";
+            this.error = R.string.error_connection;
         } catch (Exception e) {
             e.printStackTrace();
-            this.error = "Error: Unknown Error.";
+            this.error = R.string.error_unknown;
         }
 
         return null;
