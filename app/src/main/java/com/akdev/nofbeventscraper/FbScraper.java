@@ -129,10 +129,6 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     protected Date parseToDate(String time_in) {
 
         try {
-            // time in is missing a : in the timezone offset
-            //Editable editable = new SpannableStringBuilder(time_in);
-            //String time_str = editable.insert(22, ":").toString();
-
             // parse e.g. 2011-12-03T10:15:30+0100
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
 
