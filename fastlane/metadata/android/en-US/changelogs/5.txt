@@ -1,2 +1,2 @@
-Fix for event links with querystrings.
-New icon and banner as default toolbar image.
+- Fix for event links with querystrings.
+- New icon and banner as default toolbar image.

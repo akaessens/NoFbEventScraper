@@ -1,8 +1,8 @@
-Rework help and about.
-Add settings with URL prefix selector.
-Add Maps button for location.
-Disable text field inputs - all fields can be edited in the calendar app.
-Change date/time format to RFC standard.
-Minor interface changes.
-Code cleanup and refactoring.
-Add code documentation.
+- Rework help and about.
+- Add settings with URL prefix selector.
+- Add Maps button for location.
+- Disable text field inputs - all fields can be edited in the calendar app.
+- Change date/time format to RFC standard.
+- Minor interface changes.
+- Code cleanup and refactoring.
+- Add code documentation.

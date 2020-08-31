@@ -1,2 +1,2 @@
-Fix invalid default uri.
-Update about section.
+- Fix invalid default uri.
+- Update about section.

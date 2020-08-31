@@ -1,5 +1,5 @@
-Add german translation.
-Decrease MinSDK to 23 (Android 6.0).
-Replace Date implementation.
-Enable Dark Mode for WebViews.
-Add high-res preview for www prefix.
+- Add german translation.
+- Decrease MinSDK to 23 (Android 6.0).
+- Replace Date implementation.
+- Enable Dark Mode for WebViews.
+- Add high-res preview for www prefix.
