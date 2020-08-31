@@ -60,7 +60,8 @@
         app:layout_anchorGravity="bottom|end"
         app:icon="@drawable/ic_content_paste"
         android:text="@android:string/paste"
-        android:tooltipText="@string/tooltip_paste"/>
+        android:tooltipText="@string/tooltip_paste"
+        tools:ignore="UnusedAttribute" />
 
     <include layout="@layout/content_main" />
 

@@ -35,7 +35,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     /**
      * Constructor with WeakReference to the main activity, to update it's text fields.
      *
-     * @param main WeakReference of main activity to prevent context leak
+     * @param main      WeakReference of main activity to prevent context leak
      * @param input_url Input url to scrape from
      */
     FbScraper(WeakReference<MainActivity> main, String input_url) {
@@ -48,7 +48,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
      *
      * @param url input url
      * @return facebook event url String if one was found
-     * @throws URISyntaxException if event not found
+     * @throws URISyntaxException    if event not found
      * @throws MalformedURLException
      */
     protected String fixURI(String url) throws URISyntaxException, MalformedURLException {
@@ -64,7 +64,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         if (matcher.find()) {
 
             String url_prefix = "https://m.";
-            if (main != null){
+            if (main != null) {
                 SharedPreferences shared_prefs = PreferenceManager.getDefaultSharedPreferences(main.get());
                 url_prefix = shared_prefs.getString("url_preference", url_prefix);
             }
@@ -74,7 +74,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
             if (matcher.group(2) != null) {
                 ret += matcher.group(2);
             }
-             return ret;
+            return ret;
         } else {
             throw new URISyntaxException(url, "Does not contain event.");
         }
@@ -84,6 +84,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     /**
      * Strips the event location from the json string.
      * This can be a name only or a complete postal address.
+     *
      * @param location_json JSON formatted string
      * @return String representation of the location.
      */
@@ -164,8 +165,9 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
     /**
      * Read a single field from a JSONObject
+     *
      * @param reader JSONObject to read from
-     * @param field Which field to read
+     * @param field  Which field to read
      * @return String of the value of the field or empty string
      */
     private String readFromJson(JSONObject reader, String field) {
@@ -180,6 +182,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     /**
      * Started by scraper.execute().
      * Gets the HTML doc from the input string and scrapes the event information from it.
+     *
      * @param voids
      * @return
      */
@@ -212,14 +215,14 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
             try {
                 // possibly get higher res image from event header
-                image_url = document.getElementsByClass("scaledImageFitWidth")
+                image_url = document.select("img[class*=scaledImageFit]")
                         .first().attr("src");
 
             } catch (Exception e) {
                 // ignore
             }
 
-            event = new FbEvent(url, name,start_date, end_date, description, location, image_url);
+            event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
 
 
         } catch (URISyntaxException | MalformedURLException e) {
@@ -247,6 +250,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     /**
      * When scraping is finished, main activity will be updated.
      * If an error occurred, main activity is given an error string.
+     *
      * @param aVoid
      */
     protected void onPostExecute(Void aVoid) {

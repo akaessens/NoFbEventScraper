@@ -52,7 +52,8 @@ public class FbEvent {
      */
     static String dateTimeToString(Date date) {
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm z", Locale.getDefault());
+            SimpleDateFormat formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm z",
+                    Locale.getDefault());
             return formatter.format(date);
         } catch (Exception e) {
             return "";
