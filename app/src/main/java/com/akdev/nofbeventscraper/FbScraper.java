@@ -215,8 +215,8 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
             try {
                 // possibly get higher res image from event header
-                image_url = document.select("img[class*=scaledImageFit]")
-                        .first().attr("src");
+                image_url = document.select("div[id=event_header_primary]")
+                        .select("img").first().attr("src");
 
             } catch (Exception e) {
                 // ignore
