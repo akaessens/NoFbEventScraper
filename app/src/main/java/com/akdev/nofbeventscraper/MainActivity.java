@@ -174,7 +174,10 @@ public class MainActivity extends AppCompatActivity {
                 // prepend url in description
                 String desc = event.url + "\n\n" + event.description;
                 intent.putExtra(CalendarContract.Events.DESCRIPTION, desc);
-                startActivity(intent);
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
             }
         });
 
