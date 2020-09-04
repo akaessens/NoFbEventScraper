@@ -17,9 +17,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.akdev.nofbeventscraper.FbEvent.createEventList;
 
 /**
  * This class can asynchronously scrape public facebook events
@@ -30,7 +33,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     private int error;
     private String input_url;
     private WeakReference<MainActivity> main; // no context leak with WeakReference
-    private FbEvent event;
+    private List<FbEvent> events;
 
     /**
      * Constructor with WeakReference to the main activity, to update it's text fields.
@@ -41,6 +44,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     FbScraper(WeakReference<MainActivity> main, String input_url) {
         this.main = main;
         this.input_url = input_url;
+        this.events = createEventList(0);
     }
 
     /**
@@ -222,8 +226,8 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
                 // ignore
             }
 
-            event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
-
+            FbEvent event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
+            this.events.add(event);
 
         } catch (URISyntaxException | MalformedURLException e) {
             e.printStackTrace();
@@ -257,8 +261,8 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         super.onPostExecute(aVoid);
 
         if (main != null) {
-            if (this.event != null) {
-                main.get().update(event);
+            if (! this.events.isEmpty()) {
+                main.get().update(events);
             } else {
                 main.get().error(error);
                 main.get().clear(false);

@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -25,8 +27,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.Objects;
 
+import static com.akdev.nofbeventscraper.FbEvent.createEventList;
 import static com.akdev.nofbeventscraper.FbEvent.dateTimeToEpoch;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,55 +39,60 @@ public class MainActivity extends AppCompatActivity {
     protected Button paste_button;
 
     protected TextInputEditText edit_text_uri_input;
-    protected TextInputEditText edit_text_event_name;
-    protected TextInputEditText edit_text_event_start;
-    protected TextInputEditText edit_text_event_end;
-    protected TextInputEditText edit_text_event_location;
-    protected TextInputEditText edit_text_event_description;
 
     protected TextInputLayout layout_uri_input;
-    protected TextInputLayout layout_event_location;
 
     protected ImageView image_view_toolbar;
     protected CollapsingToolbarLayout layout_toolbar;
 
     protected FbScraper scraper;
-    protected FbEvent event;
+    protected List<FbEvent> events;
+    EventAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        ok_button = (Button) findViewById(R.id.ok_button);
-        paste_button = (Button) findViewById(R.id.paste_button);
 
         edit_text_uri_input = (TextInputEditText) findViewById(R.id.edit_text_uri_input);
-        edit_text_event_name = (TextInputEditText) findViewById(R.id.edit_text_event_name);
-        edit_text_event_start = (TextInputEditText) findViewById(R.id.edit_text_event_start);
-        edit_text_event_end = (TextInputEditText) findViewById(R.id.edit_text_event_end);
-        edit_text_event_location = (TextInputEditText) findViewById(R.id.edit_text_event_location);
-        edit_text_event_description = (TextInputEditText) findViewById(R.id.edit_text_event_description);
-
         layout_uri_input = (TextInputLayout) findViewById(R.id.layout_uri_input);
-        layout_event_location = (TextInputLayout) findViewById(R.id.layout_event_location);
+        // Lookup the recyclerview in activity layout
+        RecyclerView recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+
+        // Initialize contacts
+        events = createEventList(3);
+
+        // Create adapter passing in the sample user data
+        adapter = new EventAdapter(events);
+        // Attach the adapter to the recyclerview to populate items
+        recycler_view.setAdapter(adapter);
+        // Set layout manager to position the items
+        recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        // That's all!
+        /*Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //ok_button = (Button) findViewById(R.id.ok_button);
+        paste_button = (Button) findViewById(R.id.paste_button);
+
+
+
         layout_toolbar = (CollapsingToolbarLayout) findViewById(R.id.layout_toolbar);
-        image_view_toolbar = (ImageView) findViewById(R.id.image_view);
+        image_view_toolbar = (ImageView) findViewById(R.id.image_view);*/
 
 
         /*
          * Default view settings
          */
-        ok_button.setEnabled(false);
-        layout_event_location.setEndIconVisible(false);
-        image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);
+        //ok_button.setEnabled(false);
+        //layout_event_location.setEndIconVisible(false);
+        //image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);
 
         /*
          * Display title only when toolbar is collapsed
          */
-        AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar);
+        /*AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar);
         app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean show = true;
             int scroll_range = -1;
@@ -106,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         /*
          * Paste button: get last entry from clipboard
          */
-        paste_button.setOnClickListener(new View.OnClickListener() {
+        /*paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -141,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         /*
          * Maps button: launch maps intent
          */
-        layout_event_location.setEndIconOnClickListener(new View.OnClickListener() {
+        /*layout_event_location.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String map_search = "geo:0,0?q=" + edit_text_event_location.getText();
@@ -152,12 +161,12 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(map_intent);
                 }
             }
-        });
+        });*/
 
         /*
          * Add to calendar button: launch calendar application
          */
-        ok_button.setOnClickListener(new View.OnClickListener() {
+        /*ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -179,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        });
+        });*/
 
         /*
          * Enter button in uri input: start scraping
@@ -249,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
             edit_text_uri_input.setText("");
             layout_uri_input.setError(null);
         }
-        edit_text_event_name.setText("");
+        /*edit_text_event_name.setText("");
         edit_text_event_start.setText("");
         edit_text_event_end.setText("");
         edit_text_event_location.setText("");
@@ -259,7 +268,9 @@ public class MainActivity extends AppCompatActivity {
         edit_text_event_start.setError(null);
         edit_text_event_end.setError(null);
         edit_text_event_location.setError(null);
-        edit_text_event_description.setError(null);
+        edit_text_event_description.setError(null);*/
+
+        this.events.clear();
 
         try {
             scraper.cancel(true);
@@ -269,62 +280,33 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        ok_button.setEnabled(false);
+        /*ok_button.setEnabled(false);
         layout_event_location.setEndIconVisible(false);
-        image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);
+        image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);*/
     }
 
     /**
      * Updates the text fields with the event information provided.
      * If something is missing, the corresponding test field will show an error.
      *
-     * @param scraped_event the event information that was scraped by FbScraper
+     * @param events the event information that was scraped by FbScraper
      */
-    public void update(FbEvent scraped_event) {
+    public void update(List<FbEvent> events) {
 
-        this.event = scraped_event;
+        this.events.addAll(0, events);
 
-        edit_text_uri_input.setText(event.url);
+        adapter.notifyItemInserted(0);
 
-        if (event.name.equals("")) {
-            edit_text_event_name.setError(getString(R.string.error_no_name));
-        } else {
-            edit_text_event_name.setText(event.name);
-        }
+        /*edit_text_uri_input.setText(event.url);
 
-        if (event.start_date == null) {
-            edit_text_event_start.setError(getString(R.string.error_no_start_date));
-        } else {
-            String str = FbEvent.dateTimeToString(event.start_date);
-            edit_text_event_start.setText(str);
-        }
 
-        if (event.end_date == null) {
-            edit_text_event_end.setError(getString(R.string.error_no_end_date));
-        } else {
-            String str = FbEvent.dateTimeToString(event.end_date);
-            edit_text_event_end.setText(str);
-        }
-
-        if (event.location.equals("")) {
-            edit_text_event_location.setError(getString(R.string.error_no_location));
-        } else {
-            edit_text_event_location.setText(event.location);
-            layout_event_location.setEndIconVisible(true);
-        }
-
-        if (event.description.equals("")) {
-            edit_text_event_description.setError(getString(R.string.error_no_description));
-        } else {
-            edit_text_event_description.setText(event.description);
-        }
 
         Picasso.get()
                 .load(event.image_url)
                 .placeholder(R.drawable.ic_banner_foreground)
                 .into(image_view_toolbar);
 
-        ok_button.setEnabled(true);
+        ok_button.setEnabled(true);*/
     }
 
 

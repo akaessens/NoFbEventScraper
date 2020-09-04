@@ -1,6 +1,10 @@
 package com.akdev.nofbeventscraper;
 
+import android.app.usage.UsageEvents;
+import android.util.EventLog;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -18,6 +22,15 @@ public class FbEvent {
     public final String location;
     public final String image_url;
 
+    public FbEvent() {
+        url = "url";
+        name= "name";
+        start_date = null;
+        end_date = null;
+        description = "description";
+        location = "location";
+        image_url = null;
+    }
 
     public FbEvent(String url, String name, Date start_date, Date end_date,
                    String description, String location, String image_url) {
@@ -28,6 +41,16 @@ public class FbEvent {
         this.description = description;
         this.location = location;
         this.image_url = image_url;
+    }
+
+    public static ArrayList<FbEvent> createEventList(int num_events) {
+        ArrayList<FbEvent> events = new ArrayList<FbEvent>();
+
+        for (int i = 1; i <= num_events; i++) {
+            events.add(new FbEvent());
+        }
+
+        return events;
     }
 
     /**
