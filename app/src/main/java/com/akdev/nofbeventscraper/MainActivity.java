@@ -18,10 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
@@ -36,18 +40,17 @@ import static com.akdev.nofbeventscraper.FbEvent.dateTimeToEpoch;
 public class MainActivity extends AppCompatActivity {
 
     protected Button ok_button;
-    protected Button paste_button;
+    protected ExtendedFloatingActionButton paste_button;
 
     protected TextInputEditText edit_text_uri_input;
 
     protected TextInputLayout layout_uri_input;
 
-    protected ImageView image_view_toolbar;
-    protected CollapsingToolbarLayout layout_toolbar;
 
     protected FbScraper scraper;
     protected List<FbEvent> events;
     EventAdapter adapter;
+    LinearLayoutManager linear_layout_manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,10 @@ public class MainActivity extends AppCompatActivity {
         edit_text_uri_input = (TextInputEditText) findViewById(R.id.edit_text_uri_input);
         layout_uri_input = (TextInputLayout) findViewById(R.id.layout_uri_input);
         // Lookup the recyclerview in activity layout
-        RecyclerView recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        final RecyclerView recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+
+        SnapHelper snap_helper = new LinearSnapHelper();
+        snap_helper.attachToRecyclerView(recycler_view);
 
         // Initialize contacts
         events = createEventList(3);
@@ -67,55 +73,29 @@ public class MainActivity extends AppCompatActivity {
         // Attach the adapter to the recyclerview to populate items
         recycler_view.setAdapter(adapter);
         // Set layout manager to position the items
-        recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        recycler_view.setLayoutManager(linear_layout_manager);
+        recycler_view.setHasFixedSize(true);
 
         // That's all!
-        /*Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //ok_button = (Button) findViewById(R.id.ok_button);
-        paste_button = (Button) findViewById(R.id.paste_button);
-
-
-
-        layout_toolbar = (CollapsingToolbarLayout) findViewById(R.id.layout_toolbar);
-        image_view_toolbar = (ImageView) findViewById(R.id.image_view);*/
+        ok_button = (Button) findViewById(R.id.ok_button);
+        paste_button = (ExtendedFloatingActionButton) findViewById(R.id.paste_button);
 
 
         /*
          * Default view settings
          */
-        //ok_button.setEnabled(false);
-        //layout_event_location.setEndIconVisible(false);
-        //image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);
-
-        /*
-         * Display title only when toolbar is collapsed
-         */
-        /*AppBarLayout app_bar_layout = (AppBarLayout) findViewById(R.id.app_bar);
-        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean show = true;
-            int scroll_range = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout app_bar_layout, int vertical_offset) {
-                if (scroll_range == -1) {
-                    scroll_range = app_bar_layout.getTotalScrollRange();
-                }
-                if (scroll_range + vertical_offset == 0) {
-                    layout_toolbar.setTitle(getString(R.string.app_name));
-                    show = true;
-                } else if (show) {
-                    layout_toolbar.setTitle(" ");
-                    show = false;
-                }
-            }
-        });
+        ok_button.setEnabled(false);
 
         /*
          * Paste button: get last entry from clipboard
          */
-        /*paste_button.setOnClickListener(new View.OnClickListener() {
+        paste_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -166,9 +146,11 @@ public class MainActivity extends AppCompatActivity {
         /*
          * Add to calendar button: launch calendar application
          */
-        /*ok_button.setOnClickListener(new View.OnClickListener() {
+        ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                FbEvent event = events.get(linear_layout_manager.findFirstCompletelyVisibleItemPosition());
 
                 Long start_epoch = dateTimeToEpoch(event.start_date);
                 Long end_epoch = dateTimeToEpoch(event.end_date);
@@ -188,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        });*/
+        });
 
         /*
          * Enter button in uri input: start scraping
@@ -271,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
         edit_text_event_description.setError(null);*/
 
         this.events.clear();
+        adapter.notifyDataSetChanged();
 
         try {
             scraper.cancel(true);
@@ -280,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        /*ok_button.setEnabled(false);
+        ok_button.setEnabled(false);/*
         layout_event_location.setEndIconVisible(false);
         image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);*/
     }
@@ -293,9 +276,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public void update(List<FbEvent> events) {
 
-        this.events.addAll(0, events);
+        this.events.clear();
+        this.events.addAll(events);
 
-        adapter.notifyItemInserted(0);
+        adapter.notifyDataSetChanged();
 
         /*edit_text_uri_input.setText(event.url);
 
@@ -304,9 +288,9 @@ public class MainActivity extends AppCompatActivity {
         Picasso.get()
                 .load(event.image_url)
                 .placeholder(R.drawable.ic_banner_foreground)
-                .into(image_view_toolbar);
+                .into(image_view_toolbar);*/
 
-        ok_button.setEnabled(true);*/
+        ok_button.setEnabled(true);
     }
 
 

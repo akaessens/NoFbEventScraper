@@ -7,9 +7,9 @@
     tools:showIn="@layout/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="64dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:orientation="vertical"
-    android:layout_margin="16dp">
+    android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_uri_input"
@@ -17,11 +17,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+
+
         app:endIconCheckable="false"
         app:endIconDrawable="@drawable/ic_backspace_black"
-        app:errorIconDrawable="@drawable/ic_backspace_black"
         app:endIconMode="custom"
-
+        app:errorIconDrawable="@drawable/ic_backspace_black"
         app:helperText="@string/helper_add_link"
         app:helperTextEnabled="true">
 
@@ -43,147 +47,3 @@
         android:layout_height="match_parent"/>
 
 </LinearLayout>
-
-<!--<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nested_scroll_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="false"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
-
-
-    <LinearLayout
-        android:id="@+id/linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="64dp"
-
-        android:divider="@drawable/divider"
-        android:orientation="vertical"
-        android:showDividers="middle">
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_uri_input"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            app:endIconCheckable="false"
-            app:endIconDrawable="@drawable/ic_backspace_black"
-            app:errorIconDrawable="@drawable/ic_backspace_black"
-            app:endIconMode="custom"
-
-            app:helperText="@string/helper_add_link"
-            app:helperTextEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_uri_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:cursorVisible="true"
-                android:hint="@string/hint_add_link"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true"
-                android:textColorLink="@color/material_on_background_emphasis_high_type" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:hint="@string/hint_event_name"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true"
-                android:textColorLink="@color/material_on_background_emphasis_high_type" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_start"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:hint="@string/hint_event_start"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_end"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:hint="@string/hint_event_end"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_event_location"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:endIconDrawable="@drawable/ic_add_location"
-            app:endIconMode="custom">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:hint="@string/hint_event_location"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:hint="@string/hint_event_description"
-                android:inputType="textNoSuggestions|textMultiLine"
-                android:singleLine="false"
-                android:textColorLink="@color/material_on_background_emphasis_high_type" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>-->
