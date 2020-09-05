@@ -59,38 +59,27 @@ public class MainActivity extends AppCompatActivity {
 
         edit_text_uri_input = (TextInputEditText) findViewById(R.id.edit_text_uri_input);
         layout_uri_input = (TextInputLayout) findViewById(R.id.layout_uri_input);
-        // Lookup the recyclerview in activity layout
-        final RecyclerView recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-
-        SnapHelper snap_helper = new LinearSnapHelper();
-        snap_helper.attachToRecyclerView(recycler_view);
-
-        // Initialize contacts
-        events = createEventList(3);
-
-        // Create adapter passing in the sample user data
-        adapter = new EventAdapter(events);
-        // Attach the adapter to the recyclerview to populate items
-        recycler_view.setAdapter(adapter);
-        // Set layout manager to position the items
-
-        linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-        recycler_view.setLayoutManager(linear_layout_manager);
-        recycler_view.setHasFixedSize(true);
-
-        // That's all!
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ok_button = (Button) findViewById(R.id.ok_button);
         paste_button = (ExtendedFloatingActionButton) findViewById(R.id.paste_button);
-
+        ok_button.setEnabled(false);
 
         /*
-         * Default view settings
+         * initialize recycler view with empty list of events
+         * scroll horizontal with snapping
          */
-        ok_button.setEnabled(false);
+        RecyclerView recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        events = createEventList();
+        adapter = new EventAdapter(events);
+        recycler_view.setAdapter(adapter);
+        linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recycler_view.setLayoutManager(linear_layout_manager);
+        recycler_view.setHasFixedSize(true);
+        SnapHelper snap_helper = new LinearSnapHelper();
+        snap_helper.attachToRecyclerView(recycler_view);
+
 
         /*
          * Paste button: get last entry from clipboard
@@ -116,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*
-         * Clear button: delete all text in all fields
+         * Clear button: delete all events
          */
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -127,24 +116,9 @@ public class MainActivity extends AppCompatActivity {
         layout_uri_input.setEndIconOnClickListener(listener);
         layout_uri_input.setErrorIconOnClickListener(listener);
 
-        /*
-         * Maps button: launch maps intent
-         */
-        /*layout_event_location.setEndIconOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String map_search = "geo:0,0?q=" + edit_text_event_location.getText();
-
-                Uri intent_uri = Uri.parse(map_search);
-                Intent map_intent = new Intent(Intent.ACTION_VIEW, intent_uri);
-                if (map_intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(map_intent);
-                }
-            }
-        });*/
 
         /*
-         * Add to calendar button: launch calendar application
+         * Add to calendar button: launch calendar application with current event
          */
         ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             layout_uri_input.setError(null);
         }
-
     }
 
     /**
@@ -240,20 +213,6 @@ public class MainActivity extends AppCompatActivity {
             edit_text_uri_input.setText("");
             layout_uri_input.setError(null);
         }
-        /*edit_text_event_name.setText("");
-        edit_text_event_start.setText("");
-        edit_text_event_end.setText("");
-        edit_text_event_location.setText("");
-        edit_text_event_description.setText("");
-
-        edit_text_event_name.setError(null);
-        edit_text_event_start.setError(null);
-        edit_text_event_end.setError(null);
-        edit_text_event_location.setError(null);
-        edit_text_event_description.setError(null);*/
-
-        this.events.clear();
-        adapter.notifyDataSetChanged();
 
         try {
             scraper.cancel(true);
@@ -262,10 +221,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        this.events.clear();
+        adapter.notifyDataSetChanged();
 
-        ok_button.setEnabled(false);/*
-        layout_event_location.setEndIconVisible(false);
-        image_view_toolbar.setImageResource(R.drawable.ic_banner_foreground);*/
+        ok_button.setEnabled(false);
     }
 
     /**
@@ -281,18 +240,13 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
 
-        /*edit_text_uri_input.setText(event.url);
-
-
-
-        Picasso.get()
+        /*Picasso.get()
                 .load(event.image_url)
                 .placeholder(R.drawable.ic_banner_foreground)
                 .into(image_view_toolbar);*/
 
         ok_button.setEnabled(true);
     }
-
 
     @SuppressLint("RestrictedApi")
     @Override

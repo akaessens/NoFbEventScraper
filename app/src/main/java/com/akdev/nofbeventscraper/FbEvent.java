@@ -1,8 +1,5 @@
 package com.akdev.nofbeventscraper;
 
-import android.app.usage.UsageEvents;
-import android.util.EventLog;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,14 +40,9 @@ public class FbEvent {
         this.image_url = image_url;
     }
 
-    public static ArrayList<FbEvent> createEventList(int num_events) {
-        ArrayList<FbEvent> events = new ArrayList<FbEvent>();
+    public static ArrayList<FbEvent> createEventList() {
 
-        for (int i = 1; i <= num_events; i++) {
-            events.add(new FbEvent());
-        }
-
-        return events;
+        return new ArrayList<>();
     }
 
     /**

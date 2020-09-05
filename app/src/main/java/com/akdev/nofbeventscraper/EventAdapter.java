@@ -2,6 +2,8 @@ package com.akdev.nofbeventscraper;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 
@@ -25,13 +28,34 @@ public class EventAdapter extends
 
     @Override
     public EventAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int view_type) {
-        Context context = parent.getContext();
+        final Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
         View contact_view = inflater.inflate(R.layout.item_event, parent, false);
 
+
+
         // Return a new holder instance
+        final ViewHolder holder = new ViewHolder(contact_view);
+
+        /*
+         * Maps button: launch maps intent
+         */
+
+        holder.layout_event_location.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String map_search = "geo:0,0?q=" + holder.edit_text_event_location.getText();
+
+                Uri intent_uri = Uri.parse(map_search);
+                Intent map_intent = new Intent(Intent.ACTION_VIEW, intent_uri);
+                if (map_intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(map_intent);
+                }
+            }
+        });
+
         return new ViewHolder(contact_view);
     }
     @Override
@@ -87,18 +111,18 @@ public class EventAdapter extends
         protected TextInputEditText edit_text_event_end;
         protected TextInputEditText edit_text_event_location;
         protected TextInputEditText edit_text_event_description;
+        protected TextInputLayout   layout_event_location;
 
 
         public ViewHolder(View item_view) {
             super(item_view);
-
 
             edit_text_event_name = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_name);
             edit_text_event_start = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_start);
             edit_text_event_end = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_end);
             edit_text_event_location = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_location);
             edit_text_event_description = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_description);
-
+            layout_event_location = (TextInputLayout) item_view.findViewById(R.id.layout_event_location);
         }
     }
 }

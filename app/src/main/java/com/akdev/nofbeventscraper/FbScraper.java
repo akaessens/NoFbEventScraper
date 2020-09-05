@@ -44,7 +44,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
     FbScraper(WeakReference<MainActivity> main, String input_url) {
         this.main = main;
         this.input_url = input_url;
-        this.events = createEventList(0);
+        this.events = createEventList();
     }
 
     /**
@@ -227,6 +227,10 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
             }
 
             FbEvent event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
+            this.events.add(event);
+            this.events.add(event);
+            this.events.add(new FbEvent());
+            this.events.add(event);
             this.events.add(event);
 
         } catch (URISyntaxException | MalformedURLException e) {
