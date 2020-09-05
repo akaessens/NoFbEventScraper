@@ -53,6 +53,25 @@ public class MainActivity extends AppCompatActivity {
     LinearLayoutManager linear_layout_manager;
 
     @Override
+    public void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+
+        if (! state.getBoolean("events_empty") ) {
+            startScraping();
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+
+        state.putBoolean("events_empty", events.isEmpty());
+
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -214,11 +233,9 @@ public class MainActivity extends AppCompatActivity {
             layout_uri_input.setError(null);
         }
 
-        try {
+        if (scraper != null) {
             scraper.cancel(true);
             scraper = null;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         this.events.clear();
