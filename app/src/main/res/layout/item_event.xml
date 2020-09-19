@@ -1,5 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<androidx.cardview.widget.CardView android:id="@+id/card"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#000000"
+    app:cardElevation="0dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Media -->
+        <ImageView
+            android:id="@+id/image_view_event_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="image" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/edit_text_event_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                />
+            <TextView
+                android:id="@+id/edit_text_event_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="start"
+                android:textAppearance="?attr/textAppearanceBody2"
+                />
+            <TextView
+                android:id="@+id/edit_text_event_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="end"
+                android:textAppearance="?attr/textAppearanceBody2"
+                />
+            <TextView
+                android:id="@+id/edit_text_event_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="location"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                />
+            <TextView
+                android:id="@+id/edit_text_event_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="description"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                />
+
+        </LinearLayout>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="add"
+                style="?attr/borderlessButtonStyle"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dismiss"
+                style="?attr/borderlessButtonStyle"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+<!--
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -104,4 +202,4 @@
 
     </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>-->

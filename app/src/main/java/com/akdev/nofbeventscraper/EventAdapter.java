@@ -7,11 +7,14 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,7 +46,7 @@ public class EventAdapter extends
          * Maps button: launch maps intent
          */
 
-        holder.layout_event_location.setEndIconOnClickListener(new View.OnClickListener() {
+        /*holder.layout_event_location.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String map_search = "geo:0,0?q=" + holder.edit_text_event_location.getText();
@@ -54,7 +57,7 @@ public class EventAdapter extends
                     context.startActivity(map_intent);
                 }
             }
-        });
+        });*/
 
         return new ViewHolder(contact_view);
     }
@@ -96,6 +99,11 @@ public class EventAdapter extends
         } else {
             holder.edit_text_event_description.setText(event.description);
         }
+
+        Picasso.get()
+            .load(event.image_url)
+            .placeholder(R.drawable.ic_banner_foreground)
+            .into(holder.image_view_event_image);
     }
 
     // Returns the total count of items in the list
@@ -106,23 +114,25 @@ public class EventAdapter extends
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextInputEditText edit_text_event_name;
-        protected TextInputEditText edit_text_event_start;
-        protected TextInputEditText edit_text_event_end;
-        protected TextInputEditText edit_text_event_location;
-        protected TextInputEditText edit_text_event_description;
-        protected TextInputLayout   layout_event_location;
+        protected MaterialTextView edit_text_event_name;
+        protected MaterialTextView edit_text_event_start;
+        protected MaterialTextView edit_text_event_end;
+        protected MaterialTextView edit_text_event_location;
+        protected MaterialTextView edit_text_event_description;
+        protected ImageView image_view_event_image;
+        //protected TextInputLayout   layout_event_location;
 
 
         public ViewHolder(View item_view) {
             super(item_view);
 
-            edit_text_event_name = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_name);
-            edit_text_event_start = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_start);
-            edit_text_event_end = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_end);
-            edit_text_event_location = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_location);
-            edit_text_event_description = (TextInputEditText) item_view.findViewById(R.id.edit_text_event_description);
-            layout_event_location = (TextInputLayout) item_view.findViewById(R.id.layout_event_location);
+            edit_text_event_name = (MaterialTextView) item_view.findViewById(R.id.edit_text_event_name);
+            edit_text_event_start = (MaterialTextView) item_view.findViewById(R.id.edit_text_event_start);
+            edit_text_event_end = (MaterialTextView) item_view.findViewById(R.id.edit_text_event_end);
+            edit_text_event_location = (MaterialTextView) item_view.findViewById(R.id.edit_text_event_location);
+            edit_text_event_description = (MaterialTextView) item_view.findViewById(R.id.edit_text_event_description);
+            image_view_event_image = (ImageView) item_view.findViewById(R.id.image_view_event_image);
+            //layout_event_location = (TextInputLayout) item_view.findViewById(R.id.layout_event_location);
         }
     }
 }
