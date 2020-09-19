@@ -93,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
         events = createEventList();
         adapter = new EventAdapter(events);
         recycler_view.setAdapter(adapter);
-        linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycler_view.setLayoutManager(linear_layout_manager);
-        recycler_view.setHasFixedSize(true);
-        SnapHelper snap_helper = new LinearSnapHelper();
-        snap_helper.attachToRecyclerView(recycler_view);
+        //recycler_view.setHasFixedSize(true);
+        //SnapHelper snap_helper = new LinearSnapHelper();
+        //snap_helper.attachToRecyclerView(recycler_view);
 
 
         /*
