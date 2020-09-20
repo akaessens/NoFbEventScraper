@@ -1,97 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView android:id="@+id/card"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="#000000"
-    app:cardElevation="0dp">
-
+    android:layout_height="match_parent"
+    android:layout_margin="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="vertical">
-
-        <!-- Media -->
-        <ImageView
-            android:id="@+id/image_view_event_image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="image" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <!-- Title, secondary and supporting text -->
-            <TextView
-                android:id="@+id/edit_text_event_name"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/image_view_event_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginRight="8dp"
+                android:contentDescription="thumbnail"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/edit_text_event_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_event_name"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                <TextView
+                    android:id="@+id/edit_text_event_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/hint_event_location"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
             <TextView
                 android:id="@+id/edit_text_event_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="start"
-                android:textAppearance="?attr/textAppearanceBody2"
-                />
+                android:text="@string/hint_event_start"
+                android:textAppearance="?attr/textAppearanceBody2" />
+
             <TextView
                 android:id="@+id/edit_text_event_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="end"
-                android:textAppearance="?attr/textAppearanceBody2"
-                />
-            <TextView
-                android:id="@+id/edit_text_event_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="location"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"
-                />
+                android:text="@string/hint_event_end"
+                android:textAppearance="?attr/textAppearanceBody2" />
+
             <TextView
                 android:id="@+id/edit_text_event_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="description"
+                android:text="@string/hint_event_description"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"
-                />
+                android:textColor="?android:attr/textColorSecondary" />
 
         </LinearLayout>
 
-        <!-- Buttons -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
+
+            <Button
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/button_add"
+                android:textColor="@android:color/white"
+                app:icon="@drawable/ic_event_available"
+                app:iconGravity="textStart"
+                app:iconTint="@android:color/white" />
+
+
+            <ImageButton
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="add"
-                style="?attr/borderlessButtonStyle"
-                />
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="dismiss"
-                style="?attr/borderlessButtonStyle"
-                />
+                android:gravity="end"
+                android:maxWidth="10dp"
+                android:src="@drawable/ic_add_location"
+                android:tint="@color/material_on_surface_emphasis_high_type" />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -100,10 +100,15 @@ public class EventAdapter extends
             holder.edit_text_event_description.setText(event.description);
         }
 
-        Picasso.get()
-            .load(event.image_url)
-            .placeholder(R.drawable.ic_banner_foreground)
-            .into(holder.image_view_event_image);
+        if (event.image_url == null) {
+            holder.image_view_event_image.setVisibility(View.GONE);
+        }
+        else {
+            Picasso.get()
+                    .load(event.image_url).into(holder.image_view_event_image);
+        }
+            //.placeholder(R.drawable.ic_banner_foreground)*/
+
     }
 
     // Returns the total count of items in the list

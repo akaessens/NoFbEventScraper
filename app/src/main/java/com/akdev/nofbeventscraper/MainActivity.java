@@ -6,40 +6,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Objects;
 
 import static com.akdev.nofbeventscraper.FbEvent.createEventList;
-import static com.akdev.nofbeventscraper.FbEvent.dateTimeToEpoch;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected Button ok_button;
     protected ExtendedFloatingActionButton paste_button;
 
     protected TextInputEditText edit_text_uri_input;
@@ -81,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ok_button = (Button) findViewById(R.id.ok_button);
+        //ok_button = (Button) findViewById(R.id.ok_button);
         paste_button = (ExtendedFloatingActionButton) findViewById(R.id.paste_button);
-        ok_button.setEnabled(false);
+        //ok_button.setEnabled(false);
 
         /*
          * initialize recycler view with empty list of events
@@ -109,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    String str = Objects.requireNonNull(clipboard.getPrimaryClip())
-                            .getItemAt(0).getText().toString();
+                    String str = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
 
                     clear(true);
                     edit_text_uri_input.setText(str);
@@ -139,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         /*
          * Add to calendar button: launch calendar application with current event
          */
-        ok_button.setOnClickListener(new View.OnClickListener() {
+        /*ok_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -241,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         this.events.clear();
         adapter.notifyDataSetChanged();
 
-        ok_button.setEnabled(false);
+        //ok_button.setEnabled(false);
     }
 
     /**
@@ -262,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_banner_foreground)
                 .into(image_view_toolbar);*/
 
-        ok_button.setEnabled(true);
+        //ok_button.setEnabled(true);
     }
 
     @SuppressLint("RestrictedApi")

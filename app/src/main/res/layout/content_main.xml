@@ -3,52 +3,54 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="64dp"
-    android:orientation="vertical">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_uri_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-
-
-        app:endIconCheckable="false"
-        app:endIconDrawable="@drawable/ic_backspace_black"
-        app:endIconMode="custom"
-        app:errorIconDrawable="@drawable/ic_backspace_black"
-        app:helperText="@string/helper_add_link"
-        app:helperTextEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_uri_input"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_uri_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:cursorVisible="true"
-            android:hint="@string/hint_add_link"
-            android:inputType="textNoSuggestions"
-            android:singleLine="true"
-            android:textColorLink="@color/material_on_background_emphasis_high_type" />
-    </com.google.android.material.textfield.TextInputLayout>
+
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
 
 
-    <androidx.recyclerview.widget.RecyclerView android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            app:endIconCheckable="false"
+            app:endIconDrawable="@drawable/ic_backspace_black"
+            app:endIconMode="custom"
+            app:errorIconDrawable="@drawable/ic_backspace_black"
+            app:helperText="@string/helper_add_link"
+            app:helperTextEnabled="true">
 
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_uri_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:cursorVisible="true"
+                android:hint="@string/hint_add_link"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                android:textColorLink="@color/material_on_background_emphasis_high_type" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false" />
+
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
