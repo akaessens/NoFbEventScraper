@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -17,9 +19,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -85,6 +90,30 @@ public class MainActivity extends AppCompatActivity {
         recycler_view.setHasFixedSize(true);
 
 
+        /*
+         * Display title only when toolbar is collapsed
+         */
+        AppBarLayout app_bar_layout = findViewById(R.id.app_bar);
+
+        app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean show = true;
+            int scroll_range = -1;
+            CollapsingToolbarLayout layout_toolbar = findViewById(R.id.layout_toolbar);
+
+            @Override
+            public void onOffsetChanged(AppBarLayout app_bar_layout, int vertical_offset) {
+                if (scroll_range == -1) {
+                    scroll_range = app_bar_layout.getTotalScrollRange();
+                }
+                if (scroll_range + vertical_offset == 0) {
+                    layout_toolbar.setTitle(getString(R.string.app_name));
+                    show = true;
+                } else if (show) {
+                    layout_toolbar.setTitle(" ");
+                    show = false;
+                }
+            }
+        });
         /*
          * Paste button: get last entry from clipboard
          */
@@ -153,6 +182,9 @@ public class MainActivity extends AppCompatActivity {
             startScraping();
         }
 
+
+
+
     }
 
     /**
@@ -195,8 +227,6 @@ public class MainActivity extends AppCompatActivity {
 
         this.events.clear();
         adapter.notifyDataSetChanged();
-
-        //ok_button.setEnabled(false);
     }
 
     /**
@@ -211,13 +241,6 @@ public class MainActivity extends AppCompatActivity {
         this.events.addAll(events);
 
         adapter.notifyDataSetChanged();
-
-        /*Picasso.get()
-                .load(event.image_url)
-                .placeholder(R.drawable.ic_banner_foreground)
-                .into(image_view_toolbar);*/
-
-        //ok_button.setEnabled(true);
     }
 
     @SuppressLint("RestrictedApi")
