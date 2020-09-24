@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="16dp">
 
     <LinearLayout
@@ -16,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -23,72 +24,110 @@
                 android:id="@+id/image_view_event_image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="thumbnail"
                 android:scaleType="centerCrop" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/text_view_event_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:text="@string/error_no_name"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/image_view_event_location"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_map"
+                android:background="?android:attr/selectableItemBackground"
+                app:tint="@color/material_on_surface_emphasis_high_type" />
+
+            <TextView
+                android:id="@+id/text_view_event_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_no_location"
+                android:textAppearance="?attr/textAppearanceBody1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="false"
+                android:src="@drawable/ic_schedule"
+                app:tint="@color/material_on_surface_emphasis_high_type" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/edit_text_event_name"
+                    android:id="@+id/text_view_event_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hint_event_name"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
+                    android:text="@string/error_no_start_date"
+                    android:textAppearance="?attr/textAppearanceBody2" />
 
                 <TextView
-                    android:id="@+id/edit_text_event_location"
+                    android:id="@+id/text_view_event_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/hint_event_location"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:text="@string/error_no_end_date"
+                    android:textAppearance="?attr/textAppearanceBody2" />
             </LinearLayout>
+
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/text_view_event_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:ellipsize="end"
+            android:maxLines="5"
+            android:text="abc\nabc\nabc\nabc\nabc\nabc\nabc\n"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/edit_text_event_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hint_event_start"
-                android:textAppearance="?attr/textAppearanceBody2" />
-
-            <TextView
-                android:id="@+id/edit_text_event_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hint_event_end"
-                android:textAppearance="?attr/textAppearanceBody2" />
-
-            <TextView
-                android:id="@+id/edit_text_event_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/hint_event_description"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <Button
-                android:layout_width="wrap_content"
+                android:id="@+id/button_add_to_calendar"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/button_add"
                 android:textColor="@android:color/white"
@@ -97,123 +136,8 @@
                 app:iconTint="@android:color/white" />
 
 
-            <ImageButton
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:maxWidth="10dp"
-                android:src="@drawable/ic_add_location"
-                android:tint="@color/material_on_surface_emphasis_high_type" />
-
         </LinearLayout>
 
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
-<!--
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="16dp">
-
-    <LinearLayout
-        android:id="@+id/linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:divider="@drawable/divider"
-        android:orientation="vertical"
-        android:showDividers="middle">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:hint="@string/hint_event_name"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true"
-                android:textColorLink="@color/material_on_background_emphasis_high_type" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_start"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:hint="@string/hint_event_start"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_end"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:hint="@string/hint_event_end"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_event_location"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:endIconDrawable="@drawable/ic_add_location"
-            app:endIconMode="custom">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:hint="@string/hint_event_location"
-                android:inputType="textNoSuggestions"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_event_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:hint="@string/hint_event_description"
-                android:inputType="textNoSuggestions|textMultiLine"
-                android:singleLine="false"
-                android:textColorLink="@color/material_on_background_emphasis_high_type" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>-->

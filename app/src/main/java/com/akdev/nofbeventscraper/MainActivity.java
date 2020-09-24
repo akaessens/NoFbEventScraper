@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle state) {
         super.onRestoreInstanceState(state);
 
-        if (! state.getBoolean("events_empty") ) {
+        if (!state.getBoolean("events_empty")) {
             startScraping();
         }
 
@@ -66,28 +65,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        edit_text_uri_input = (TextInputEditText) findViewById(R.id.edit_text_uri_input);
-        layout_uri_input = (TextInputLayout) findViewById(R.id.layout_uri_input);
+        edit_text_uri_input = findViewById(R.id.edit_text_uri_input);
+        layout_uri_input = findViewById(R.id.layout_uri_input);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //ok_button = (Button) findViewById(R.id.ok_button);
-        paste_button = (ExtendedFloatingActionButton) findViewById(R.id.paste_button);
-        //ok_button.setEnabled(false);
+        paste_button = findViewById(R.id.paste_button);
 
         /*
          * initialize recycler view with empty list of events
          * scroll horizontal with snapping
          */
-        RecyclerView recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recycler_view = findViewById(R.id.recycler_view);
         events = createEventList();
         adapter = new EventAdapter(events);
         recycler_view.setAdapter(adapter);
         linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycler_view.setLayoutManager(linear_layout_manager);
-        //recycler_view.setHasFixedSize(true);
-        //SnapHelper snap_helper = new LinearSnapHelper();
-        //snap_helper.attachToRecyclerView(recycler_view);
+        recycler_view.setHasFixedSize(true);
 
 
         /*
@@ -124,35 +119,6 @@ public class MainActivity extends AppCompatActivity {
         layout_uri_input.setEndIconOnClickListener(listener);
         layout_uri_input.setErrorIconOnClickListener(listener);
 
-
-        /*
-         * Add to calendar button: launch calendar application with current event
-         */
-        /*ok_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                FbEvent event = events.get(linear_layout_manager.findFirstCompletelyVisibleItemPosition());
-
-                Long start_epoch = dateTimeToEpoch(event.start_date);
-                Long end_epoch = dateTimeToEpoch(event.end_date);
-
-                Intent intent = new Intent(Intent.ACTION_EDIT);
-                intent.setType("vnd.android.cursor.item/event");
-                intent.putExtra(CalendarContract.Events.TITLE, event.name);
-                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start_epoch);
-                intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end_epoch);
-                intent.putExtra(CalendarContract.Events.EVENT_LOCATION, event.location);
-
-                // prepend url in description
-                String desc = event.url + "\n\n" + event.description;
-                intent.putExtra(CalendarContract.Events.DESCRIPTION, desc);
-
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-            }
-        });
 
         /*
          * Enter button in uri input: start scraping
