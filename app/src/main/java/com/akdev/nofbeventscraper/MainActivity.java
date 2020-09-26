@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
@@ -67,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Callback after clearing events from settings needed.
+     * Callback for Restoring data
      */
     @Override
-    public void onRestart() {
-        super.onRestart();
+    public void onResume() {
+        super.onResume();
 
         events.clear();
         events.addAll(getSavedEvents());
@@ -82,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
      * Save events list to SharedPreferences as JSON
      */
     @Override
-    public void onSaveInstanceState(@NonNull Bundle state) {
-        super.onSaveInstanceState(state);
+    public void onPause() {
+        super.onPause();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor prefs_edit = prefs.edit();
@@ -160,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                     startScraping();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    input_helper(R.string.error_clipboard_empty, true);
+                    input_helper(getString(R.string.error_clipboard_empty), true);
                 }
             }
         });
@@ -171,9 +170,10 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                input_helper(R.string.helper_add_link, true);
+                input_helper(getString(R.string.helper_add_link), true);
                 edit_text_uri_input.setText(null);
-                input_helper(R.string.helper_add_link, false);
+                scraper.killAllTasks();
+                input_helper(getString(R.string.helper_add_link), false);
             }
         };
         layout_uri_input.setErrorIconOnClickListener(listener);
@@ -225,9 +225,11 @@ public class MainActivity extends AppCompatActivity {
         scraper = new FbScraper(new WeakReference<>(this), url);
     }
 
-    public void input_helper(Integer resId, boolean error) {
+    public void input_helper(String str, boolean error) {
 
-        String str = (resId != null) ? getString(resId) : " ";
+        if (str == null) {
+            str = " ";
+        } // keep spacing
 
         if (error) {
             layout_uri_input.setError(str);

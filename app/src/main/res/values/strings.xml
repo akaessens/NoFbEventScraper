@@ -31,5 +31,6 @@
     <string name="preferences_event_snackbar">Events list cleared</string>
     <string name="event_placeholder" translatable="false">Placeholder</string>
     <string name="done">Done</string>
+    <string name="found_events">Found %1$d events</string>
 
 </resources>

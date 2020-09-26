@@ -1,9 +1,6 @@
 package com.akdev.nofbeventscraper;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-
-import androidx.preference.PreferenceManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,18 +8,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static com.akdev.nofbeventscraper.FbEvent.createEventList;
 
 /**
  * This class can asynchronously scrape public facebook events
@@ -36,7 +24,7 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
     private FbEvent event;
 
     /**
-     * Constructor with WeakReference to the main activity, to update it's text fields.
+     * Constructor with reference to scraper to return results.
      *
      * @param scraper   Reference to FbScraper
      * @param input_url Input url to scrape from
@@ -162,6 +150,7 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
             Document document = Jsoup.connect(url).userAgent(user_agent).get();
 
             if (document == null) {
+                throw new IOException();
             }
             String json = document
                     .select("script[type = application/ld+json]")
@@ -209,7 +198,8 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
     }
 
     /**
-     * When scraping is finished, the scraper callback will receive the Event.
+     * When scraping is finished, the scraper callback will receive the event.
+     *
      * @param aVoid
      */
     protected void onPostExecute(Void aVoid) {

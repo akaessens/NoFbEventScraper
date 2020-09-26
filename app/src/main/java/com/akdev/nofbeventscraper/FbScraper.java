@@ -1,6 +1,7 @@
 package com.akdev.nofbeventscraper;
 
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 
 import androidx.preference.PreferenceManager;
 
@@ -8,6 +9,7 @@ import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,8 +19,9 @@ import static com.akdev.nofbeventscraper.FbEvent.createEventList;
 public class FbScraper {
 
     protected List<FbEvent> events;
+    protected List<AsyncTask> tasks;
+    int remaining_events = 0;
     url_type_enum url_type = url_type_enum.EVENT;
-    private int error;
     private String input_url;
     private WeakReference<MainActivity> main; // no context leak with WeakReference
 
@@ -32,12 +35,31 @@ public class FbScraper {
         this.main = main;
         this.input_url = input_url;
         this.events = createEventList();
+        this.tasks = new ArrayList<>();
 
         run();
     }
 
     protected String getPageUrl(String url) throws URISyntaxException, MalformedURLException {
-        throw new URISyntaxException(url, "not implemented");
+
+        // check for url format
+        new URL(url).toURI();
+
+        String regex = "(facebook.com/)(pg/)?([^/?]*)";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(url);
+
+        if (matcher.find()) {
+
+            String url_prefix = "https://mbasic.facebook.com/";
+            String url_suffix = "?v=events";
+
+            return url_prefix + matcher.group(3) + url_suffix;
+
+        } else {
+            throw new URISyntaxException(url, "Does not contain page.");
+        }
     }
 
     /**
@@ -81,6 +103,7 @@ public class FbScraper {
 
     void scrapeEvent(String event_url) {
         FbEventScraper scraper = new FbEventScraper(this, event_url);
+        tasks.add(scraper);
         scraper.execute();
     }
 
@@ -89,31 +112,55 @@ public class FbScraper {
         if (url_type == url_type_enum.EVENT) {
             if (event != null) {
                 main.get().addEvent(event);
-                main.get().input_helper(R.string.done, false);
+                main.get().input_helper(main.get().getString(R.string.done), false);
             } else {
-                main.get().input_helper(error, true);
+                main.get().input_helper(main.get().getString(error), true);
             }
+            killAllTasks();
+
         } else {
             main.get().addEvent(event);
+            remaining_events--;
+
+            if (remaining_events <= 0) {
+                main.get().input_helper(main.get().getString(R.string.done), false);
+                killAllTasks();
+            }
+        }
+    }
+
+    /**
+     * cancel vestigial async tasks
+     */
+    void killAllTasks() {
+        for (AsyncTask task : tasks) {
+            task.cancel(true);
+            task = null;
         }
     }
 
     void scrapePage(String page_url) {
-        /*
         FbPageScraper scraper = new FbPageScraper(this, page_url);
 
+        tasks.add(scraper);
         scraper.execute();
-         */
     }
 
-    protected void scrapePageResultCallback(String[] event_urls, int error) {
+    protected void scrapePageResultCallback(List<String> event_urls, int error) {
 
-        if (event_urls != null) {
+        if (event_urls.size() > 0) {
+            remaining_events = event_urls.size();
+            main.get().input_helper(main.get().getString(R.string.found_events, event_urls.size()), false);
             for (String event_url : event_urls) {
-                scrapeEvent(event_url);
+                try {
+                    String url = getEventUrl(event_url);
+                    scrapeEvent(url);
+                } catch (URISyntaxException | MalformedURLException e) {
+                    // ignore this event
+                }
             }
         } else if (url_type == url_type_enum.PAGE) {
-            main.get().input_helper(error, true);
+            main.get().input_helper(main.get().getString(error), true);
         }
     }
 
@@ -137,7 +184,7 @@ public class FbScraper {
 
         } catch (URISyntaxException | MalformedURLException e) {
             url_type = url_type_enum.INVALID;
-            main.get().input_helper(R.string.error_url, true);
+            main.get().input_helper(main.get().getString(R.string.error_url), true);
         }
     }
 
