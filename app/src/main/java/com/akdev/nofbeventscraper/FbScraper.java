@@ -131,9 +131,14 @@ public class FbScraper {
      * cancel vestigial async tasks
      */
     void killAllTasks() {
-        for (AsyncTask task : tasks) {
-            task.cancel(true);
-            task = null;
+
+        try {
+            for (AsyncTask task : tasks) {
+                task.cancel(true);
+                task = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -172,7 +172,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 input_helper(getString(R.string.helper_add_link), true);
                 edit_text_uri_input.setText(null);
-                scraper.killAllTasks();
+                if (scraper != null) {
+                    scraper.killAllTasks();
+                }
                 input_helper(getString(R.string.helper_add_link), false);
             }
         };
