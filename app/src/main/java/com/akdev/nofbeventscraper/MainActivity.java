@@ -199,17 +199,21 @@ public class MainActivity extends AppCompatActivity {
          * via "share to" or "open with"
          */
         Intent intent = getIntent();
-        Uri data = intent.getData();
-        String shared_text = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-        if (data != null) {
-            // opening external fb link
-            edit_text_uri_input.setText(data.toString());
-            startScraping();
-        } else if (shared_text != null) {
-            //share to nofb
-            edit_text_uri_input.setText(shared_text);
-            startScraping();
+        if (intent.getAction() != null) {
+            // only use this intent once, not every onCreate (e.g. rotation)
+            intent.setAction(null);
+            Uri data = intent.getData();
+            String shared_text = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (data != null) {
+                // opening external fb link
+                edit_text_uri_input.setText(data.toString());
+                startScraping();
+            } else if (shared_text != null) {
+                //share to nofb
+                edit_text_uri_input.setText(shared_text);
+                startScraping();
+            }
         }
     }
 
@@ -223,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
         String url = Objects.requireNonNull(edit_text_uri_input.getText()).toString();
 
         scraper = new FbScraper(new WeakReference<>(this), url);
+
+        scraper.run();
     }
 
     public void input_helper(String str, boolean error) {

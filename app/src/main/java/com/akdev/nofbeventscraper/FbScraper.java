@@ -36,8 +36,6 @@ public class FbScraper {
         this.input_url = input_url;
         this.events = createEventList();
         this.tasks = new ArrayList<>();
-
-        run();
     }
 
     protected String getPageUrl(String url) throws URISyntaxException, MalformedURLException {
