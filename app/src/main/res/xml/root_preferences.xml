@@ -5,17 +5,23 @@
 
 
         <ListPreference
+            android:summary="@string/preferences_url_setting_summary"
             app:defaultValue="https://m."
             app:entries="@array/url_to_scrape"
             app:entryValues="@array/url_prefix"
             app:key="url_preference"
-            app:title="@string/preferences_url_setting"
-            android:summary="@string/preferences_url_setting_summary"/>
+            app:title="@string/preferences_url_setting" />
+    </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/preferences_events_header">
+
+
+        <Preference
+            android:key="event_reset"
+            android:title="@string/preferences_event_setting" />
 
 
     </PreferenceCategory>
-
 
 
 </PreferenceScreen>

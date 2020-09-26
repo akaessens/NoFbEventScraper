@@ -8,11 +8,6 @@
 
     <!-- Input hints -->
     <string name="hint_add_link">Event link</string>
-    <string name="hint_event_name">Event name</string>
-    <string name="hint_event_start">Event start</string>
-    <string name="hint_event_end">Event end</string>
-    <string name="hint_event_location">Event location</string>
-    <string name="hint_event_description">Event description</string>
 
 
     <string name="helper_add_link">Paste Facebook link to the event</string>
@@ -21,11 +16,6 @@
 
     <!-- Errors -->
     <string name="error_clipboard_empty">Error: clipboard empty</string>
-    <string name="error_no_name">Error: Event name unavailable</string>
-    <string name="error_no_start_date">Error: Event start date unavailable</string>
-    <string name="error_no_end_date">Error: Event end date unavailable</string>
-    <string name="error_no_location">Error: Event location unavailable</string>
-    <string name="error_no_description">Error: Event description unavailable</string>
     <string name="error_scraping">Error: Scraping event data failed</string>
     <string name="error_url">Error: URL invalid</string>
     <string name="error_connection">Error: Unable to connect</string>
@@ -33,10 +23,12 @@
 
     <!-- Preferences -->
     <string name="preferences_scraper_header" translatable="false">Scraper</string>
-
     <string name="preferences_url_setting">Which URL prefix to use</string>
     <string name="preferences_url_setting_summary">"Using m.facebook.com is more stable and faster. Using www.facebook.com works better with multiple instance events and will display a high resolution preview but will eventually break when Facebook disables the classic design.     "</string>
 
-
+    <string name="preferences_events_header">Events</string>
+    <string name="preferences_event_setting">Clear event list</string>
+    <string name="preferences_event_snackbar">Events list cleared</string>
+    <string name="event_placeholder" translatable="false">Placeholder</string>
 
 </resources>

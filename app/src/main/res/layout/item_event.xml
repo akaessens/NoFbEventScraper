@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="@string/error_no_name"
+                android:text="@string/event_placeholder"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
         </LinearLayout>
@@ -60,7 +60,7 @@
                 android:id="@+id/text_view_event_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/error_no_location"
+                android:text="@string/event_placeholder"
                 android:textAppearance="?attr/textAppearanceBody1" />
 
         </LinearLayout>
@@ -92,14 +92,14 @@
                     android:id="@+id/text_view_event_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/error_no_start_date"
+                    android:text="@string/event_placeholder"
                     android:textAppearance="?attr/textAppearanceBody2" />
 
                 <TextView
                     android:id="@+id/text_view_event_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/error_no_end_date"
+                    android:text="@string/event_placeholder"
                     android:textAppearance="?attr/textAppearanceBody2" />
             </LinearLayout>
 
@@ -113,7 +113,7 @@
             android:layout_margin="8dp"
             android:ellipsize="end"
             android:maxLines="5"
-            android:text="abc\nabc\nabc\nabc\nabc\nabc\nabc\n"
+            android:text="@string/event_placeholder"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="?android:attr/textColorSecondary" />
 

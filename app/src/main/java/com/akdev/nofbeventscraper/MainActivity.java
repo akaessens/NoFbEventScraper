@@ -4,18 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,9 +25,11 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.squareup.picasso.Picasso;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,23 +49,48 @@ public class MainActivity extends AppCompatActivity {
     EventAdapter adapter;
     LinearLayoutManager linear_layout_manager;
 
-    @Override
-    public void onRestoreInstanceState(Bundle state) {
-        super.onRestoreInstanceState(state);
+    private List<FbEvent> getSavedEvents() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (!state.getBoolean("events_empty")) {
-            startScraping();
+        Gson gson = new Gson();
+        String json = prefs.getString("events", "");
+
+        Type event_list_type = new TypeToken<List<FbEvent>>() {
+        }.getType();
+        List<FbEvent> list = gson.fromJson(json, event_list_type);
+
+        if (list == null) {
+            list = createEventList();
         }
 
+        return list;
     }
 
+    /**
+     * Callback after clearing events from settings needed.
+     */
     @Override
-    public void onSaveInstanceState(Bundle state) {
+    public void onRestart() {
+        super.onRestart();
+
+        events.clear();
+        events.addAll(getSavedEvents());
+        adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Save events list to SharedPreferences as JSON
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle state) {
         super.onSaveInstanceState(state);
 
-        state.putBoolean("events_empty", events.isEmpty());
-
-
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor prefs_edit = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(events);
+        prefs_edit.putString("events", json);
+        prefs_edit.apply();
     }
 
     @Override
@@ -78,11 +106,11 @@ public class MainActivity extends AppCompatActivity {
         paste_button = findViewById(R.id.paste_button);
 
         /*
-         * initialize recycler view with empty list of events
+         * initialize recycler view with saved list of events
          * scroll horizontal with snapping
          */
         RecyclerView recycler_view = findViewById(R.id.recycler_view);
-        events = createEventList();
+        this.events = getSavedEvents();
         adapter = new EventAdapter(events);
         recycler_view.setAdapter(adapter);
         linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -94,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
          * Display title only when toolbar is collapsed
          */
         AppBarLayout app_bar_layout = findViewById(R.id.app_bar);
-
         app_bar_layout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean show = true;
             int scroll_range = -1;
@@ -114,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         /*
          * Paste button: get last entry from clipboard
          */
@@ -125,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     String str = clipboard.getPrimaryClip().getItemAt(0).getText().toString();
 
-                    clear(true);
                     edit_text_uri_input.setText(str);
 
                     startScraping();
@@ -137,16 +164,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*
-         * Clear button: delete all events
+         * Error in input: clear input on click
          */
-        View.OnClickListener listener = new View.OnClickListener() {
+        layout_uri_input.setErrorIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clear(true);
+                layout_uri_input.setError(null);
+                edit_text_uri_input.setText(null);
             }
-        };
-        layout_uri_input.setEndIconOnClickListener(listener);
-        layout_uri_input.setErrorIconOnClickListener(listener);
+        });
 
 
         /*
@@ -162,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
 
         /*
          * Get data from intent: if launched by other application
@@ -181,10 +206,6 @@ public class MainActivity extends AppCompatActivity {
             edit_text_uri_input.setText(shared_text);
             startScraping();
         }
-
-
-
-
     }
 
     /**
@@ -208,39 +229,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Clears all event text field strings and errors and also the input field depending if wanted.
-     * Loads the default banner into the toolbar image view and disables unneeded buttons.
+     * Adds new events to the start of the events list.
      *
-     * @param clear_uri Choose whether to clear the input uri field, too
+     * @param new_events the list of events that was scraped by FbScraper
      */
-    public void clear(boolean clear_uri) {
+    public void addEvents(List<FbEvent> new_events) {
 
-        if (clear_uri) {
-            edit_text_uri_input.setText("");
-            layout_uri_input.setError(null);
+        if (new_events != null) {
+            this.events.addAll(0, new_events);
+            this.adapter.notifyDataSetChanged();
         }
-
-        if (scraper != null) {
-            scraper.cancel(true);
-            scraper = null;
-        }
-
-        this.events.clear();
-        adapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Updates the text fields with the event information provided.
-     * If something is missing, the corresponding test field will show an error.
-     *
-     * @param events the event information that was scraped by FbScraper
-     */
-    public void update(List<FbEvent> events) {
-
-        this.events.clear();
-        this.events.addAll(events);
-
-        adapter.notifyDataSetChanged();
     }
 
     @SuppressLint("RestrictedApi")
@@ -259,12 +257,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
             startActivity(new Intent(this, AboutActivity.class));
             return true;

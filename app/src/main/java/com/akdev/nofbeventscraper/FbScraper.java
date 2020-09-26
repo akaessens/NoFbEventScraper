@@ -200,7 +200,6 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
             Document document = Jsoup.connect(url).userAgent(user_agent).get();
 
             if (document == null) {
-                throw new IOException();
             }
             String json = document
                     .select("script[type = application/ld+json]")
@@ -227,10 +226,6 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
             }
 
             FbEvent event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
-            this.events.add(event);
-            this.events.add(event);
-            this.events.add(new FbEvent());
-            this.events.add(event);
             this.events.add(event);
 
         } catch (URISyntaxException | MalformedURLException e) {
@@ -266,10 +261,9 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
         if (main != null) {
             if (! this.events.isEmpty()) {
-                main.get().update(events);
+                main.get().addEvents(this.events);
             } else {
                 main.get().error(error);
-                main.get().clear(false);
             }
         }
     }

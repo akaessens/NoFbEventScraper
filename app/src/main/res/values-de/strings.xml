@@ -5,24 +5,17 @@
     <string name="action_help">Hilfe</string>
     <string name="action_settings">Einstellungen</string>
     <string name="hint_add_link">Veranstaltungslink</string>
-    <string name="hint_event_name">Veranstaltungsname</string>
-    <string name="hint_event_start">Veranstaltungsbeginn</string>
-    <string name="hint_event_end">Veranstantungsende</string>
-    <string name="hint_event_location">Veranstaltungsort</string>
-    <string name="hint_event_description">Veranstaltungsbeschreibung</string>
     <string name="helper_add_link">Facebook-Link zur Veranstaltung einfügen</string>
     <string name="button_add">Zum Kalender hinzufügen</string>
     <string name="tooltip_paste">Einfügen von Inhalten aus der Zwischenablage in das URL-Eingabefeld</string>
     <string name="preferences_url_setting">Welcher URL-Präfix ist zu verwenden?</string>
     <string name="preferences_url_setting_summary">Die Nutzung von m.facebook.com ist stabiler und schneller. Die Verwendung von www.facebook.com funktioniert besser bei Ereignissen mit mehreren Instanzen und zeigt eine hochauflösende Vorschau an, geht aber irgendwann kaputt, wenn Facebook das klassische Design deaktiviert.</string>
     <string name="error_clipboard_empty">Fehler: Zwischenablage leer</string>
-    <string name="error_no_name">Fehler: Veranstaltungsname nicht verfügbar</string>
-    <string name="error_no_start_date">Fehler: Veranstaltungsbeginn nicht verfügbar</string>
-    <string name="error_no_end_date">Fehler: Veranstaltungsende nicht verfügbar</string>
-    <string name="error_no_location">Fehler: Veranstaltungsort nicht verfügbar</string>
-    <string name="error_no_description">Fehler: Veranstaltungsbeschreibung nicht verfügbar</string>
     <string name="error_scraping">Fehler: Veranstaltungsdaten nicht gefunden</string>
     <string name="error_url">Fehler: URL ungültig</string>
     <string name="error_connection">Fehler: Keine Verbindung möglich</string>
     <string name="error_unknown">Fehler: Unbekannter Fehler</string>
+    <string name="preferences_events_header">Veranstaltungen</string>
+    <string name="preferences_event_setting">Veranstaltungsliste löschen</string>
+    <string name="preferences_event_snackbar">"Veranstaltungen gelöscht "</string>
 </resources>
