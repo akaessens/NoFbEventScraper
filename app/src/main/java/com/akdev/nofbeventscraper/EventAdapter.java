@@ -1,6 +1,7 @@
 package com.akdev.nofbeventscraper;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,8 @@ import android.provider.CalendarContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -145,6 +148,40 @@ public class EventAdapter extends
                 }
             }
         });
+
+        /*
+         * Image dialog
+         */
+        holder.image_view_event_image.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View view) {
+
+
+                     final Dialog dialog = new Dialog(view.getContext(),android.R.style.Theme_Translucent_NoTitleBar);
+                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                     dialog.setContentView(R.layout.dialog_image);
+                     dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+                     ImageView image = (ImageView) dialog.findViewById(R.id.image_view_event_image_fullscreen);
+                     image.setOnClickListener(new View.OnClickListener() {
+                         @Override
+                         public void onClick(View v) {
+                             dialog.dismiss();
+                         }
+                     });
+
+                     try {
+                         Picasso.get()
+                                 .load(event.image_url)
+                                 .into(image);
+                         dialog.show();
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }
+                 }
+             }
+
+        );
 
 
     }
