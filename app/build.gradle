@@ -45,8 +45,10 @@ dependencies {
 
     // Image loading and transforming
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
+    // animations and transformations
+    implementation 'jp.wasabeef:picasso-transformations:2.2.1'
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
     // tests
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

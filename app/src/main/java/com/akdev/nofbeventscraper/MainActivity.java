@@ -33,14 +33,14 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
 
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+
 import static com.akdev.nofbeventscraper.FbEvent.createEventList;
 
 public class MainActivity extends AppCompatActivity {
 
     protected ExtendedFloatingActionButton paste_button;
-
     protected TextInputEditText edit_text_uri_input;
-
     protected TextInputLayout layout_uri_input;
 
 
@@ -115,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
         recycler_view.setAdapter(adapter);
         linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycler_view.setLayoutManager(linear_layout_manager);
-        recycler_view.setHasFixedSize(true);
+
+        recycler_view.setItemAnimator(new FadeInAnimator());
+
 
 
         /*
@@ -229,8 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (error) {
             layout_uri_input.setError(str);
-        }
-        else {
+        } else {
             layout_uri_input.setError(null);
             layout_uri_input.setHelperText(str);
         }
@@ -245,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (new_event != null) {
             this.events.add(0, new_event);
-            this.adapter.notifyDataSetChanged();
+            this.adapter.notifyItemInserted(0);
         }
     }
 
