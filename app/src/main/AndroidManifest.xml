@@ -50,12 +50,10 @@
                 <!-- Accepts URIs that begin with "https://*.facebook.com/events” -->
                 <data
                     android:host="*.facebook.com"
-                    android:pathPrefix="/events"
                     android:scheme="https" />
                 <!-- Accepts URIs that begin with "https://facebook.com/events” -->
                 <data
                     android:host="facebook.com"
-                    android:pathPrefix="/events"
                     android:scheme="https" />
             </intent-filter>
 
