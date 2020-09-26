@@ -74,6 +74,7 @@
 
             <ImageView
                 style="?android:attr/borderlessButtonStyle"
+                android:id="@+id/image_view_event_time"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="8dp"

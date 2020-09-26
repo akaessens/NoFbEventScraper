@@ -227,6 +227,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
             FbEvent event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
             this.events.add(event);
+            this.events.add(new FbEvent());
 
         } catch (URISyntaxException | MalformedURLException e) {
             e.printStackTrace();

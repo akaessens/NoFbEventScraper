@@ -58,26 +58,39 @@ public class EventAdapter extends
 
 
         // Set item views based on your views and data model
-        if (!event.name.equals("")) {
-            holder.text_view_event_name.setText(event.name);
+        holder.text_view_event_name.setText(event.name);
+
+        if (!event.location.equals("")) {
+            holder.text_view_event_location.setText(event.location);
+        } else {
+            holder.text_view_event_location.setVisibility(View.GONE);
+            holder.image_view_event_location.setVisibility(View.GONE);
         }
 
         if (event.start_date != null) {
             String str = FbEvent.dateTimeToString(event.start_date);
             holder.text_view_event_start.setText(str);
+        } else {
+            holder.text_view_event_start.setVisibility(View.GONE);
+
+            if (event.end_date == null) {
+                holder.image_view_event_time.setVisibility(View.GONE);
+            }
         }
 
         if (event.end_date != null) {
             String str = FbEvent.dateTimeToString(event.end_date);
             holder.text_view_event_end.setText(str);
+        } else {
+            holder.text_view_event_end.setVisibility(View.GONE);
         }
 
-        if (!event.location.equals("")) {
-            holder.text_view_event_location.setText(event.location);
-        }
+
 
         if (!event.description.equals("")) {
             holder.text_view_event_description.setText(event.description);
+        } else {
+            holder.text_view_event_description.setVisibility(View.GONE);
         }
 
         try {
@@ -152,37 +165,43 @@ public class EventAdapter extends
         /*
          * Image dialog
          */
-        holder.image_view_event_image.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View view) {
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final Dialog dialog = new Dialog(view.getContext(), android.R.style.Theme_Translucent_NoTitleBar);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_image);
+                dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+                ImageView image = (ImageView) dialog.findViewById(R.id.image_view_event_image_fullscreen);
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                Picasso.get()
+                        .load(event.image_url)
+                        .into(image, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                dialog.show();
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                dialog.dismiss();
+                            }
+                        });
 
 
-                     final Dialog dialog = new Dialog(view.getContext(),android.R.style.Theme_Translucent_NoTitleBar);
-                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                     dialog.setContentView(R.layout.dialog_image);
-                     dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
-                     ImageView image = (ImageView) dialog.findViewById(R.id.image_view_event_image_fullscreen);
-                     image.setOnClickListener(new View.OnClickListener() {
-                         @Override
-                         public void onClick(View v) {
-                             dialog.dismiss();
-                         }
-                     });
-
-                     try {
-                         Picasso.get()
-                                 .load(event.image_url)
-                                 .into(image);
-                         dialog.show();
-                     } catch (Exception e) {
-                         e.printStackTrace();
-                     }
-                 }
-             }
-
-        );
-
+            }
+        };
+        holder.image_view_event_image.setOnClickListener(listener);
 
     }
 
@@ -202,6 +221,7 @@ public class EventAdapter extends
         protected TextView text_view_event_description;
         protected ImageView image_view_event_image;
         protected ImageView image_view_event_location;
+        protected ImageView image_view_event_time;
         protected Button button_add_to_calendar;
 
         protected boolean description_collapsed = true;
@@ -216,6 +236,7 @@ public class EventAdapter extends
             text_view_event_description = item_view.findViewById(R.id.text_view_event_description);
             image_view_event_image = item_view.findViewById(R.id.image_view_event_image);
             image_view_event_location = item_view.findViewById(R.id.image_view_event_location);
+            image_view_event_time = item_view.findViewById(R.id.image_view_event_time);
             button_add_to_calendar = item_view.findViewById(R.id.button_add_to_calendar);
 
         }

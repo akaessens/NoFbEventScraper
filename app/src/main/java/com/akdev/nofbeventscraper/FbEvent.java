@@ -20,12 +20,12 @@ public class FbEvent {
     public final String image_url;
 
     public FbEvent() {
-        url = "url";
-        name= "name";
+        url = "";
+        name= "";
         start_date = null;
         end_date = null;
-        description = "description";
-        location = "location";
+        description = "";
+        location = "";
         image_url = null;
     }
 
