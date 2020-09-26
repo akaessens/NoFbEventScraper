@@ -18,4 +18,5 @@
     <string name="preferences_events_header">Veranstaltungen</string>
     <string name="preferences_event_setting">Veranstaltungsliste löschen</string>
     <string name="preferences_event_snackbar">"Veranstaltungen gelöscht "</string>
+    <string name="done">Fertig</string>
 </resources>

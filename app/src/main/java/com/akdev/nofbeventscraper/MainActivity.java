@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     startScraping();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    error(R.string.error_clipboard_empty);
+                    input_helper(R.string.error_clipboard_empty, true);
                 }
             }
         });
@@ -166,13 +166,16 @@ public class MainActivity extends AppCompatActivity {
         /*
          * Error in input: clear input on click
          */
-        layout_uri_input.setErrorIconOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layout_uri_input.setError(null);
+                input_helper(R.string.helper_add_link, true);
                 edit_text_uri_input.setText(null);
+                input_helper(R.string.helper_add_link, false);
             }
-        });
+        };
+        layout_uri_input.setErrorIconOnClickListener(listener);
+        layout_uri_input.setEndIconOnClickListener(listener);
 
 
         /*
@@ -213,30 +216,35 @@ public class MainActivity extends AppCompatActivity {
      */
     public void startScraping() {
 
-        error(null);
+        input_helper(null, false);
 
         String url = Objects.requireNonNull(edit_text_uri_input.getText()).toString();
+
         scraper = new FbScraper(new WeakReference<>(this), url);
-        scraper.execute();
     }
 
-    public void error(Integer resId) {
-        if (resId != null) {
-            layout_uri_input.setError(getString(resId));
-        } else {
+    public void input_helper(Integer resId, boolean error) {
+
+        String str = (resId != null) ? getString(resId) : " ";
+
+        if (error) {
+            layout_uri_input.setError(str);
+        }
+        else {
             layout_uri_input.setError(null);
+            layout_uri_input.setHelperText(str);
         }
     }
 
     /**
      * Adds new events to the start of the events list.
      *
-     * @param new_events the list of events that was scraped by FbScraper
+     * @param new_event the event that was scraped by FbScraper
      */
-    public void addEvents(List<FbEvent> new_events) {
+    public void addEvent(FbEvent new_event) {
 
-        if (new_events != null) {
-            this.events.addAll(0, new_events);
+        if (new_event != null) {
+            this.events.add(0, new_event);
             this.adapter.notifyDataSetChanged();
         }
     }

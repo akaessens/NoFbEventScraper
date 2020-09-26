@@ -1,42 +1,29 @@
 package com.akdev.nofbeventscraper;
 
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 
 import androidx.preference.PreferenceManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.akdev.nofbeventscraper.FbEvent.createEventList;
 
-/**
- * This class can asynchronously scrape public facebook events
- * and gather the most important information. It is stored in a FbEvent object.
- */
-public class FbScraper extends AsyncTask<Void, Void, Void> {
+public class FbScraper {
 
+    protected List<FbEvent> events;
+    url_type_enum url_type = url_type_enum.EVENT;
     private int error;
     private String input_url;
     private WeakReference<MainActivity> main; // no context leak with WeakReference
-    private List<FbEvent> events;
 
     /**
-     * Constructor with WeakReference to the main activity, to update it's text fields.
+     * Constructor with WeakReference to the main activity, to add events.
      *
      * @param main      WeakReference of main activity to prevent context leak
      * @param input_url Input url to scrape from
@@ -45,6 +32,12 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
         this.main = main;
         this.input_url = input_url;
         this.events = createEventList();
+
+        run();
+    }
+
+    protected String getPageUrl(String url) throws URISyntaxException, MalformedURLException {
+        throw new URISyntaxException(url, "not implemented");
     }
 
     /**
@@ -55,7 +48,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
      * @throws URISyntaxException    if event not found
      * @throws MalformedURLException
      */
-    protected String fixURI(String url) throws URISyntaxException, MalformedURLException {
+    protected String getEventUrl(String url) throws URISyntaxException, MalformedURLException {
 
         // check for url format
         new URL(url).toURI();
@@ -76,6 +69,7 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
             // rewrite url to m.facebook and dismiss any query strings or referrals
             String ret = url_prefix + matcher.group(1);
             if (matcher.group(2) != null) {
+                // add event time identifier
                 ret += matcher.group(2);
             }
             return ret;
@@ -85,188 +79,68 @@ public class FbScraper extends AsyncTask<Void, Void, Void> {
 
     }
 
-    /**
-     * Strips the event location from the json string.
-     * This can be a name only or a complete postal address.
-     *
-     * @param location_json JSON formatted string
-     * @return String representation of the location.
-     */
-    protected String fixLocation(String location_json) {
+    void scrapeEvent(String event_url) {
+        FbEventScraper scraper = new FbEventScraper(this, event_url);
+        scraper.execute();
+    }
 
-        String location_name = "";
+    void scrapeEventResultCallback(FbEvent event, int error) {
 
-        try {
-            JSONObject reader = new JSONObject(location_json);
-
-            location_name = reader.getString("name");
-            JSONObject address = reader.getJSONObject("address");
-
-            String type = address.getString("@type");
-
-            if (type.equals("PostalAddress")) {
-                String postal_code = address.getString("postalCode");
-                String address_locality = address.getString("addressLocality");
-                String street_address = address.getString("streetAddress");
-                // included in locality
-                //String address_country = address.getString("addressCountry");
-
-                return location_name + ", "
-                        + street_address + ", "
-                        + postal_code + " "
-                        + address_locality;
+        if (url_type == url_type_enum.EVENT) {
+            if (event != null) {
+                main.get().addEvent(event);
+                main.get().input_helper(R.string.done, false);
             } else {
-                return location_name;
+                main.get().input_helper(error, true);
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return location_name;
+        } else {
+            main.get().addEvent(event);
         }
     }
 
-    /**
-     * Parses a time string from the facebook event into a Date
-     *
-     * @param time_in time string from the event
-     * @return Date parsed from input or null
-     */
-    protected Date parseToDate(String time_in) {
+    void scrapePage(String page_url) {
+        /*
+        FbPageScraper scraper = new FbPageScraper(this, page_url);
 
-        try {
-            // parse e.g. 2011-12-03T10:15:30+0100
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
-
-            return sdf.parse(time_in);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        scraper.execute();
+         */
     }
 
-    /**
-     * Replaces all occurrences of a facebook internal links in
-     * an event description into an actual URL.
-     *
-     * @param description_in description string from the event
-     * @return corrected String with internal links resolved
-     */
-    protected String fixDescriptionLinks(String description_in) {
-        try {
-            /* @[152580919265:274:SiteDescription]
-             * to
-             * SiteDescription [m.facebook.com/152580919265] */
+    protected void scrapePageResultCallback(String[] event_urls, int error) {
 
-            return description_in.replaceAll("@\\[([0-9]{10,}):[0-9]{3}:([^]]*)]",
-                    "$2 [m.facebook.com/$1]");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return description_in;
-        }
-    }
-
-    /**
-     * Read a single field from a JSONObject
-     *
-     * @param reader JSONObject to read from
-     * @param field  Which field to read
-     * @return String of the value of the field or empty string
-     */
-    private String readFromJson(JSONObject reader, String field) {
-        try {
-            return reader.getString(field);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    /**
-     * Started by scraper.execute().
-     * Gets the HTML doc from the input string and scrapes the event information from it.
-     *
-     * @param voids
-     * @return
-     */
-    @Override
-    protected Void doInBackground(Void... voids) {
-
-        try {
-            String url = fixURI(input_url);
-            // use default android user agent
-            String user_agent = "Mozilla/5.0 (X11; Linux x86_64)";
-            Document document = Jsoup.connect(url).userAgent(user_agent).get();
-
-            if (document == null) {
+        if (event_urls != null) {
+            for (String event_url : event_urls) {
+                scrapeEvent(event_url);
             }
-            String json = document
-                    .select("script[type = application/ld+json]")
-                    .first().data();
+        } else if (url_type == url_type_enum.PAGE) {
+            main.get().input_helper(error, true);
+        }
+    }
 
-            JSONObject reader = new JSONObject(json);
+    void run() {
 
+        try {
+            String event_url = getEventUrl(input_url);
+            url_type = url_type_enum.EVENT;
+            scrapeEvent(event_url);
 
-            String name = readFromJson(reader, "name");
-            Date start_date = parseToDate(readFromJson(reader, "startDate"));
-            Date end_date = parseToDate(readFromJson(reader, "endDate"));
-            String description = fixDescriptionLinks(readFromJson(reader, "description"));
-            String location = fixLocation(readFromJson(reader, "location"));
-
-            String image_url = readFromJson(reader, "image"); // get from json
-
-            try {
-                // possibly get higher res image from event header
-                image_url = document.select("div[id=event_header_primary]")
-                        .select("img").first().attr("src");
-
-            } catch (Exception e) {
-                // ignore
-            }
-
-            FbEvent event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
-            this.events.add(event);
-            this.events.add(new FbEvent());
+            return;
 
         } catch (URISyntaxException | MalformedURLException e) {
-            e.printStackTrace();
-            this.error = R.string.error_url;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            this.error = R.string.error_scraping;
-        } catch (IOException e) {
-            e.printStackTrace();
-            this.error = R.string.error_connection;
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.error = R.string.error_unknown;
+            url_type = url_type_enum.INVALID;
         }
 
-        return null;
-    }
+        try {
+            String page_url = getPageUrl(input_url);
+            url_type = url_type_enum.PAGE;
+            scrapePage(page_url);
 
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    /**
-     * When scraping is finished, main activity will be updated.
-     * If an error occurred, main activity is given an error string.
-     *
-     * @param aVoid
-     */
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-
-        if (main != null) {
-            if (! this.events.isEmpty()) {
-                main.get().addEvents(this.events);
-            } else {
-                main.get().error(error);
-            }
+        } catch (URISyntaxException | MalformedURLException e) {
+            url_type = url_type_enum.INVALID;
+            main.get().input_helper(R.string.error_url, true);
         }
     }
+
+
+    enum url_type_enum {EVENT, PAGE, INVALID}
 }
-

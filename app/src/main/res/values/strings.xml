@@ -30,5 +30,6 @@
     <string name="preferences_event_setting">Clear event list</string>
     <string name="preferences_event_snackbar">Events list cleared</string>
     <string name="event_placeholder" translatable="false">Placeholder</string>
+    <string name="done">Done</string>
 
 </resources>
