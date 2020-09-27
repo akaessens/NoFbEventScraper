@@ -30,9 +30,13 @@
     <string name="preferences_event_setting">Clear event list</string>
     <string name="preferences_event_snackbar">Events list cleared</string>
 
+    <string name="preferences_page_event_max_summary">Maximum amount of events scraped from a single page link.</string>
+    <string name="preferences_page_event_max">Page event limit</string>
+
     <!-- others -->
     <string name="event_placeholder" translatable="false">Placeholder</string>
     <string name="done">Done</string>
     <string name="undo">Undo</string>
+
 
 </resources>

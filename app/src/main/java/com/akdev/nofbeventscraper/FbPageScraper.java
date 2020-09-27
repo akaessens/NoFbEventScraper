@@ -1,6 +1,9 @@
 package com.akdev.nofbeventscraper;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+
+import androidx.preference.PreferenceManager;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,32 +47,50 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        try {
-            // use default android user agent
-            String user_agent = "Mozilla/5.0 (X11; Linux x86_64)";
-            Document document = Jsoup.connect(url).userAgent(user_agent).get();
 
-            if (document == null) {
-                throw new IOException();
+        do {
+            try {
+                // use default android user agent
+                String user_agent = "Mozilla/5.0 (X11; Linux x86_64)";
+                Document document = Jsoup.connect(url).userAgent(user_agent).get();
+
+                if (document == null) {
+                    throw new IOException();
+                }
+
+                String regex = "(/events/[0-9]*)(/\\?event_time_id=[0-9]*)?";
+
+                List<String> event_links_href = document
+                        .getElementsByAttributeValueMatching("href", Pattern.compile(regex))
+                        .eachAttr("href");
+
+                for (String link : event_links_href) {
+                    this.event_links.add("https://www.facebook.com" + link);
+                }
+
+                SharedPreferences shared_prefs = PreferenceManager
+                        .getDefaultSharedPreferences(scraper.main.get());
+
+                int max = shared_prefs.getInt("page_event_max", 5);
+
+                if (event_links.size() < max) {
+                    String next_url = document
+                            .getElementsByAttributeValueMatching("href", "has_more=1")
+                            .first().attr("href");
+
+                    this.url = "https://mbasic.facebook.com" + next_url;
+                } else {
+                    url = null;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                this.error = R.string.error_connection;
+            } catch (Exception e) {
+                e.printStackTrace();
+                this.error = R.string.error_unknown;
             }
-
-            String regex = "(/events/[0-9]*)(/\\?event_time_id=[0-9]*)?";
-
-            List<String> event_links_href = document
-                    .getElementsByAttributeValueMatching("href", Pattern.compile(regex))
-                    .eachAttr("href");
-
-            for (String link : event_links_href) {
-                this.event_links.add("https://www.facebook.com" + link);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            this.error = R.string.error_connection;
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.error = R.string.error_unknown;
-        }
+        } while (url != null);
 
         return null;
     }

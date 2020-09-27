@@ -22,7 +22,7 @@ public class FbScraper {
     protected List<AsyncTask> tasks;
     url_type_enum url_type = url_type_enum.EVENT;
     private String input_url;
-    private WeakReference<MainActivity> main; // no context leak with WeakReference
+    protected WeakReference<MainActivity> main; // no context leak with WeakReference
 
     /**
      * Constructor with WeakReference to the main activity, to add events.
