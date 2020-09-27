@@ -81,6 +81,7 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
                     this.url = "https://mbasic.facebook.com" + next_url;
                 } else {
                     url = null;
+                    event_links = event_links.subList(0, max);
                 }
 
             } catch (IOException e) {

@@ -152,35 +152,44 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
             if (document == null) {
                 throw new IOException();
             }
-            String json = document
-                    .select("script[type = application/ld+json]")
-                    .first().data();
 
-            JSONObject reader = new JSONObject(json);
-
-
-            String name = readFromJson(reader, "name");
-            Date start_date = parseToDate(readFromJson(reader, "startDate"));
-            Date end_date = parseToDate(readFromJson(reader, "endDate"));
-            String description = fixDescriptionLinks(readFromJson(reader, "description"));
-            String location = fixLocation(readFromJson(reader, "location"));
-
-            String image_url = readFromJson(reader, "image"); // get from json
-
+            String name = "", location = "", description = "", image_url = "";
+            Date start_date = null, end_date = null;
             try {
-                // possibly get higher res image from event header
-                image_url = document.select("div[id=event_header_primary]")
-                        .select("img").first().attr("src");
 
-            } catch (Exception e) {
-                // ignore
+                String json = document
+                        .select("script[type = application/ld+json]")
+                        .first().data();
+
+                JSONObject reader = new JSONObject(json);
+
+                name = readFromJson(reader, "name");
+                start_date = parseToDate(readFromJson(reader, "startDate"));
+                end_date = parseToDate(readFromJson(reader, "endDate"));
+                description = fixDescriptionLinks(readFromJson(reader, "description"));
+                location = fixLocation(readFromJson(reader, "location"));
+                image_url = readFromJson(reader, "image");
+
+                try {
+                    image_url = document.select("div[id=event_header_primary]")
+                            .select("img").first().attr("src");
+                } catch (Exception ignored) {
+                }
+
+            } catch (JSONException | NullPointerException e) {
+                name = document.title();
+                try {
+                    image_url = document.select("div[id*=event_header]")
+                            .select("img").first().attr("src");
+                } catch (Exception ignored) {
+                }
             }
+
+
+
 
             this.event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-            this.error = R.string.error_scraping;
         } catch (IOException e) {
             e.printStackTrace();
             this.error = R.string.error_connection;
