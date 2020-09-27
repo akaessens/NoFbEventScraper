@@ -75,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
         events.clear();
         events.addAll(getSavedEvents());
         adapter.notifyDataSetChanged();
+
+        Intent intent = getIntent();
+        String data = intent.getStringExtra("InputLink");
+
+        if (data != null) {
+            intent.removeExtra("InputLink");
+            edit_text_uri_input.setText(data);
+            startScraping();
+        }
     }
 
     /**
@@ -196,27 +205,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*
-         * Get data from intent: if launched by other application
-         * via "share to" or "open with"
-         */
-        Intent intent = getIntent();
 
-        if (intent.getAction() != null) {
-            // only use this intent once, not every onCreate (e.g. rotation)
-            intent.setAction(null);
-            Uri data = intent.getData();
-            String shared_text = intent.getStringExtra(Intent.EXTRA_TEXT);
-            if (data != null) {
-                // opening external fb link
-                edit_text_uri_input.setText(data.toString());
-                startScraping();
-            } else if (shared_text != null) {
-                //share to nofb
-                edit_text_uri_input.setText(shared_text);
-                startScraping();
-            }
-        }
     }
 
     /**
