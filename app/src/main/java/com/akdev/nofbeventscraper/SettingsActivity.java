@@ -43,12 +43,20 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
 
-                        SharedPreferences prefs = preference.getSharedPreferences();
+                        final SharedPreferences prefs = preference.getSharedPreferences();
 
+                        final String undo = prefs.getString("events", "");
                         prefs.edit().remove("events").apply();
 
                         Snackbar.make(getActivity().findViewById(android.R.id.content),
-                                getString(R.string.preferences_event_snackbar), Snackbar.LENGTH_SHORT).show();
+                                getString(R.string.preferences_event_snackbar), Snackbar.LENGTH_SHORT)
+                                .setAction(R.string.undo, new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                prefs.edit().putString("events", undo).apply();
+                            }
+                        }).show();
 
                         return true;
                     }
