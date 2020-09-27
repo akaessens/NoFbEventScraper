@@ -178,6 +178,7 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
 
             } catch (JSONException | NullPointerException e) {
                 name = document.title();
+                description = scraper.main.get().getString(R.string.error_scraping);
                 try {
                     image_url = document.select("div[id*=event_header]")
                             .select("img").first().attr("src");
