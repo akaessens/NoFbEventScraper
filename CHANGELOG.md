@@ -1,4 +1,11 @@
 # Changelog
+## v0.4.0 (10)
+- Support pages with upcoming events *beta*
+- Display events in a scrollable card-based view
+- Improve intent handling
+- Add history for scraped events
+- Tap image preview to open fullscreen
+- Scrape name and image even if no event data found
 ## v0.3.3 (9)
 - Update about section with download and changelog information.
 - Improve high-res preview scraping.
