@@ -1,0 +1,6 @@
+- Support pages with upcoming events *beta*
+- Display events in a scrollable card-based view
+- Improve intent handling
+- Add history for scraped events
+- Tap image preview to open fullscreen
+- Scrape name and image even if no event data found

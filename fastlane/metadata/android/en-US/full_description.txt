@@ -1,4 +1,12 @@
-This application was developed to be used without a Facebook account.
+The purpose of this application is to get access to Facebook events without an account.
 Therefore it does not use the Facebook API.
-Instead it opens the Facebook event URI and downloads the website source code.
-This source contains the information which is used to create a calendar entry.
+Instead it opens the Facebook event URI and downloads the website HTML code.
+This source should contain the event information in form of structured data.
+That data is extracted and used to create Android events.
+
+Features:
+* Does not use Facebook API
+* Supports "open-with" and "share-to"
+* Independent from Facebook regional sub-domain URLs
+* Saves history of scraped events
+* Handles upcoming events from pages

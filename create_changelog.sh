@@ -14,8 +14,8 @@ echo "# Changelog" > CHANGELOG.md
 for i in $(seq "$count_txt" -1 1)
 do
    tag=$(git tag | sed "$i!d")
-
    echo "## $tag ($i)" >> CHANGELOG.md
-   cat $changelog_location/"$i".txt >> CHANGELOG.md
+
+   awk 1 $changelog_location/"$i".txt >> CHANGELOG.md
    
 done

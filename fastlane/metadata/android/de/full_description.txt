@@ -1,4 +1,12 @@
-Diese Anwendung wurde entwickelt, um ohne ein Facebook-Konto verwendet werden zu können.
+Der Zweck dieser Anwendung ist es, Zugang zu Facebook-Veranstaltungen ohne ein Konto zu erhalten.
 Daher verwendet sie nicht die Facebook-API.
-Stattdessen öffnet sie die URI der Facebook-Veranstaltung und lädt den Quellcode der Website herunter.
-Dieser Quellcode enthält die Informationen, die zum Erstellen eines Kalendereintrags verwendet werden.
+Stattdessen öffnet sie die URI der Facebook-Veranstaltung und lädt den HTML-Code der Website herunter.
+Dieser Code sollte die Veranstaltungsinformationen in Form von strukturierten Daten enthalten.
+Die Daten werden extrahiert und zur Erstellung von Android-Terminen verwendet.
+
+Features:
+* Verwendet keine Facebook-API
+* Unterstützt "öffnen-mit" und "teilen mit".
+* Unabhängig von regionalen Subdomain-URLs von Facebook
+* Speichert den Verlauf der eingegebenen Veranstaltungen
+* Unterstützt bevorstehende Veranstaltungen von Seiten
