@@ -8,6 +8,7 @@
 
     <!-- Input hints -->
     <string name="hint_add_link">Event link</string>
+    <string name="done">Done</string>
 
 
     <string name="helper_add_link">Paste Facebook link to the event</string>
@@ -21,6 +22,8 @@
     <string name="error_connection">Error: Unable to connect</string>
     <string name="error_unknown">Error: Unknown Error</string>
 
+    <string name="event_placeholder" translatable="false">Placeholder</string>
+
     <!-- Preferences -->
     <string name="preferences_scraper_header" translatable="false">Scraper</string>
     <string name="preferences_url_setting">Which URL prefix to use</string>
@@ -29,8 +32,5 @@
     <string name="preferences_events_header">Events</string>
     <string name="preferences_event_setting">Clear event list</string>
     <string name="preferences_event_snackbar">Events list cleared</string>
-    <string name="event_placeholder" translatable="false">Placeholder</string>
-    <string name="done">Done</string>
-    <string name="found_events">Found %1$d events</string>
 
 </resources>

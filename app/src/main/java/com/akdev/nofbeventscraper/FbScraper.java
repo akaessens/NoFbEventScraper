@@ -20,7 +20,6 @@ public class FbScraper {
 
     protected List<FbEvent> events;
     protected List<AsyncTask> tasks;
-    int remaining_events = 0;
     url_type_enum url_type = url_type_enum.EVENT;
     private String input_url;
     private WeakReference<MainActivity> main; // no context leak with WeakReference
@@ -107,23 +106,11 @@ public class FbScraper {
 
     void scrapeEventResultCallback(FbEvent event, int error) {
 
-        if (url_type == url_type_enum.EVENT) {
-            if (event != null) {
-                main.get().addEvent(event);
-                main.get().input_helper(main.get().getString(R.string.done), false);
-            } else {
-                main.get().input_helper(main.get().getString(error), true);
-            }
-            killAllTasks();
-
-        } else {
+        if (event != null) {
             main.get().addEvent(event);
-            remaining_events--;
-
-            if (remaining_events <= 0) {
-                main.get().input_helper(main.get().getString(R.string.done), false);
-                killAllTasks();
-            }
+            main.get().input_helper(main.get().getString(R.string.done), false);
+        } else if (url_type == url_type_enum.EVENT) {
+            main.get().input_helper(main.get().getString(error), true);
         }
     }
 
@@ -152,8 +139,7 @@ public class FbScraper {
     protected void scrapePageResultCallback(List<String> event_urls, int error) {
 
         if (event_urls.size() > 0) {
-            remaining_events = event_urls.size();
-            main.get().input_helper(main.get().getString(R.string.found_events, event_urls.size()), false);
+
             for (String event_url : event_urls) {
                 try {
                     String url = getEventUrl(event_url);
@@ -162,7 +148,7 @@ public class FbScraper {
                     // ignore this event
                 }
             }
-        } else if (url_type == url_type_enum.PAGE) {
+        } else {
             main.get().input_helper(main.get().getString(error), true);
         }
     }
