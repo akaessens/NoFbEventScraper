@@ -74,11 +74,19 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
                 int max = shared_prefs.getInt("page_event_max", 5);
 
                 if (event_links.size() < max) {
-                    String next_url = document
-                            .getElementsByAttributeValueMatching("href", "has_more=1")
-                            .first().attr("href");
 
-                    this.url = "https://mbasic.facebook.com" + next_url;
+                    try {
+                        String next_url = document
+                                .getElementsByAttributeValueMatching("href", "has_more=1")
+                                .first().attr("href");
+
+                        this.url = "https://mbasic.facebook.com" + next_url;
+                    } catch (NullPointerException e) {
+                        url = null;
+                        event_links = event_links.subList(0, max);
+                    }
+
+
                 } else {
                     url = null;
                     event_links = event_links.subList(0, max);
