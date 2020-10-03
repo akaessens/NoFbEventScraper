@@ -1,6 +1,7 @@
 package com.akdev.nofbeventscraper;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -205,6 +207,13 @@ public class MainActivity extends AppCompatActivity {
                 //If the key event is a key-down event on the "enter" button
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keycode == KeyEvent.KEYCODE_ENTER)) {
                     startScraping();
+
+                    // do not focus next view, just release it
+                    edit_text_uri_input.clearFocus();
+
+                    // close soft keyboard
+                    InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     return true;
                 }
                 return false;
@@ -231,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * manage Helper text on uri_input
      *
-     * @param str What should be displayed
+     * @param str   What should be displayed
      * @param error True if should be displayed as error
      */
     public void input_helper(String str, boolean error) {
@@ -279,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Dispatch menu item to new activity
+     *
      * @param item
      * @return
      */
