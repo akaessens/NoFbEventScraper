@@ -212,6 +212,7 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
      *
      * @param aVoid
      */
+    @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 

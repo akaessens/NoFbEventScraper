@@ -9,7 +9,7 @@
     <string name="button_add">Zum Kalender hinzufügen</string>
     <string name="tooltip_paste">Einfügen von Inhalten aus der Zwischenablage in das URL-Eingabefeld</string>
     <string name="preferences_url_setting">Welcher URL-Präfix ist zu verwenden?</string>
-    <string name="preferences_url_setting_summary">Die Nutzung von m.facebook.com ist stabiler und schneller. Die Verwendung von www.facebook.com funktioniert besser bei Ereignissen mit mehreren Instanzen und zeigt eine hochauflösende Vorschau an, geht aber irgendwann kaputt, wenn Facebook das klassische Design deaktiviert.</string>
+    <string name="preferences_url_setting_summary">Die Nutzung von mbasic.facebook.com ist stabiler und schneller. Die Verwendung von www.facebook.com funktioniert besser bei Ereignissen mit mehreren Instanzen und zeigt eine hochauflösende Vorschau an, geht aber irgendwann kaputt, wenn Facebook das klassische Design deaktiviert.</string>
     <string name="error_clipboard_empty">Fehler: Zwischenablage leer</string>
     <string name="error_scraping">Fehler: Veranstaltungsdaten nicht gefunden</string>
     <string name="error_url">Fehler: URL ungültig</string>

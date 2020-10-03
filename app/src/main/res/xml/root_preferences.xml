@@ -6,7 +6,7 @@
 
         <ListPreference
             android:summary="@string/preferences_url_setting_summary"
-            app:defaultValue="https://m."
+            app:defaultValue="https://mbasic."
             app:entries="@array/url_to_scrape"
             app:entryValues="@array/url_prefix"
             app:key="url_preference"

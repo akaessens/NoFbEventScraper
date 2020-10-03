@@ -5,10 +5,12 @@ import android.os.AsyncTask;
 
 import androidx.preference.PreferenceManager;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -31,6 +33,28 @@ public class FbScraper {
         this.main = main;
         this.input_url = input_url;
         this.tasks = new ArrayList<>();
+    }
+
+    protected String getShortened(String url) throws IOException, URISyntaxException {
+        // check for url format
+        new URL(url).toURI();
+
+        String regex = "(fb.me/)(e/)?([^/?]*)|(facebook.com/event_invite/[a-zA-Z0-9]*)";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(url);
+
+        if (matcher.find()) {
+            //only mbasic does have event ids displayed in HTML
+            String url_prefix = "https://mbasic.";
+
+            // create URL
+            return url_prefix + matcher.group();
+
+        } else {
+            throw new URISyntaxException(url, "Does not contain page.");
+        }
+
     }
 
     /**
@@ -183,10 +207,34 @@ public class FbScraper {
         }
     }
 
+    protected void redirectUrl (String url) {
+        FbRedirectionResolver resolver = new FbRedirectionResolver(this, url);
+
+        resolver.execute();
+    }
+    protected void redirectionResultCallback(String url) {
+        this.input_url = url;
+
+        // now try again with expanded url
+        this.run();
+    }
+
     /**
      * Start scraping input url
      */
     void run() {
+
+        // check if shortened url
+        try {
+            String shortened = getShortened(input_url);
+            url_type = url_type_enum.SHORT;
+            redirectUrl(shortened);
+
+            return;
+
+        } catch (IOException | URISyntaxException e) {
+            url_type = url_type_enum.INVALID;
+        }
 
         // check if input url is an event
         try {
@@ -212,5 +260,5 @@ public class FbScraper {
     }
 
     // enum for storing url type in this class
-    enum url_type_enum {EVENT, PAGE, INVALID}
+    enum url_type_enum {SHORT, EVENT, PAGE, INVALID}
 }

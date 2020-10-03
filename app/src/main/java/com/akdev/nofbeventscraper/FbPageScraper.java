@@ -67,12 +67,12 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
                         .getElementsByAttributeValueMatching("href", Pattern.compile(regex))
                         .eachAttr("href");
 
-                for (String link : event_links_href) {
-                    this.event_links.add("https://www.facebook.com" + link);
+                for (String event_id : event_links_href) {
+                    this.event_links.add("https://mbasic.facebook.com" + event_id);
                 }
 
                 /*
-                 * check if more events should scraped
+                 * check if more events should be scraped
                  */
                 SharedPreferences shared_prefs = PreferenceManager
                         .getDefaultSharedPreferences(scraper.main.get());
@@ -120,6 +120,7 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
      *
      * @param aVoid
      */
+    @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
