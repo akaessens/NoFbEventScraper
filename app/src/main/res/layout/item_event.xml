@@ -51,9 +51,9 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_map"
-                android:background="?android:attr/selectableItemBackground"
                 app:tint="@color/material_on_surface_emphasis_high_type" />
 
             <TextView
@@ -73,8 +73,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                style="?android:attr/borderlessButtonStyle"
                 android:id="@+id/image_view_event_time"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
@@ -128,13 +128,25 @@
 
             <Button
                 android:id="@+id/button_add_to_calendar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/button_add"
                 android:textColor="@android:color/white"
                 app:icon="@drawable/ic_event_available"
                 app:iconGravity="textStart"
                 app:iconTint="@android:color/white" />
+
+            <ImageView
+                android:id="@+id/image_view_share"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_share"
+                app:tint="@color/material_on_surface_emphasis_high_type" />
 
 
         </LinearLayout>

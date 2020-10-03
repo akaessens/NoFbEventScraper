@@ -206,6 +206,16 @@ public class EventAdapter extends
         };
         holder.image_view_event_image.setOnClickListener(listener);
 
+        holder.image_view_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent share_intent = new Intent(android.content.Intent.ACTION_SEND);
+                share_intent.setType("text/plain");
+                share_intent.putExtra(Intent.EXTRA_TEXT, event.url);
+
+                view.getContext().startActivity(Intent.createChooser(share_intent, null));
+            }
+        });
     }
 
 
@@ -228,6 +238,7 @@ public class EventAdapter extends
         protected ImageView image_view_event_image;
         protected ImageView image_view_event_location;
         protected ImageView image_view_event_time;
+        protected ImageView image_view_share;
         protected Button button_add_to_calendar;
 
         protected boolean description_collapsed = true;
@@ -243,6 +254,7 @@ public class EventAdapter extends
             image_view_event_image = item_view.findViewById(R.id.image_view_event_image);
             image_view_event_location = item_view.findViewById(R.id.image_view_event_location);
             image_view_event_time = item_view.findViewById(R.id.image_view_event_time);
+            image_view_share = item_view.findViewById(R.id.image_view_share);
             button_add_to_calendar = item_view.findViewById(R.id.button_add_to_calendar);
 
         }
