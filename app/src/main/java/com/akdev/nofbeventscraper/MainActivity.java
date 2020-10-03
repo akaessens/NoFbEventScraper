@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -65,17 +64,24 @@ public class MainActivity extends AppCompatActivity {
         return list;
     }
 
-    /**
-     * Callback for Restoring data
+    /*
+     * On resume from other activities, e.g. settings
      */
     @Override
     public void onResume() {
         super.onResume();
 
-        events.clear();
-        events.addAll(getSavedEvents());
-        adapter.notifyDataSetChanged();
+        /*
+         * Clear events after saved events deleted from settings
+         */
+        if (getSavedEvents().isEmpty()) {
+            events.clear();
+            adapter.notifyDataSetChanged();
+        }
 
+        /*
+         * Intent from IntentReceiver - read only once
+         */
         Intent intent = getIntent();
         String data = intent.getStringExtra("InputLink");
 
@@ -209,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * launch the FbScraper asynchronous task with the current text in the input text field.
+     * launch the FbScraper with the current text in the input text field.
      */
     public void startScraping() {
 
@@ -222,6 +228,12 @@ public class MainActivity extends AppCompatActivity {
         scraper.run();
     }
 
+    /**
+     * manage Helper text on uri_input
+     *
+     * @param str What should be displayed
+     * @param error True if should be displayed as error
+     */
     public void input_helper(String str, boolean error) {
 
         if (str == null) {
@@ -255,14 +267,21 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        /*
+         * Display icons, restricted API, maybe find other solution?
+         */
         if (menu instanceof MenuBuilder) {
             MenuBuilder m = (MenuBuilder) menu;
-            //noinspection RestrictedApi
             m.setOptionalIconsVisible(true);
         }
         return true;
     }
 
+    /**
+     * Dispatch menu item to new activity
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

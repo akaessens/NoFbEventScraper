@@ -1,20 +1,15 @@
 package com.akdev.nofbeventscraper;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -37,6 +32,9 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
+            /*
+             * reset events click action: delete saved events and display snackbar
+             */
             Preference button = findPreference("event_reset");
             if (button != null) {
                 button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -52,11 +50,11 @@ public class SettingsActivity extends AppCompatActivity {
                                 getString(R.string.preferences_event_snackbar), Snackbar.LENGTH_SHORT)
                                 .setAction(R.string.undo, new View.OnClickListener() {
 
-                            @Override
-                            public void onClick(View v) {
-                                prefs.edit().putString("events", undo).apply();
-                            }
-                        }).show();
+                                    @Override
+                                    public void onClick(View v) {
+                                        prefs.edit().putString("events", undo).apply();
+                                    }
+                                }).show();
 
                         return true;
                     }

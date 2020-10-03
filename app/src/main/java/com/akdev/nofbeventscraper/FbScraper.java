@@ -14,15 +14,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.akdev.nofbeventscraper.FbEvent.createEventList;
-
 public class FbScraper {
 
-    protected List<FbEvent> events;
     protected List<AsyncTask> tasks;
+    protected WeakReference<MainActivity> main; // no context leak with WeakReference
     url_type_enum url_type = url_type_enum.EVENT;
     private String input_url;
-    protected WeakReference<MainActivity> main; // no context leak with WeakReference
 
     /**
      * Constructor with WeakReference to the main activity, to add events.
@@ -33,10 +30,18 @@ public class FbScraper {
     FbScraper(WeakReference<MainActivity> main, String input_url) {
         this.main = main;
         this.input_url = input_url;
-        this.events = createEventList();
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Checks if valid URL,
+     * strips the facebook page id from the input link and create an URL that can be scraped from.
+     *
+     * @param url input URL
+     * @return new mbasic url that can be scraped for event id's
+     * @throws URISyntaxException    if page not found
+     * @throws MalformedURLException
+     */
     protected String getPageUrl(String url) throws URISyntaxException, MalformedURLException {
 
         // check for url format
@@ -48,10 +53,11 @@ public class FbScraper {
         Matcher matcher = pattern.matcher(url);
 
         if (matcher.find()) {
-
+            //only mbasic does have event ids displayed in HTML
             String url_prefix = "https://mbasic.facebook.com/";
             String url_suffix = "?v=events";
 
+            // create URL
             return url_prefix + matcher.group(3) + url_suffix;
 
         } else {
@@ -60,7 +66,7 @@ public class FbScraper {
     }
 
     /**
-     * Strips the facebook event link of the input url.
+     * Strips the facebook event link from the input event url.
      *
      * @param url input url
      * @return facebook event url String if one was found
@@ -98,12 +104,40 @@ public class FbScraper {
 
     }
 
+    /**
+     * cancel vestigial async tasks
+     */
+    void killAllTasks() {
+
+        if (!tasks.isEmpty()) {
+            for (AsyncTask task : tasks) {
+                try {
+                    task.cancel(true);
+                    task = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * start an EventScraper async task and add to tasks list
+     *
+     * @param event_url
+     */
     void scrapeEvent(String event_url) {
         FbEventScraper scraper = new FbEventScraper(this, event_url);
         tasks.add(scraper);
         scraper.execute();
     }
 
+    /**
+     * Callback for finished EventSCraper async task
+     *
+     * @param event Contains event information if scraping successful
+     * @param error resId for error message
+     */
     void scrapeEventResultCallback(FbEvent event, int error) {
 
         if (event != null) {
@@ -115,20 +149,10 @@ public class FbScraper {
     }
 
     /**
-     * cancel vestigial async tasks
+     * start a page scraper and add to list of tasks
+     *
+     * @param page_url
      */
-    void killAllTasks() {
-
-        try {
-            for (AsyncTask task : tasks) {
-                task.cancel(true);
-                task = null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     void scrapePage(String page_url) {
         FbPageScraper scraper = new FbPageScraper(this, page_url);
 
@@ -136,6 +160,12 @@ public class FbScraper {
         scraper.execute();
     }
 
+    /**
+     * Callback for page scraper async task
+     *
+     * @param event_urls List of event urls scraped from the event
+     * @param error      resId of error message if task list is empty
+     */
     protected void scrapePageResultCallback(List<String> event_urls, int error) {
 
         if (event_urls.size() > 0) {
@@ -153,8 +183,12 @@ public class FbScraper {
         }
     }
 
+    /**
+     * Start scraping input url
+     */
     void run() {
 
+        // check if input url is an event
         try {
             String event_url = getEventUrl(input_url);
             url_type = url_type_enum.EVENT;
@@ -165,7 +199,7 @@ public class FbScraper {
         } catch (URISyntaxException | MalformedURLException e) {
             url_type = url_type_enum.INVALID;
         }
-
+        // check if input url is a page
         try {
             String page_url = getPageUrl(input_url);
             url_type = url_type_enum.PAGE;
@@ -177,6 +211,6 @@ public class FbScraper {
         }
     }
 
-
+    // enum for storing url type in this class
     enum url_type_enum {EVENT, PAGE, INVALID}
 }

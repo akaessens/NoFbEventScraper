@@ -1,10 +1,9 @@
 package com.akdev.nofbeventscraper;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class IntentReceiver extends AppCompatActivity {
 

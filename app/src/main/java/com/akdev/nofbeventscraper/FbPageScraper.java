@@ -22,7 +22,7 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
     private FbScraper scraper;
     private int error;
     private String url;
-    private List<String> event_links = new ArrayList<String>();
+    private List<String> event_links = new ArrayList<>();
 
     /**
      * Constructor with reference to scraper to return results.
@@ -58,6 +58,9 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
                     throw new IOException();
                 }
 
+                /*
+                 * get all event id's from current url and add to the list
+                 */
                 String regex = "(/events/[0-9]*)(/\\?event_time_id=[0-9]*)?";
 
                 List<String> event_links_href = document
@@ -68,13 +71,16 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
                     this.event_links.add("https://www.facebook.com" + link);
                 }
 
+                /*
+                 * check if more events should scraped
+                 */
                 SharedPreferences shared_prefs = PreferenceManager
                         .getDefaultSharedPreferences(scraper.main.get());
 
                 int max = shared_prefs.getInt("page_event_max", 5);
 
                 if (event_links.size() < max) {
-
+                    // find "next page
                     try {
                         String next_url = document
                                 .getElementsByAttributeValueMatching("href", "has_more=1")

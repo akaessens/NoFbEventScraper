@@ -60,6 +60,10 @@ public class EventAdapter extends
         // Set item views based on your views and data model
         holder.text_view_event_name.setText(event.name);
 
+        /*
+         * initialize all text views with event information
+         * hide fields and image views if no information is available
+         */
         if (!event.location.equals("")) {
             holder.text_view_event_location.setText(event.location);
         } else {
@@ -84,7 +88,6 @@ public class EventAdapter extends
         } else {
             holder.text_view_event_end.setVisibility(View.GONE);
         }
-
 
 
         if (!event.description.equals("")) {
@@ -120,13 +123,14 @@ public class EventAdapter extends
         };
         holder.image_view_event_location.setOnClickListener(location_click_listener);
         holder.text_view_event_location.setOnClickListener(location_click_listener);
+
         /*
          * Add to calendar button: launch calendar application with current event
          */
         holder.button_add_to_calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // calendar event intent expects epoch time format
                 Long start_epoch = dateTimeToEpoch(event.start_date);
                 Long end_epoch = dateTimeToEpoch(event.end_date);
 
@@ -163,7 +167,7 @@ public class EventAdapter extends
         });
 
         /*
-         * Image dialog
+         * Image preview click creates fullscreen dialog
          */
 
         View.OnClickListener listener = new View.OnClickListener() {
@@ -198,7 +202,6 @@ public class EventAdapter extends
                         });
 
 
-
             }
         };
         holder.image_view_event_image.setOnClickListener(listener);
@@ -212,6 +215,9 @@ public class EventAdapter extends
         return events.size();
     }
 
+    /**
+     * access item view elements via holder class
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         protected TextView text_view_event_name;

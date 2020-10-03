@@ -163,6 +163,7 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
 
                 JSONObject reader = new JSONObject(json);
 
+                // get all fields from json event information
                 name = readFromJson(reader, "name");
                 start_date = parseToDate(readFromJson(reader, "startDate"));
                 end_date = parseToDate(readFromJson(reader, "endDate"));
@@ -170,6 +171,7 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
                 location = fixLocation(readFromJson(reader, "location"));
                 image_url = readFromJson(reader, "image");
 
+                // try to find a high-res image
                 try {
                     image_url = document.select("div[id=event_header_primary]")
                             .select("img").first().attr("src");
@@ -177,6 +179,7 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
                 }
 
             } catch (JSONException | NullPointerException e) {
+                // json event information mot found. get at least title and image
                 name = document.title();
                 description = scraper.main.get().getString(R.string.error_scraping);
                 try {
@@ -185,9 +188,6 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
                 } catch (Exception ignored) {
                 }
             }
-
-
-
 
             this.event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
 
