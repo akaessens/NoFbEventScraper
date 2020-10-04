@@ -1,0 +1,3 @@
+- Fix events not displaying correctly after activity resume
+- add share action on each event
+- add URL shortener redirection for fb.me

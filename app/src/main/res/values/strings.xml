@@ -18,7 +18,7 @@
     <string name="error_url">Error: URL invalid</string>
     <string name="error_connection">Error: Unable to connect</string>
     <string name="error_unknown">Error: Unknown Error</string>
-
+    <string name="error_no_events">Error: No upcoming events</string>
 
 
     <!-- Preferences -->
@@ -37,7 +37,6 @@
     <string name="event_placeholder" translatable="false">Placeholder</string>
     <string name="done">Done</string>
     <string name="undo">Undo</string>
-    <string name="error_no_events">Error: No upcoming events</string>
 
 
 </resources>
