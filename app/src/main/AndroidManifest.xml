@@ -23,6 +23,12 @@
                 <data
                     android:host="facebook.com"
                     android:scheme="https" />
+                <data
+                    android:host="*.fb.me"
+                    android:scheme="https" />
+                <data
+                    android:host="fb.me"
+                    android:scheme="https" />
             </intent-filter>
 
             <!-- Accepts share intents -->
