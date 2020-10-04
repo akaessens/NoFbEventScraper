@@ -20,6 +20,10 @@ This source contains the information which is used to create a calendar entry.
   <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="75">
 </a>
 
+# Changelog
+
+[CHANGELOG](CHANGELOG.md)
+
 # Building
 
 This Android app is written in Java and is using the Gradle build system. To compile it, i recommend using Android Studio.
