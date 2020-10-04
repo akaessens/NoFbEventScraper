@@ -1,4 +1,8 @@
 # Changelog
+## v0.4.1 (11)
+- Fix events not displaying correctly after activity resume
+- add share action on each event
+- add URL shortener redirection for fb.me
 ## v0.4.0 (10)
 - Support pages with upcoming events *beta*
 - Display events in a scrollable card-based view
