@@ -22,4 +22,5 @@
     <string name="undo">Rückgängig</string>
     <string name="preferences_page_event_max_summary">Maximale Anzahl Events, die von einer einzelnen Seite geladen werden sollen.</string>
     <string name="preferences_page_event_max">Veranstaltungslimit für Seiten</string>
+    <string name="error_no_events">Fehler: keine bevorstehenden Veranstaltungen</string>
 </resources>
