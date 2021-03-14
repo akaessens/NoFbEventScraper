@@ -1,0 +1,2 @@
+- Fix scraping not working when cookies need to be accepted
+- Android 11 ready
