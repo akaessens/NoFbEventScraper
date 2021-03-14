@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 
 import androidx.preference.PreferenceManager;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
@@ -51,8 +50,8 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
         do {
             try {
                 // use default android user agent
-                String user_agent = "Mozilla/5.0 (X11; Linux x86_64)";
-                Document document = Jsoup.connect(url).userAgent(user_agent).get();
+
+                Document document = DocumentReceiver.getDocument(url);
 
                 if (document == null) {
                     throw new IOException();
@@ -80,7 +79,7 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
                 int max = shared_prefs.getInt("page_event_max", 5);
 
                 if (event_links.size() < max) {
-                    // find "next page
+                    // find next page
                     try {
                         String next_url = document
                                 .getElementsByAttributeValueMatching("href", "has_more=1")

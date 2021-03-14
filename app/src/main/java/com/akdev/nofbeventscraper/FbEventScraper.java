@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
@@ -144,11 +143,9 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        try {
-            // use default android user agent
-            String user_agent = "Mozilla/5.0 (X11; Linux x86_64)";
-            Document document = Jsoup.connect(url).userAgent(user_agent).get();
+        Document document = DocumentReceiver.getDocument(url);
 
+        try {
             if (document == null) {
                 throw new IOException();
             }
