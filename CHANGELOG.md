@@ -1,4 +1,7 @@
 # Changelog
+## v0.4.2 (12)
+- Fix scraping not working when cookies need to be accepted
+- Android 11 ready
 ## v0.4.1 (11)
 - Fix events not displaying correctly after activity resume
 - add share action on each event
