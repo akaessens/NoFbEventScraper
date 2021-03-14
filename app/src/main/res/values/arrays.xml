@@ -2,11 +2,13 @@
     <!-- Reply Preference -->
     <string-array name="url_to_scrape">
         <item>mbasic.facebook.com</item>
+        <item>touch.facebook.com</item>
         <item>www.facebook.com</item>
     </string-array>
 
     <string-array name="url_prefix">
         <item>https://mbasic.</item>
+        <item>https://touch.</item>
         <item>https://www.</item>
     </string-array>
 

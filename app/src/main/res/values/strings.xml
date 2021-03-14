@@ -24,7 +24,7 @@
     <!-- Preferences -->
     <string name="preferences_scraper_header" translatable="false">Scraper</string>
     <string name="preferences_url_setting">Which URL prefix to use</string>
-    <string name="preferences_url_setting_summary">"Using mbasic.facebook.com is more stable and faster. Using www.facebook.com works better with multiple instance events and will display a high resolution preview but will eventually break when Facebook disables the classic design."</string>
+    <string name="preferences_url_setting_summary">"mbasic is the fastest, www loads high-res image preview, touch is an additional backup."</string>
 
     <string name="preferences_events_header">Events</string>
     <string name="preferences_event_setting">Clear event list</string>
