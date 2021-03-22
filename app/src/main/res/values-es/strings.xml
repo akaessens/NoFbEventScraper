@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NoFb Event Scraper</string>
+    <string name="action_about">Acerca de</string>
+    <string name="action_help">Ayuda</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="hint_add_link">Enlace del evento</string>
+    <string name="helper_add_link">Pegue el enlace del evento en Facebook</string>
+    <string name="button_add">Añadir al calendario</string>
+    <string name="tooltip_paste">Pegue el contenido del portapapeles en el cuadro de entrada de la URL</string>
+    <string name="preferences_url_setting">Prefijo de URL que debe utilizarse</string>
+    <string name="preferences_url_setting_summary">mbasic es el más rápida, www carga la vista previa de la imagen en alta resolución, touch es una herramienta de respaldo</string>
+    <string name="error_clipboard_empty">Error: Portapapeles vacío</string>
+    <string name="error_scraping">Error: No se han encontrado los datos del evento</string>
+    <string name="error_url">Error: URL no válida</string>
+    <string name="error_connection">Error: No es posible la conexión</string>
+    <string name="error_unknown">Error: Error desconocido</string>
+    <string name="preferences_events_header">Eventos</string>
+    <string name="preferences_event_setting">Limpiar lista de eventos</string>
+    <string name="preferences_event_snackbar">"Lista de eventos limpiada "</string>
+    <string name="done">Aceptar</string>
+    <string name="undo">Deshacer</string>
+    <string name="preferences_page_event_max_summary">Número máximo de eventos a cargar en una sola página.</string>
+    <string name="preferences_page_event_max">Límite de eventos por página</string>
+    <string name="error_no_events">Error: no hay próximos eventos</string>
+</resources>

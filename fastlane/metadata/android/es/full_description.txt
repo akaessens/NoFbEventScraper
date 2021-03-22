@@ -1,0 +1,12 @@
+El propósito de esta aplicación es obtener acceso a los eventos de Facebook sin necesidad de una cuenta.
+Por lo tanto, no recurre a la API de Facebook.
+Como alternativa, abre el URI del evento de Facebook y descarga el código HTML del sitio web.
+Esta fuente debe contener la información del evento en forma de datos estructurados.
+Esos datos al extraerse se crean eventos en Android.
+
+Características:
+* No recurre a la API de Facebook
+* Soporta "abrir con" y "compartir via"
+* Funciona con todas las URLs de los subdominios regionales de Facebook
+* Guarda el historial de eventos extraídos
+* Maneja los próximos eventos de las páginas
