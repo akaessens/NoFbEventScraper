@@ -1,4 +1,7 @@
 # Changelog
+## v0.4.3 (13)
+- Add spanish translation thanks to @sguinetti
+- update dependencies
 ## v0.4.2 (12)
 - Fix scraping not working when cookies need to be accepted
 - Android 11 ready
