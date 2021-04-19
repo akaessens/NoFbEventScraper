@@ -7,8 +7,8 @@ android {
         applicationId "com.akdev.nofbeventscraper"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 12
-        versionName "0.4.2"
+        versionCode 13
+        versionName "0.4.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

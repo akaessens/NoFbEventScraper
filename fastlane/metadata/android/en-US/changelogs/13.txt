@@ -1,0 +1,2 @@
+- Add spanish translation thanks to @sguinetti
+- update dependencies
