@@ -1,0 +1,1 @@
+- Fix Android 11 intents (to open Calendar or Maps)
