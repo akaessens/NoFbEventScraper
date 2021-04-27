@@ -2,6 +2,7 @@ package com.akdev.nofbeventscraper;
 
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -116,8 +118,12 @@ public class EventAdapter extends
 
                 Uri intent_uri = Uri.parse(map_search);
                 Intent map_intent = new Intent(Intent.ACTION_VIEW, intent_uri);
-                if (map_intent.resolveActivity(view.getContext().getPackageManager()) != null) {
+
+                try {
                     view.getContext().startActivity(map_intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast toast=Toast.makeText(view.getContext(),"no App installed", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         };
@@ -145,8 +151,11 @@ public class EventAdapter extends
                 String desc = event.url + "\n\n" + event.description;
                 intent.putExtra(CalendarContract.Events.DESCRIPTION, desc);
 
-                if (intent.resolveActivity(view.getContext().getPackageManager()) != null) {
+                try {
                     view.getContext().startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast toast=Toast.makeText(view.getContext(),"no App installed", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         });
@@ -213,7 +222,12 @@ public class EventAdapter extends
                 share_intent.setType("text/plain");
                 share_intent.putExtra(Intent.EXTRA_TEXT, event.url);
 
-                view.getContext().startActivity(Intent.createChooser(share_intent, null));
+                try {
+                    view.getContext().startActivity(share_intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast toast=Toast.makeText(view.getContext(),"no App installed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
     }
