@@ -1,4 +1,6 @@
 # Changelog
+## v0.4.4 (14)
+- Fix Android 11 intents (to open Calendar or Maps)
 ## v0.4.3 (13)
 - Add spanish translation thanks to @sguinetti
 - update dependencies
