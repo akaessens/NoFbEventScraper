@@ -1,6 +1,7 @@
 package com.akdev.nofbeventscraper;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,6 +143,8 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
      */
     @Override
     protected Void doInBackground(Void... voids) {
+
+        Log.d("scraperLog", "doInBackground: "+url);
 
         Document document = DocumentReceiver.getDocument(url);
 

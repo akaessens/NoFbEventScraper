@@ -2,6 +2,7 @@ package com.akdev.nofbeventscraper;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -165,6 +166,7 @@ public class FbScraper {
     void scrapeEventResultCallback(FbEvent event, int error) {
 
         if (event != null) {
+            Log.d("scraperLog", "scrapeEventResultCallback: "+event.url);
             main.get().addEvent(event);
             main.get().input_helper(main.get().getString(R.string.done), false);
         } else if (url_type == url_type_enum.EVENT) {
@@ -193,10 +195,11 @@ public class FbScraper {
     protected void scrapePageResultCallback(List<String> event_urls, int error) {
 
         if (event_urls.size() > 0) {
-
+            Log.d("scraperLog", "scrapePageResultCallback: "+event_urls.toString());
             for (String event_url : event_urls) {
                 try {
                     String url = getEventUrl(event_url);
+                    Log.d("scraperLog", "scrapePageResultCallback: "+url);
                     scrapeEvent(url);
                 } catch (URISyntaxException | MalformedURLException e) {
                     // ignore this event
@@ -210,10 +213,14 @@ public class FbScraper {
     protected void redirectUrl (String url) {
         FbRedirectionResolver resolver = new FbRedirectionResolver(this, url);
 
+        Log.d("scraperLog", "redirectUrl: "+url);
+
         resolver.execute();
     }
     protected void redirectionResultCallback(String url) {
         this.input_url = url;
+
+        Log.d("scraperLog", "redirectUrlCb: "+url);
 
         // now try again with expanded url
         this.run();
