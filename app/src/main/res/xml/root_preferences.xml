@@ -20,7 +20,7 @@
             android:defaultValue="5"
             app:showSeekBarValue="true"
             app:min="1"
-            android:max="30"
+            android:max="100"
             android:summary="@string/preferences_page_event_max_summary"
             android:key="page_event_max"
             android:title="@string/preferences_page_event_max" />
