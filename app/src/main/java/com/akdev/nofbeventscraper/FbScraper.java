@@ -154,7 +154,7 @@ public class FbScraper {
     void scrapeEvent(String event_url) {
         FbEventScraper scraper = new FbEventScraper(this, event_url);
         tasks.add(scraper);
-        scraper.execute();
+        scraper.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -183,7 +183,7 @@ public class FbScraper {
         FbPageScraper scraper = new FbPageScraper(this, page_url);
 
         tasks.add(scraper);
-        scraper.execute();
+        scraper.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     /**
@@ -215,7 +215,7 @@ public class FbScraper {
 
         Log.d("scraperLog", "redirectUrl: "+url);
 
-        resolver.execute();
+        resolver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     protected void redirectionResultCallback(String url) {
         this.input_url = url;
