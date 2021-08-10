@@ -1,5 +1,7 @@
 package com.akdev.nofbeventscraper;
 
+import android.util.Log;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -17,11 +19,15 @@ public class DocumentReceiver {
             // use default android user agent
             String user_agent = "Mozilla/5.0 (X11; Linux x86_64)";
 
+            Log.d("scraperLog", "DocumentReceiver: "+url);
+
             Connection connection = Jsoup.connect(url).userAgent(user_agent).followRedirects(true);
 
             Connection.Response response = connection.execute();
 
             document = response.parse();
+
+            Log.d("scraperLog", "Document title: "+document.title());
 
             try {
                 // accept cookies needed?
@@ -46,7 +52,8 @@ public class DocumentReceiver {
             } catch (Exception ignore) {
             }
         } catch (Exception e) {
-                return null;
+            e.printStackTrace();
+            return null;
         }
         return document;
     }

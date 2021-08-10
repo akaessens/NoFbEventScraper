@@ -153,6 +153,8 @@ public class FbScraper {
      */
     void scrapeEvent(String event_url) {
         FbEventScraper scraper = new FbEventScraper(this, event_url);
+
+        Log.d("scraperLog", "scrapeEvent: "+event_url);
         tasks.add(scraper);
         scraper.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -181,6 +183,8 @@ public class FbScraper {
      */
     void scrapePage(String page_url) {
         FbPageScraper scraper = new FbPageScraper(this, page_url);
+
+        Log.d("scraperLog", "scrapePage: "+page_url);
 
         tasks.add(scraper);
         scraper.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
