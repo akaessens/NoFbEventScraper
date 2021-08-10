@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -23,13 +25,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +42,7 @@ import static com.akdev.nofbeventscraper.FbEvent.createEventList;
 public class MainActivity extends AppCompatActivity {
 
     protected ExtendedFloatingActionButton paste_button;
-    protected TextInputEditText edit_text_uri_input;
+    protected AutoCompleteTextView edit_text_uri_input;
     protected TextInputLayout layout_uri_input;
 
 
@@ -48,6 +50,28 @@ public class MainActivity extends AppCompatActivity {
     protected List<FbEvent> events;
     EventAdapter adapter;
     LinearLayoutManager linear_layout_manager;
+
+    List<String> history;
+    ArrayAdapter<String> history_adapter;
+
+
+    private List<String> getHistory() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Gson gson = new Gson();
+        String json = prefs.getString("history", "");
+
+        Type history_type = new TypeToken<List<String>>() {
+        }.getType();
+        List<String> list = gson.fromJson(json, history_type);
+
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+
+        return list;
+    }
+
 
     private List<FbEvent> getSavedEvents() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -81,6 +105,12 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
 
+        if (getHistory().isEmpty()) {
+            history.clear();
+            history_adapter.clear();
+            adapter.notifyDataSetChanged();
+        }
+
         /*
          * Intent from IntentReceiver - read only once
          */
@@ -106,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(events);
         prefs_edit.putString("events", json);
+
+        json = gson.toJson(history);
+        prefs_edit.putString("history", json);
         prefs_edit.apply();
     }
 
@@ -131,6 +164,10 @@ public class MainActivity extends AppCompatActivity {
         recycler_view.setAdapter(adapter);
         linear_layout_manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recycler_view.setLayoutManager(linear_layout_manager);
+
+        // restore history
+        this.history = getHistory();
+        history_adapter = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, history);
 
         recycler_view.setItemAnimator(new FadeInAnimator());
 
@@ -197,6 +234,14 @@ public class MainActivity extends AppCompatActivity {
         };
         layout_uri_input.setErrorIconOnClickListener(listener);
         layout_uri_input.setEndIconOnClickListener(listener);
+        edit_text_uri_input.setAdapter(history_adapter);
+
+        layout_uri_input.setStartIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edit_text_uri_input.showDropDown();
+            }
+        });
 
 
         /*
@@ -235,6 +280,9 @@ public class MainActivity extends AppCompatActivity {
         scraper = new FbScraper(new WeakReference<>(this), url);
 
         scraper.run();
+
+        history_adapter.insert(url, 0);
+        history.add(0, url);
     }
 
     /**
