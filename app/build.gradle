@@ -34,7 +34,7 @@ dependencies {
     implementation "androidx.webkit:webkit:1.4.0"
 
     // JSON save/restore shared preference
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     // Theme
     implementation 'com.google.android.material:material:1.4.0'
