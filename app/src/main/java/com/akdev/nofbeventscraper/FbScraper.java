@@ -264,6 +264,17 @@ public class FbScraper {
             url_type = url_type_enum.PAGE;
             scrapePage(page_url);
 
+            return;
+
+        } catch (URISyntaxException | MalformedURLException e) {
+            url_type = url_type_enum.INVALID;
+        }
+        // check if only page name without prefix
+        try {
+            String page_url = getPageUrl("https://mbasic.facebook.com/"+input_url);
+            url_type = url_type_enum.PAGE;
+            scrapePage(page_url);
+
         } catch (URISyntaxException | MalformedURLException e) {
             url_type = url_type_enum.INVALID;
             main.get().input_helper(main.get().getString(R.string.error_url), true);

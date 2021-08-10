@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.preference.PreferenceManager;
 
+import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
@@ -95,7 +96,9 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
                     url = null;
                     event_links = event_links.subList(0, max);
                 }
-
+            } catch (HttpStatusException e) {
+                this.error = R.string.error_url;
+                return null;
             } catch (IOException e) {
                 e.printStackTrace();
                 this.error = R.string.error_connection;

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
@@ -146,9 +147,8 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
 
         Log.d("scraperLog", "doInBackground: "+url);
 
-        Document document = DocumentReceiver.getDocument(url);
-
         try {
+            Document document = DocumentReceiver.getDocument(url);
             if (document == null) {
                 throw new IOException();
             }
@@ -191,7 +191,10 @@ public class FbEventScraper extends AsyncTask<Void, Void, Void> {
 
             this.event = new FbEvent(url, name, start_date, end_date, description, location, image_url);
 
-        } catch (IOException e) {
+        } catch (HttpStatusException e) {
+            this.error = R.string.error_url;
+        }
+        catch (IOException e) {
             e.printStackTrace();
             this.error = R.string.error_connection;
         } catch (Exception e) {
