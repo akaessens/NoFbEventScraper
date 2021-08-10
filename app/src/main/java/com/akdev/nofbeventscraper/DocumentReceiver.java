@@ -19,7 +19,7 @@ public class DocumentReceiver {
             // use default android user agent
             String user_agent = "Mozilla/5.0 (X11; Linux x86_64)";
 
-            Log.d("scraperLog", "DocumentReceiver: "+url);
+            Log.d("scraperLog", "DocumentReceiver: " + url);
 
             Connection connection = Jsoup.connect(url).userAgent(user_agent).followRedirects(true);
 
@@ -27,7 +27,7 @@ public class DocumentReceiver {
 
             document = response.parse();
 
-            Log.d("scraperLog", "Document title: "+document.title());
+            Log.d("scraperLog", "Document title: " + document.title());
 
             try {
                 // accept cookies needed?

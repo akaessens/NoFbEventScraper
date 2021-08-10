@@ -99,9 +99,11 @@ public class FbPageScraper extends AsyncTask<Void, Void, Void> {
             } catch (IOException e) {
                 e.printStackTrace();
                 this.error = R.string.error_connection;
+                return null;
             } catch (Exception e) {
                 e.printStackTrace();
                 this.error = R.string.error_unknown;
+                return null;
             }
         } while (url != null);
 
