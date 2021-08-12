@@ -1,0 +1,4 @@
+- parallelize multiple event scraping
+- add scraping history
+- allow entering page name without URL format
+- updated dependencies
