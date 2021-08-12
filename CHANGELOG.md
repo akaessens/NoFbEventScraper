@@ -1,4 +1,9 @@
 # Changelog
+## v0.5.0 (15)
+- parallelize multiple event scraping
+- add scraping history
+- allow entering page name without URL format
+- updated dependencies
 ## v0.4.4 (14)
 - Fix Android 11 intents (to open Calendar or Maps)
 ## v0.4.3 (13)
